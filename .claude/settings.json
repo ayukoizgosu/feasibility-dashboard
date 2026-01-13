@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "git status",
+      "git diff",
+      "git diff --stat",
+      "git log -n 5 --oneline",
+      "rg",
+      "rg --files"
+    ]
+  }
+}

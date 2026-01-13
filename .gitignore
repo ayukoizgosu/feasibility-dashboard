@@ -1,0 +1,11 @@
+
+.env
+*.log
+dist/
+build/
+node_modules/
+__pycache__/
+.venv/
+coverage/
+sbom/*.spdx.json
+tools/ai/call-log.ndjson

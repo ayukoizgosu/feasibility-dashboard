@@ -1,0 +1,18 @@
+
+title = "repo gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allowlist common non-secrets"
+paths = [
+  '''^sbom/''',
+  '''^docs/''',
+  '''^README\.md$'''
+]
+regexes = [
+  '''example[_-]?key''',
+  '''not[_-]?a[_-]?real[_-]?secret''',
+  '''dummy[_-]?token'''
+]

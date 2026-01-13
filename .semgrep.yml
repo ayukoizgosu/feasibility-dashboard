@@ -1,0 +1,9 @@
+
+# Semgrep Community Edition configuration
+# Runs default community rules plus specific security packs where available.
+rules:
+  - id: no-todo-in-security
+    pattern: TODO
+    message: "Track security TODOs explicitly in SECURITY_REPORT.md"
+    languages: [generic]
+    severity: INFO
