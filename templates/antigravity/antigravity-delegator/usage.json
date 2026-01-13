@@ -1,0 +1,13 @@
+{
+  "ts": 0,
+  "codex": {
+    "available": false,
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "gemini": {
+    "available": false,
+    "calls": 0
+  }
+}

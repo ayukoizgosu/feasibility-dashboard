@@ -1,0 +1,5 @@
+
+#!/usr/bin/env bash
+# Ensure we run the repo-local wrapper (not recursive) and preserve args.
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+python3 "$DIR/gemini_cli.py" -- "$@"

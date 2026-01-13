@@ -1,0 +1,12 @@
+{
+  "gemini": {
+    "used": 677,
+    "limit": 100000,
+    "calls": 21
+  },
+  "codex": {
+    "used": 3360,
+    "limit": 100000,
+    "calls": 15
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "currency": "USD",
+  "unit": "per_1k_tokens",
+  "note": "Update model names and prices for your account.",
+  "models": {
+    "MODEL_NAME": {
+      "input": 0.0,
+      "output": 0.0
+    }
+  }
+}
