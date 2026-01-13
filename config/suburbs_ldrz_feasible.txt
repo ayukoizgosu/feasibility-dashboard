@@ -1,0 +1,116 @@
+# Optimized Feasible List for LDRZ ( >4000sqm, <$2m )
+# Removed inner-ring and expensive middle-ring suburbs.
+# Focuses on Outer East, North East, and Growth Corridors.
+
+# North Eastern (Outer/Fringe)
+Briar Hill
+Bundoora
+Diamond Creek
+Eltham
+Eltham North
+Greensborough
+Here
+Kangaroo Ground
+Mill Park
+Montmorency
+Plenty
+Research
+St Helena
+Viewbank
+Watsonia
+Watsonia North
+Wattle Glen
+Yallambie
+
+# Manningham / NE (Lifestyle/Fringe)
+Donvale
+North Warrandyte
+Park Orchards
+Templestowe Lower
+Warrandyte
+Warrandyte South
+Wonga Park
+
+# Eastern (Outer - Maroondah/Knox/Yarra Ranges)
+Bayswater
+Bayswater North
+Belgrave
+Belgrave Heights
+Belgrave South
+Boronia
+Chirnside Park
+Croydon
+Croydon Hills
+Croydon North
+Croydon South
+Ferntree Gully
+Heathmont
+Kilsyth
+Kilsyth South
+Knoxfield
+Lilydale
+Lysterfield
+Lysterfield South
+Mitcham
+Montrose
+Mooroolbark
+Mount Evelyn
+Ringwood East
+Ringwood North
+Rowville
+Scoresby
+Tecoma
+The Basin
+Upper Ferntree Gully
+Wantirna
+Wantirna South
+Vermont South
+
+# South Eastern (Kingston/Frankston/Bayside Fringe)
+Aspendale Gardens
+Bonbeach
+Carrum
+Carrum Downs
+Chelsea Heights
+Edithvale
+Frankston
+Frankston East
+Frankston Heights
+Frankston North
+Frankston South
+Langwarrin
+Langwarrin South
+Mordialloc
+Patterson Lakes
+Seaford
+Skye
+
+# South Eastern (Greater Dandenong/Casey/Cardinia)
+Bangholme
+Berwick
+Beaconsfield
+Clyde
+Clyde North
+Cranbourne
+Cranbourne East
+Cranbourne North
+Cranbourne South
+Cranbourne West
+Dandenong North
+Doveton
+Endeavour Hills
+Eumemmerring
+Hallam
+Hampton Park
+Keysborough
+Lynbrook
+Lyndhurst
+Narre Warren
+Narre Warren East
+Narre Warren North
+Narre Warren South
+Noble Park North
+Officer
+Officer South
+Pakenham
+Springvale South

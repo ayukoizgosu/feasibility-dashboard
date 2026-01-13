@@ -1,0 +1,124 @@
+# Melbourne Property Site Scanner Configuration
+
+# Target suburbs for subdivision opportunities
+suburbs:
+  # Inner-Middle Ring
+  - Reservoir
+  - Preston
+  - Coburg
+  - Thornbury
+  # Middle Ring (Sweet Spot)
+  - Glenroy
+  - Fawkner
+  - Heidelberg West
+  - Pascoe Vale
+  # Outer Growth
+  - Campbellfield
+  - Broadmeadows
+  - Sunshine West
+  - St Albans
+
+# Listing filters
+filters:
+  property_types:
+    - house
+    - vacant_land
+  price_max: 2000000
+  land_size_min_m2: 400  # Minimum for subdivision potential
+  exclude_keywords:
+    - apartment
+    - unit
+    - townhouse
+    - villa
+
+# Geocoding (Nominatim - FREE, no API key required)
+geocoding:
+  provider: nominatim
+  rate_limit_per_second: 1  # Required by Nominatim usage policy
+
+# Feasibility assumptions
+feasibility:
+  build_cost_per_m2: 2800  # AUD per m2 GFA
+  soft_cost_pct: 0.15
+  contingency_pct: 0.10
+  holding_months: 18
+  finance_rate: 0.075
+  selling_cost_pct: 0.04
+  avg_dwelling_size_m2: 180
+
+# Zone-specific parameters  
+zones:
+  GRZ1:
+    site_coverage_max: 0.60
+    garden_area_min: 0.35
+    height_limit_m: 11
+    yield_factor: 0.0025  # dwellings per m2 land
+  GRZ2:
+    site_coverage_max: 0.60
+    garden_area_min: 0.35
+    height_limit_m: 9
+    yield_factor: 0.0020
+  NRZ:
+    site_coverage_max: 0.50
+    garden_area_min: 0.40
+    height_limit_m: 9
+    max_dwellings: 2
+    yield_factor: 0.0015
+  RGZ:
+    site_coverage_max: 0.70
+    height_limit_m: 13.5
+    yield_factor: 0.0035
+
+# Constraint severity (0=info, 1=minor, 2=moderate, 3=blocker)
+constraints:
+  HO: 3   # Heritage Overlay
+  VHR: 3  # Victorian Heritage Register
+  PAO: 3  # Public Acquisition Overlay
+  EAO: 3  # Environmental Audit Overlay
+  DDO: 1  # Design & Development Overlay
+  SLO: 2  # Significant Landscape Overlay
+  ESO: 2  # Environmental Significance Overlay
+  BMO: 3  # Bushfire Management Overlay - UPGRADED TO BLOCKER
+  LSIO: 2 # Land Subject to Inundation
+  SBO: 2  # Special Building Overlay
+  NCO: 1  # Neighbourhood Character Overlay
+
+# Quick-kill rules for fast rejection (before detailed analysis)
+quick_kill:
+  enabled: true
+  transmission_line_proximity_m: 300  # Reject if within 300m of 66kV+ lines
+  blocker_overlays:
+    - HO   # Heritage Overlay
+    - VHR  # Victorian Heritage Register
+    - PAO  # Public Acquisition Overlay
+    - EAO  # Environmental Audit Overlay
+    - BMO  # Bushfire Management Overlay
+
+# GIS API endpoints (for quick-kill screening)
+gis_apis:
+  vicmap_wfs: "https://opendata.maps.vic.gov.au/geoserver/wfs"
+  ga_electricity_wfs: "https://services.ga.gov.au/gis/services/National_Electricity_Infrastructure/MapServer/WFSServer"
+  request_timeout_seconds: 30
+  retry_attempts: 3
+
+# Output
+output:
+  top_n: 25
+  reports_dir: reports
+
+# Browser agent scraping settings (conservative to avoid detection)
+browser_scraping:
+  enabled: true
+  max_pages_per_session: 3
+  max_suburbs_per_run: 2
+  min_dwell_time_seconds: 8
+  max_dwell_time_seconds: 25
+  break_between_suburbs_seconds: [60, 180]  # [min, max]
+  # Links containing these patterns will be avoided (honeypots)
+  avoid_patterns:
+    - subscribe
+    - newsletter
+    - alert
+    - saved-search
+    - sign-in
+    - login

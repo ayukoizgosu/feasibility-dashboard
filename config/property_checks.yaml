@@ -1,0 +1,65 @@
+quick_kill:
+  transmission_lines:
+    enabled: true
+    radius_m: 300
+    severity: REJECT
+    description: "High voltage transmission lines"
+    research_basis: "Property Value & Visual Impact. Zones of 200-300m often see price reduction due to visual stigma and perceived health risks (EMF)."
+  
+  substations:
+    enabled: true
+    radius_m: 200
+    severity: REJECT
+    description: "Electrical substation"
+    research_basis: "Property Value & Visual Impact. 200m buffer recommended to avoid visual stigma and low-frequency humming noise issues."
+  
+  power_stations:
+    enabled: true
+    radius_m: 1000
+    severity: REJECT
+    description: "Major power station"
+    research_basis: "Industrial Hazard & Stigma. 1km buffer recommended for noise, emissions, and heavy industrial stigma."
+  
+  bushfire_prone_area:
+    enabled: true
+    severity: WARNING
+    description: "Designated Bushfire Prone Area (BPA)"
+    research_basis: "Construction Cost. BPA triggers BAL assessment which adds $10k-$50k+ to build costs depending on BAL rating."
+  
+  epa_priority_sites:
+    enabled: true
+    radius_m: 500
+    severity: REJECT
+    description: "EPA Priority Site (Contamination)"
+    research_basis: "Health & Liability. 500m is standard environmental audit buffer. Sites listed often have active clean-up notices or ongoing pollution issues."
+  
+  landfills:
+    enabled: true
+    radius_m: 1000
+    severity: REJECT
+    description: "Active or historical landfill"
+    research_basis: "Health & Amenity. 500m is EPA buffer for gas migration/odour. 1km recommended to avoid stigma and 'bin smell' complaints."
+  
+  npi_facilities:
+    enabled: true
+    radius_m: 1000
+    severity: WARNING
+    description: "National Pollutant Inventory facility"
+    research_basis: "Amenity & Air Quality. 1km buffer for industrial emissions. Impact varies by industry type."
+  
+  heritage_overlay:
+    enabled: true
+    severity: REJECT
+    description: "Heritage Overlay (HO)"
+    research_basis: "Development Restriction. HO severely limits demolition and subdivision potential."
+  
+  flood_overlay:
+    enabled: true
+    severity: REJECT
+    description: "Floodway / LSIO Overlay"
+    research_basis: "Safety & Insurance. Flood zones (LSIO/FO) significantly increase insurance premiums and restrict buildable footprint."
+
+manual_review_triggers:
+  - "slope_gt_15_pct"
+  - "irregular_shape"
+  - "battleaxe_driveway"

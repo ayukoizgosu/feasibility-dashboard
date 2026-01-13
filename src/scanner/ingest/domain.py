@@ -1,0 +1,371 @@
+"""Domain.com.au scraper with human-like behavior."""
+
+import asyncio
+import random
+import re
+from datetime import datetime
+from typing import Any
+
+from playwright.async_api import async_playwright, Page, Browser, BrowserContext
+from rich.console import Console
+
+from scanner.config import get_config
+from scanner.models import RawListing, Site
+from scanner.db import get_session
+from scanner.ingest.human_like import (
+    random_delay, human_scroll, human_move_mouse, 
+    setup_human_browser, simulate_reading, SessionManager
+)
+
+console = Console()
+
+
+class DomainScraper:
+    """Human-like scraper for Domain.com.au."""
+    
+    BASE_URL = "https://www.domain.com.au"
+    
+    def __init__(self):
+        self.config = get_config()
+        self.browser: Browser | None = None
+        self.context: BrowserContext | None = None
+        self.page: Page | None = None
+        self.session = SessionManager(max_pages_per_session=30)
+    
+    async def start(self):
+        """Start browser with human-like settings."""
+        playwright = await async_playwright().start()
+        
+        # Use headed browser occasionally for more realistic behavior
+        headless = random.random() > 0.1  # 90% headless, 10% headed
+        
+        self.browser = await playwright.chromium.launch(
+            headless=headless,
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--no-sandbox",
+            ]
+        )
+        
+        # Create context with realistic settings
+        self.context = await self.browser.new_context(
+            viewport={"width": 1920, "height": 1080},
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            locale="en-AU",
+            timezone_id="Australia/Melbourne"
+        )
+        
+        # Block unnecessary resources to speed up
+        await self.context.route("**/*.{png,jpg,jpeg,gif,svg,ico}", lambda route: route.abort())
+        await self.context.route("**/analytics**", lambda route: route.abort())
+        await self.context.route("**/tracking**", lambda route: route.abort())
+        
+        self.page = await self.context.new_page()
+        await setup_human_browser(self.page)
+        
+        # Visit homepage first like a real user
+        console.print("[dim]Visiting homepage first...[/dim]")
+        await self.page.goto(self.BASE_URL, wait_until="domcontentloaded")
+        await simulate_reading(self.page, 2, 5)
+    
+    async def stop(self):
+        """Close browser."""
+        if self.browser:
+            await self.browser.close()
+    
+    def build_search_url(self, suburb: str, page: int = 1) -> str:
+        """Build search URL."""
+        property_types = []
+        for pt in self.config.filters.property_types:
+            if pt == "house":
+                property_types.append("house")
+            elif pt == "vacant_land":
+                property_types.append("vacant-land")
+        
+        ptype_str = ",".join(property_types) if property_types else "house"
+        suburb_slug = suburb.lower().replace(" ", "-")
+        
+        url = f"{self.BASE_URL}/sale/{suburb_slug}-vic/"
+        url += f"?ptype={ptype_str}"
+        url += f"&price=0-{self.config.filters.price_max}"
+        url += f"&landsize={self.config.filters.land_size_min_m2}-any"
+        url += "&excludeunderoffer=1"
+        
+        if page > 1:
+            url += f"&page={page}"
+        
+        return url
+    
+    async def scrape_suburb(self, suburb: str, max_pages: int = 5) -> list[dict[str, Any]]:
+        """Scrape listings for a suburb with human-like behavior."""
+        listings = []
+        page_num = 1
+        
+        console.print(f"[blue]Scraping Domain: {suburb}[/blue]")
+        
+        while page_num <= max_pages:
+            # Check if we need a break
+            if self.session.should_take_break():
+                console.print("[dim]Taking a short break...[/dim]")
+                await self.session.take_break()
+            
+            url = self.build_search_url(suburb, page_num)
+            
+            try:
+                # Random delay before navigating
+                await random_delay(2, 5)
+                
+                # Navigate
+                await self.page.goto(url, wait_until="domcontentloaded", timeout=30000)
+                
+                # Simulate human viewing the page
+                await simulate_reading(self.page, 3, 7)
+                
+                # Scroll down to load more content
+                for _ in range(random.randint(2, 4)):
+                    await human_scroll(self.page)
+                    await random_delay(0.5, 1.5)
+                
+                # Check for no results
+                content = await self.page.content()
+                if "no properties" in content.lower() or "0 properties" in content.lower():
+                    break
+                
+                # Extract listings
+                cards = await self.page.query_selector_all('[data-testid="listing-card"]')
+                if not cards:
+                    # Try alternative selectors
+                    cards = await self.page.query_selector_all('[class*="listing-result"]')
+                
+                if not cards:
+                    console.print(f"  [yellow]No cards found on page {page_num}[/yellow]")
+                    break
+                
+                for card in cards:
+                    try:
+                        listing = await self._extract_listing(card, suburb)
+                        if listing:
+                            listings.append(listing)
+                    except Exception as e:
+                        pass  # Silent fail on individual cards
+                
+                console.print(f"  Page {page_num}: {len(cards)} listings")
+                
+                # Check for next page
+                if page_num < max_pages:
+                    next_exists = await self.page.query_selector('[data-testid="paginator-next-page"]:not([disabled])')
+                    if not next_exists:
+                        break
+                
+                page_num += 1
+                
+                # Random delay between pages (longer than normal)
+                await random_delay(3, 8)
+                
+            except Exception as e:
+                console.print(f"  [red]Error: {e}[/red]")
+                await random_delay(5, 10)  # Longer delay after error
+                break
+        
+        console.print(f"  Total for {suburb}: {len(listings)}")
+        return listings
+    
+    async def _extract_listing(self, card, suburb: str) -> dict[str, Any] | None:
+        """Extract data from a listing card."""
+        try:
+            # Get link
+            link = await card.query_selector("a[href*='/property']")
+            if not link:
+                link = await card.query_selector("a")
+            
+            if not link:
+                return None
+            
+            href = await link.get_attribute("href")
+            if not href:
+                return None
+            
+            if not href.startswith("http"):
+                href = f"{self.BASE_URL}{href}"
+            
+            # Extract ID
+            match = re.search(r'/(\d+)(?:\?|$)', href)
+            listing_id = match.group(1) if match else None
+            if not listing_id:
+                return None
+            
+            # Get text content for parsing
+            text = await card.inner_text()
+            
+            # Parse address (usually first significant text)
+            lines = [l.strip() for l in text.split('\n') if l.strip()]
+            address = lines[0] if lines else ""
+            
+            # Parse price
+            price_text = ""
+            for line in lines:
+                if '$' in line or 'contact' in line.lower() or 'auction' in line.lower():
+                    price_text = line
+                    break
+            
+            # Parse features
+            beds = baths = cars = None
+            for line in lines:
+                if 'bed' in line.lower():
+                    match = re.search(r'(\d+)', line)
+                    beds = int(match.group(1)) if match else None
+                if 'bath' in line.lower():
+                    match = re.search(r'(\d+)', line)
+                    baths = int(match.group(1)) if match else None
+                if 'car' in line.lower():
+                    match = re.search(r'(\d+)', line)
+                    cars = int(match.group(1)) if match else None
+            
+            # Parse land size
+            land_size = None
+            land_match = re.search(r'(\d{3,})\s*m[²2]', text)
+            if land_match:
+                land_size = float(land_match.group(1))
+            
+            return {
+                "listing_id": listing_id,
+                "url": href,
+                "address": address,
+                "suburb": suburb,
+                "price_text": price_text,
+                "bedrooms": beds,
+                "bathrooms": baths,
+                "car_spaces": cars,
+                "land_size_m2": land_size,
+                "scraped_at": datetime.utcnow().isoformat()
+            }
+            
+        except Exception:
+            return None
+    
+    def parse_price(self, price_text: str) -> tuple[float | None, float | None, float | None]:
+        """Parse price text."""
+        if not price_text:
+            return None, None, None
+        
+        price_text = price_text.lower().replace(",", "").replace("$", "")
+        
+        # Range
+        range_match = re.search(r'([\d.]+)\s*m?\s*[-–to]+\s*([\d.]+)\s*m?', price_text)
+        if range_match:
+            low = float(range_match.group(1))
+            high = float(range_match.group(2))
+            if low < 100:
+                low *= 1_000_000
+            if high < 100:
+                high *= 1_000_000
+            return low, high, (low + high) / 2
+        
+        # Single with m
+        single_match = re.search(r'([\d.]+)\s*m', price_text)
+        if single_match:
+            value = float(single_match.group(1)) * 1_000_000
+            return value, value, value
+        
+        # Plain number
+        num_match = re.search(r'(\d{6,})', price_text)
+        if num_match:
+            value = float(num_match.group(1))
+            return value, value, value
+        
+        return None, None, None
+
+
+async def scrape_domain(suburbs: list[str] | None = None) -> int:
+    """Scrape Domain with human-like behavior."""
+    config = get_config()
+    suburbs = suburbs or config.suburbs
+    
+    if not suburbs:
+        console.print("[yellow]No suburbs configured[/yellow]")
+        return 0
+    
+    # Limit to a few suburbs per run to stay under radar
+    max_suburbs_per_run = 4
+    if len(suburbs) > max_suburbs_per_run:
+        console.print(f"[dim]Limiting to {max_suburbs_per_run} suburbs this run[/dim]")
+        suburbs = random.sample(suburbs, max_suburbs_per_run)
+    
+    scraper = DomainScraper()
+    
+    try:
+        await scraper.start()
+        
+        total_new = 0
+        
+        for suburb in suburbs:
+            listings = await scraper.scrape_suburb(suburb, max_pages=3)
+            
+            with get_session() as session:
+                for listing in listings:
+                    # Skip excluded
+                    if any(kw in listing.get("address", "").lower() 
+                           for kw in config.filters.exclude_keywords):
+                        continue
+                    
+                    listing_id = listing["listing_id"]
+                    raw_id = f"domain:{listing_id}"
+                    
+                    existing = session.query(RawListing).filter_by(id=raw_id).first()
+                    if existing:
+                        existing.fetched_at = datetime.utcnow()
+                        existing.payload = listing
+                        continue
+                    
+                    raw = RawListing(
+                        id=raw_id,
+                        source="domain",
+                        listing_id=listing_id,
+                        url=listing["url"],
+                        payload=listing
+                    )
+                    session.add(raw)
+                    
+                    site = session.query(Site).filter_by(domain_listing_id=listing_id).first()
+                    if not site:
+                        price_low, price_high, price_guide = scraper.parse_price(listing.get("price_text", ""))
+                        
+                        site = Site(
+                            source="domain",
+                            domain_listing_id=listing_id,
+                            url=listing["url"],
+                            address_raw=listing.get("address"),
+                            suburb=listing.get("suburb"),
+                            state="VIC",
+                            property_type="house",
+                            price_display=listing.get("price_text"),
+                            price_low=price_low,
+                            price_high=price_high,
+                            price_guide=price_guide,
+                            bedrooms=listing.get("bedrooms"),
+                            bathrooms=listing.get("bathrooms"),
+                            car_spaces=listing.get("car_spaces"),
+                            land_size_listed=listing.get("land_size_m2"),
+                            geocode_status="pending"
+                        )
+                        session.add(site)
+                        total_new += 1
+                    else:
+                        site.last_seen = datetime.utcnow()
+            
+            # Longer break between suburbs
+            await random_delay(10, 20)
+        
+        console.print(f"[green]Domain: {total_new} new listings[/green]")
+        return total_new
+        
+    finally:
+        await scraper.stop()
+
+
+def run():
+    asyncio.run(scrape_domain())
+
+
+if __name__ == "__main__":
+    run()

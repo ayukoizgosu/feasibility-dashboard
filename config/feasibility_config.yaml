@@ -1,0 +1,275 @@
+# =============================================================================
+# FEASIBILITY MODEL CONFIGURATION
+# Based on Melbourne market research January 2024/2025
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# DEMOLITION COSTS (per sqm of existing structure)
+# Source: Varcon, Hipages, Prime Projects 2024
+# -----------------------------------------------------------------------------
+demolition:
+  standard_per_sqm: 80          # Standard timber house ($40-150 range, avg $80)
+  brick_per_sqm: 110            # Brick veneer (+30%)
+  double_storey_per_sqm: 120    # Double storey 
+  with_asbestos_per_sqm: 150    # With asbestos removal ($70-180)
+  permit_cost: 500              # Council demolition permit
+  typical_dwelling_sqm: 150     # Assumed existing dwelling size
+
+# -----------------------------------------------------------------------------
+# FINANCE PARAMETERS
+# Source: Finder, OzLend, Smart Business Plans, Feasly 2024
+# -----------------------------------------------------------------------------
+finance:
+  # Residential (<4 dwellings) - standard mortgage rates
+  residential:
+    interest_rate: 0.065        # 6.5% (5.7-8% range, bank rate)
+    lvr_max: 0.80               # 80% LVR typical
+    
+  # Commercial (4+ dwellings) - construction loan
+  commercial:
+    interest_rate: 0.085        # 8.5% (7.5-9.5% range)
+    lvr_max: 0.70               # 70% LVR typical (65-75%)
+    
+  # Mezzanine debt (if equity shortfall)
+  mezzanine:
+    interest_rate_low: 0.12     # 12% p.a. (low risk)
+    interest_rate_mid: 0.18     # 18% p.a. (mid risk) 
+    interest_rate_high: 0.25    # 25% p.a. (high risk, up to 30%)
+    monthly_rate_typical: 0.015 # 1.5% per month (as user noted)
+    establishment_fee: 0.03     # 3% of facility (2-5% range)
+    
+  # Project draw-down assumption
+  average_draw_factor: 0.60     # 60% avg drawn during construction
+
+# -----------------------------------------------------------------------------
+# PROFESSIONAL FEES (as % of construction cost)
+# Source: Formery, Desyne, Hipages, Feasly 2024
+# -----------------------------------------------------------------------------
+professional_fees:
+  # Architect fees by project size
+  architect:
+    design_only: 0.06           # 5-8% for design only
+    full_service: 0.10          # 8-15% design + project management
+    under_1m: 0.12              # 10-15% for projects <$1M
+    1m_to_5m: 0.08              # 5-10% for $1-5M projects
+    over_5m: 0.04               # 3-5% for $5M+ projects
+    
+  # Engineering fees
+  structural_engineer: 0.025    # 1-3% (simple), up to 6% (complex)
+  civil_engineer: 0.015         # 0.5-3% (site works, drainage)
+  
+  # Other consultants
+  quantity_surveyor: 0.015      # 1-2% of construction
+  town_planner: 3500            # $3,000-5,000 typical (fixed)
+  land_surveyor: 5000           # $4,000-6,000 for subdivision
+  building_surveyor: 0.005      # 0.5% or fixed ~$3,000-5,000
+  
+  # Project management (if not architect full service)
+  project_management: 0.03      # 2-5% if separate PM
+  
+  # Combined estimate (for quick calcs)
+  combined_typical: 0.10        # 10% all-in (arch + eng + QS + PM)
+  combined_premium: 0.15        # 15% for complex projects
+
+# -----------------------------------------------------------------------------
+# CONTINGENCY
+# Source: Industry standard, Napier & Blakeley
+# -----------------------------------------------------------------------------
+contingency:
+  feasibility_stage: 0.15       # 15% at feasibility (high uncertainty)
+  tender_stage: 0.075           # 7.5% at tender (N&B typical)
+  construction_stage: 0.05      # 5% during construction
+  
+# -----------------------------------------------------------------------------
+# SITE WORKS
+# Source: Rycon, Hipages, Melbourne Retaining Walls 2024
+# -----------------------------------------------------------------------------
+site_works:
+  # Base site prep (% of construction)
+  flat_site: 0.06               # 5-8% flat/easy site
+  moderate_slope: 0.12          # 10-15% moderate slope (5-10% grade)
+  steep_slope: 0.20             # 15-25% steep slope (>10% grade)
+  
+  # Additional costs per meter of fall
+  cost_per_meter_fall: 12500    # $10-15K per meter of fall
+  
+  # Retaining walls (per sqm of wall face)
+  retaining_timber: 300         # $250-350 timber sleepers
+  retaining_concrete_block: 550 # $400-680 concrete blocks
+  retaining_poured: 700         # $550-850 poured concrete
+  
+  # Fixed items
+  site_clearing: 5000           # $3,000-8,000 tree/veg removal
+  soil_test: 1500               # $1,000-2,500 geotech
+  
+# -----------------------------------------------------------------------------
+# STATUTORY COSTS
+# Source: Planning.vic.gov.au, Land.vic.gov.au 2024/2025
+# -----------------------------------------------------------------------------
+statutory:
+  # Planning permits (2024-25 fee unit = $16.33)
+  planning_permit_2_lot: 1453   # 2-lot subdivision
+  planning_permit_per_100_lots: 1453  # Per 100 lots
+  development_contribution: 0.05  # 0-10% depending on council
+  
+  # Building permits
+  building_permit_percent: 0.015  # 1-2% of construction
+  building_permit_min: 1500     # Minimum ~$1,500
+  
+  # Land registry (2025/26)
+  land_registry_base: 704       # Base fee
+  land_registry_per_lot: 218    # Per lot created
+  
+  # Utility connections
+  sewer_contribution: 2000      # $1,600-2,500 per lot
+  water_contribution: 2500      # Similar
+  electricity_connection: 1500  # $550-3,000 underground
+  
+  # Other
+  title_search: 50              # Per title
+  section_32: 500               # Vendor statement
+  
+# -----------------------------------------------------------------------------
+# SUBDIVISION COSTS (all-in estimates)
+# Source: ACGOL, Best Town Planner, Canstar 2024
+# -----------------------------------------------------------------------------
+subdivision:
+  two_lot_total: 35000          # $30-40K typical 2-lot
+  per_additional_lot: 8000      # $6-10K per extra lot
+  surveyor_base: 5000           # $4-6K surveyor fees
+  surveyor_per_extra_lot: 440   # Extra lots
+  drainage_per_lot: 20000       # $18-23K underground drainage
+  fencing_per_lot: 1500         # New boundary fencing
+
+# -----------------------------------------------------------------------------
+# SELLING COSTS
+# Source: User input, market standard
+# -----------------------------------------------------------------------------
+selling:
+  agent_commission: 0.015       # 1.5% as per user (typically 1.5-2.5%)
+  marketing: 0.005              # 0.5% marketing/staging
+  conveyancing: 1500            # $1,000-2,000 per transaction
+  
+# -----------------------------------------------------------------------------
+# CAP RATES & YIELDS (for income-producing strategies)
+# Source: Various investment sites, 2024
+# -----------------------------------------------------------------------------
+cap_rates:
+  # Rooming house
+  rooming_house_gross: 0.10     # 8-10% gross yield typical
+  rooming_house_net: 0.08       # ~8% after expenses
+  
+  # NDIS SDA
+  sda_conservative: 0.10        # 8-12% net typical
+  sda_optimistic: 0.15          # Up to 15-20% advertised
+  sda_annual_payment_hps: 150000  # ~$150K HPS typical
+  
+  # Childcare
+  childcare: 0.055              # 5-5.5% cap rate (lower risk)
+  childcare_rent_yield: 0.15    # 15% of fees as rent
+  
+  # Standard residential (for comparison)
+  residential_house: 0.035      # 3.5% Melbourne houses
+  residential_unit: 0.047       # 4.7% Melbourne units
+
+# -----------------------------------------------------------------------------
+# SALE PRICES / GDV
+# Note: These are defaults - ideally use suburb-specific comparables
+# Source: PRD, Soho, REA 2024
+# -----------------------------------------------------------------------------
+sale_prices:
+  # Melbourne median (2024)
+  median_house: 913000
+  median_unit: 629000
+  
+  # Per sqm rates (internal area)
+  per_sqm_premium_inner: 9500   # Kew, Hawthorn ($9-12K)
+  per_sqm_middle_ring: 7400     # Melbourne average
+  per_sqm_outer: 4500           # Werribee etc ($3.3-5.4K)
+  
+  # New construction premium
+  new_build_premium: 0.10       # 8-12% above comparable used
+  
+  # By product type (middle ring defaults)
+  townhouse_3bed: 950000        # 3-bed townhouse
+  townhouse_4bed: 1100000       # 4-bed townhouse
+  apartment_2bed: 550000        # 2-bed apartment
+  apartment_3bed: 750000        # 3-bed apartment
+  
+  # Land value per sqm (for subdivision GDV)
+  land_per_sqm_inner: 2500      # Inner suburbs
+  land_per_sqm_middle: 1500     # Middle ring
+  land_per_sqm_outer: 800       # Outer suburbs
+
+# -----------------------------------------------------------------------------
+# HOLDING PERIODS (months)
+# Source: Industry standard project timelines
+# -----------------------------------------------------------------------------
+holding_periods:
+  dual_occ: 14                  # 12-16 months
+  townhouse_3: 16               # 14-18 months
+  townhouse_4_plus: 18          # 16-20 months
+  apartment_3_storey: 20        # 18-24 months
+  apartment_4_plus: 24          # 24-30 months
+  subdivision_only: 12          # 9-15 months (no construction)
+  renovation: 6                 # 4-8 months
+
+# -----------------------------------------------------------------------------
+# AREA ASSUMPTIONS (sqm per dwelling)
+# Source: Building industry standards
+# -----------------------------------------------------------------------------
+dwelling_sizes:
+  townhouse_2bed: 120           # 110-140 sqm GFA
+  townhouse_3bed: 160           # 150-180 sqm GFA
+  townhouse_4bed: 200           # 180-220 sqm GFA
+  apartment_1bed: 55            # 50-60 sqm
+  apartment_2bed: 75            # 70-85 sqm
+  apartment_3bed: 110           # 100-120 sqm
+  single_dwelling: 250          # 220-280 sqm typical
+  
+# -----------------------------------------------------------------------------
+# SUBURB DATA (example - should be expanded)
+# Methodology: Use recent sales of comparable products
+# -----------------------------------------------------------------------------
+suburbs:
+  reservoir:
+    townhouse_3bed: 850000
+    land_per_sqm: 1200
+    zone: "GRZ1"
+  preston:
+    townhouse_3bed: 950000
+    land_per_sqm: 1600
+    zone: "GRZ1"
+  coburg:
+    townhouse_3bed: 1050000
+    land_per_sqm: 1800
+    zone: "GRZ1"
+  thornbury:
+    townhouse_3bed: 1150000
+    land_per_sqm: 2000
+    zone: "GRZ1"
+  donvale:
+    townhouse_3bed: 1100000
+    house_4bed: 1400000
+    land_per_sqm: 1800
+    zone: "GRZ1"
+  fawkner:
+    townhouse_3bed: 700000
+    land_per_sqm: 900
+    zone: "GRZ1"
+  broadmeadows:
+    townhouse_3bed: 600000
+    land_per_sqm: 700
+    zone: "GRZ1"
+    
+# -----------------------------------------------------------------------------
+# NOTES
+# -----------------------------------------------------------------------------
+notes:
+  - "All costs are indicative and should be verified for specific projects"
+  - "GDV should be based on recent comparable sales, not assumptions"
+  - "Finance rates change frequently - verify with lenders"
+  - "Consider getting QS estimate for accurate construction costs"
+  - "Location significantly impacts both costs and GDV"
+  - "Train station proximity adds 5-15% to sale prices"
+  - "For land value, check recent sales of run-down/uninhabitable houses too"

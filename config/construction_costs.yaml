@@ -1,0 +1,100 @@
+# Napier & Blakeley Construction Cost Reference
+# Source: N&B Construction Costs Datacards (Updated Q4 2024)
+# Melbourne/Victoria Rates - Updated periodically from official datacards
+# Last Updated: 2026-01-11
+
+# =============================================================================
+# RESIDENTIAL CONSTRUCTION COSTS ($/sqm GFA)
+# =============================================================================
+
+# Single Dwelling House (Detached)
+# Timber frame, project home standard
+SINGLE_DWELLING:
+  budget: 1800        # Basic spec, standard finishes
+  medium: 2100        # Good quality finishes, some upgrades
+  high: 2600          # High quality finishes, premium fittings
+  premium: 3200       # Architecturally designed, luxury finishes
+
+# Townhouse / Dual Occupancy (2-storey, timber frame)
+# Includes common walls, individual access
+TOWNHOUSE:
+  budget: 2100        # Basic spec
+  medium: 2525        # Medium standard (N&B baseline)
+  high: 2900          # High quality
+  premium: 3400       # Premium spec
+
+# Multi-Unit / Walk-up Apartments (3+ storeys)
+# Concrete/steel frame typically
+APARTMENT:
+  budget: 2800        # Basic spec
+  medium: 3250        # Medium standard (N&B baseline)
+  high: 3800          # High quality
+  premium: 4500       # Premium spec
+
+# =============================================================================
+# RENOVATION COSTS ($/sqm)
+# =============================================================================
+
+RENOVATION:
+  cosmetic: 800       # Paint, flooring, minor fixes
+  medium: 1500        # Kitchen/bathroom refresh, some structural
+  major: 2200         # Full gut renovation, reconfigure
+  extension: 2800     # New extension/addition
+
+# =============================================================================
+# SITE WORKS & EXTERNALS (% of construction OR fixed)
+# =============================================================================
+
+SITE_WORKS:
+  standard_percent: 0.08      # 8% of construction for standard sites
+  sloping_percent: 0.15       # 15% for slopes 5-12%
+  steep_percent: 0.25         # 25% for slopes >12%
+  demolition_per_sqm: 80      # $/sqm demolition (existing dwelling)
+  landscaping_budget: 25000   # Basic landscaping allowance
+  driveway_per_sqm: 120       # Concrete driveway
+
+# =============================================================================
+# PROFESSIONAL FEES (% of construction)
+# =============================================================================
+
+PROFESSIONAL_FEES:
+  architecture: 0.06          # 6% for custom design
+  engineering: 0.02           # Structural + civil
+  planning_consultant: 0.015  # Town planning
+  project_management: 0.03    # PM services
+  quantity_surveyor: 0.01     # QS fees
+  total_typical: 0.10         # 10% combined for project homes
+
+# =============================================================================
+# STATUTORY & AUTHORITY COSTS
+# =============================================================================
+
+STATUTORY:
+  council_permit_percent: 0.005   # 0.5% of construction
+  building_permit_percent: 0.015  # 1.5% of construction
+  headworks_per_lot: 35000        # Development contributions
+  services_connection: 15000      # Utility connections per dwelling
+  
+# =============================================================================
+# CONTINGENCY & ESCALATION
+# =============================================================================
+
+CONTINGENCY:
+  design_stage: 0.10          # 10% during design
+  tender_stage: 0.075         # 7.5% at tender
+  construction_stage: 0.05    # 5% during build
+
+ESCALATION:
+  annual_rate: 0.05           # 5% per annum (current forecast)
+  forecast_2025: 0.04         # 4% forecast for 2025
+  forecast_2026: 0.035        # 3.5% forecast for 2026
+
+# =============================================================================
+# NOTES
+# =============================================================================
+# - All rates are EXCLUSIVE of GST
+# - Rates assume standard site conditions
+# - Regional Victoria: deduct 5-10%
+# - CBD/Inner suburbs: add 10-15%
+# - Rates include builder margin (typically 15-20%)
+# - Update quarterly from N&B datacards or industry benchmarks

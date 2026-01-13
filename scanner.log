@@ -1,0 +1,595 @@
+
+==================================================
+SESSION START: 2026-01-13 22:46:51.010481
+==================================================
+[2026-01-13 22:46:51] 🛡️  Secure Scanner Launcher
+[2026-01-13 22:46:51] Targeting 3 batches with source: random
+[2026-01-13 22:46:51] Logging to: C:\Users\Carter Xu\OneDrive\Antigravity Workspaces\site-scanner\scanner.log
+[2026-01-13 22:46:51] 
+=== Batch 1/3 ===
+[2026-01-13 22:46:51] Disconnecting/Resetting VPN...
+[2026-01-13 22:46:51] VPN OUT: Disconnected
+[2026-01-13 22:46:53] Connecting to ExpressVPN: Melbourne (ID: 156)
+[2026-01-13 22:46:56] VPN OUT: Connected to Australia - Melbourne
+[2026-01-13 22:46:56] Successfully connected to Melbourne!
+[2026-01-13 22:46:56] Waiting 15 seconds for DNS/Routing to stabilize...
+[2026-01-13 22:47:11] 
+🚀 Launching Scanner...
+[22:47:12] Database initialized at C:\Users\Carter Xu\OneDrive\Antigravity Workspaces\db\sites.db
+[22:47:12] Starting weekly refresh
+[22:47:12] Batch index: 60
+[22:47:12] Stealth Mode: Scanning REA only
+[22:47:12] REA suburbs: Wantirna South, Vermont South
+[22:47:13] Visiting REA homepage...
+[22:47:27] Scraping REA: Wantirna South
+[22:48:03]   Total for Wantirna South: 0
+[22:48:41] Scraping REA: Vermont South
+[22:49:05]   Total for Vermont South: 0
+[22:49:49] REA: 0 new listings
+[22:49:49] Ingested: Domain 0, REA 0
+[22:49:49] No pending sites to geocode
+[22:49:49] Geocoded: 0 success, 0 failed
+[22:49:49] Report written: reports\weekly_ldrz_candidates_20260113.csv
+[22:49:49] Report written: reports\weekly_ldrz_candidates_latest.csv
+[22:49:49] Candidates found: 0
+[22:49:49] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x00000228CA675BC0>
+[22:49:49] Traceback (most recent call last):
+[22:49:49]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[22:49:49]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[22:49:49]                                ^^^^^^^^
+[22:49:49]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[22:49:49]     info.append(f'fd={self._sock.fileno()}')
+[22:49:49]                       ^^^^^^^^^^^^^^^^^^^
+[22:49:49]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[22:49:49]     raise ValueError("I/O operation on closed pipe")
+[22:49:49] ValueError: I/O operation on closed pipe
+[22:49:49] Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x00000228CA674400>
+[22:49:49] Traceback (most recent call last):
+[22:49:49]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 125, in __del__
+[22:49:49]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[22:49:49]                                ^^^^^^^^
+[22:49:49]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 70, in __repr__
+[22:49:49]     info.append(f'stdin={stdin.pipe}')
+[22:49:49]                         ^^^^^^^^^^^^
+[22:49:49]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[22:49:49]     info.append(f'fd={self._sock.fileno()}')
+[22:49:49]                       ^^^^^^^^^^^^^^^^^^^
+[22:49:49]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[22:49:49]     raise ValueError("I/O operation on closed pipe")
+[22:49:49] ValueError: I/O operation on closed pipe
+[22:49:49] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x00000228CA675BC0>
+[22:49:49] Traceback (most recent call last):
+[22:49:49]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[22:49:49]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[22:49:49]                                ^^^^^^^^
+[22:49:49]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[22:49:49]     info.append(f'fd={self._sock.fileno()}')
+[22:49:49]                       ^^^^^^^^^^^^^^^^^^^
+[22:49:49]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[22:49:49]     raise ValueError("I/O operation on closed pipe")
+[22:49:49] ValueError: I/O operation on closed pipe
+[2026-01-13 22:49:49] Batch 1 complete!
+[2026-01-13 22:49:49] 
+Sleeping for 160 seconds to randomize behavior...
+[2026-01-13 22:52:29] 
+=== Batch 2/3 ===
+[2026-01-13 22:52:29] Disconnecting/Resetting VPN...
+[2026-01-13 22:52:29] VPN OUT: Disconnected
+[2026-01-13 22:52:31] Connecting to ExpressVPN: Sydney - 2 (ID: 162)
+[2026-01-13 22:52:34] VPN OUT: Connected to Australia - Sydney - 2
+[2026-01-13 22:52:34] Successfully connected to Sydney - 2!
+[2026-01-13 22:52:34] Waiting 15 seconds for DNS/Routing to stabilize...
+[2026-01-13 22:52:49] 
+🚀 Launching Scanner...
+[22:52:50] Database initialized at C:\Users\Carter Xu\OneDrive\Antigravity Workspaces\db\sites.db
+[22:52:50] Starting weekly refresh
+[22:52:50] Batch index: 64
+[22:52:50] Stealth Mode: Scanning DOMAIN only
+[22:52:50] Domain suburbs: Carrum, Carrum Downs, Chelsea Heights, Edithvale
+[22:52:51] Visiting homepage first...
+[22:53:01] Scraping Domain: Carrum
+[22:53:17]   No cards found on page 1
+[22:53:17]   Total for Carrum: 0
+[22:53:29] Scraping Domain: Carrum Downs
+[22:53:47]   No cards found on page 1
+[22:53:47]   Total for Carrum Downs: 0
+[22:54:05] Scraping Domain: Chelsea Heights
+[22:54:05] Taking a short break...
+[22:55:12]   No cards found on page 1
+[22:55:12]   Total for Chelsea Heights: 0
+[22:55:26] Scraping Domain: Edithvale
+[22:55:43]   No cards found on page 1
+[22:55:43]   Total for Edithvale: 0
+[22:56:02] Domain: 0 new listings
+[22:56:02] Ingested: Domain 0, REA 0
+[22:56:02] No pending sites to geocode
+[22:56:02] Geocoded: 0 success, 0 failed
+[22:56:02] Report written: reports\weekly_ldrz_candidates_20260113.csv
+[22:56:02] Report written: reports\weekly_ldrz_candidates_latest.csv
+[22:56:02] Candidates found: 0
+[22:56:02] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x0000028DB5145BC0>
+[22:56:02] Traceback (most recent call last):
+[22:56:02]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[22:56:02]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[22:56:02]                                ^^^^^^^^
+[22:56:02]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[22:56:02]     info.append(f'fd={self._sock.fileno()}')
+[22:56:02]                       ^^^^^^^^^^^^^^^^^^^
+[22:56:02]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[22:56:02]     raise ValueError("I/O operation on closed pipe")
+[22:56:02] ValueError: I/O operation on closed pipe
+[22:56:02] Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x0000028DB5144400>
+[22:56:02] Traceback (most recent call last):
+[22:56:02]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 125, in __del__
+[22:56:02]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[22:56:02]                                ^^^^^^^^
+[22:56:02]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 70, in __repr__
+[22:56:02]     info.append(f'stdin={stdin.pipe}')
+[22:56:02]                         ^^^^^^^^^^^^
+[22:56:02]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[22:56:02]     info.append(f'fd={self._sock.fileno()}')
+[22:56:02]                       ^^^^^^^^^^^^^^^^^^^
+[22:56:02]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[22:56:02]     raise ValueError("I/O operation on closed pipe")
+[22:56:02] ValueError: I/O operation on closed pipe
+[22:56:02] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x0000028DB5145BC0>
+[22:56:02] Traceback (most recent call last):
+[22:56:02]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[22:56:02]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[22:56:02]                                ^^^^^^^^
+[22:56:02]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[22:56:02]     info.append(f'fd={self._sock.fileno()}')
+[22:56:02]                       ^^^^^^^^^^^^^^^^^^^
+[22:56:02]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[22:56:02]     raise ValueError("I/O operation on closed pipe")
+[22:56:02] ValueError: I/O operation on closed pipe
+[2026-01-13 22:56:02] Batch 2 complete!
+[2026-01-13 22:56:02] 
+Sleeping for 64 seconds to randomize behavior...
+[2026-01-13 22:57:06] 
+=== Batch 3/3 ===
+[2026-01-13 22:57:06] Disconnecting/Resetting VPN...
+[2026-01-13 22:57:07] VPN OUT: Disconnected
+[2026-01-13 22:57:09] Connecting to ExpressVPN: Brisbane (ID: 208)
+[2026-01-13 22:57:11] VPN OUT: Connected to Australia - Brisbane
+[2026-01-13 22:57:11] Successfully connected to Brisbane!
+[2026-01-13 22:57:11] Waiting 15 seconds for DNS/Routing to stabilize...
+[2026-01-13 22:57:26] 
+🚀 Launching Scanner...
+[22:57:27] Database initialized at C:\Users\Carter Xu\OneDrive\Antigravity Workspaces\db\sites.db
+[22:57:27] Starting weekly refresh
+[22:57:27] Batch index: 68
+[22:57:27] Stealth Mode: Scanning DOMAIN only
+[22:57:27] Domain suburbs: Frankston, Frankston East, Frankston Heights, Frankston North
+[22:57:28] Visiting homepage first...
+[22:57:35] Scraping Domain: Frankston
+[22:57:52]   No cards found on page 1
+[22:57:52]   Total for Frankston: 0
+[22:58:10] Scraping Domain: Frankston East
+[22:58:27]   No cards found on page 1
+[22:58:27]   Total for Frankston East: 0
+[22:58:38] Scraping Domain: Frankston Heights
+[22:58:57]   No cards found on page 1
+[22:58:57]   Total for Frankston Heights: 0
+[22:59:16] Scraping Domain: Frankston North
+[22:59:38]   No cards found on page 1
+[22:59:38]   Total for Frankston North: 0
+[22:59:55] Domain: 0 new listings
+[22:59:55] Ingested: Domain 0, REA 0
+[22:59:55] No pending sites to geocode
+[22:59:55] Geocoded: 0 success, 0 failed
+[22:59:55] Report written: reports\weekly_ldrz_candidates_20260113.csv
+[22:59:55] Report written: reports\weekly_ldrz_candidates_latest.csv
+[22:59:55] Candidates found: 0
+[22:59:55] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x00000136D57F5BC0>
+[22:59:55] Traceback (most recent call last):
+[22:59:55]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[22:59:55]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[22:59:55]                                ^^^^^^^^
+[22:59:55]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[22:59:55]     info.append(f'fd={self._sock.fileno()}')
+[22:59:55]                       ^^^^^^^^^^^^^^^^^^^
+[22:59:55]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[22:59:55]     raise ValueError("I/O operation on closed pipe")
+[22:59:55] ValueError: I/O operation on closed pipe
+[22:59:55] Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x00000136D57F4400>
+[22:59:55] Traceback (most recent call last):
+[22:59:55]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 125, in __del__
+[22:59:55]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[22:59:55]                                ^^^^^^^^
+[22:59:55]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 70, in __repr__
+[22:59:55]     info.append(f'stdin={stdin.pipe}')
+[22:59:55]                         ^^^^^^^^^^^^
+[22:59:55]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[22:59:55]     info.append(f'fd={self._sock.fileno()}')
+[22:59:55]                       ^^^^^^^^^^^^^^^^^^^
+[22:59:55]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[22:59:55]     raise ValueError("I/O operation on closed pipe")
+[22:59:55] ValueError: I/O operation on closed pipe
+[22:59:55] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x00000136D57F5BC0>
+[22:59:55] Traceback (most recent call last):
+[22:59:55]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[22:59:55]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[22:59:55]                                ^^^^^^^^
+[22:59:55]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[22:59:55]     info.append(f'fd={self._sock.fileno()}')
+[22:59:55]                       ^^^^^^^^^^^^^^^^^^^
+[22:59:55]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[22:59:55]     raise ValueError("I/O operation on closed pipe")
+[22:59:55] ValueError: I/O operation on closed pipe
+[2026-01-13 22:59:55] Batch 3 complete!
+[2026-01-13 22:59:55] 
+Loop Complete. Disconnecting...
+[2026-01-13 22:59:56] VPN OUT: Disconnected
+
+==================================================
+SESSION START: 2026-01-13 23:20:39.358183
+==================================================
+[2026-01-13 23:20:39] 🛡️  Secure Scanner Launcher
+[2026-01-13 23:20:39] Targeting 2 batches with source: random
+[2026-01-13 23:20:39] Logging to: C:\Users\Carter Xu\OneDrive\Antigravity Workspaces\site-scanner\scanner.log
+[2026-01-13 23:20:39] 
+=== Batch 1/2 ===
+[2026-01-13 23:20:39] Disconnecting/Resetting VPN...
+[2026-01-13 23:20:39] VPN OUT: Disconnected
+[2026-01-13 23:20:41] Connecting to ExpressVPN: Sydney (ID: 81)
+[2026-01-13 23:20:44] VPN OUT: Connected to Australia - Sydney
+[2026-01-13 23:20:44] Successfully connected to Sydney!
+[2026-01-13 23:20:44] Waiting 15 seconds for DNS/Routing to stabilize...
+[2026-01-13 23:20:59] 
+🚀 Launching Scanner...
+[23:21:00] Database initialized at C:\Users\Carter Xu\OneDrive\Antigravity Workspaces\db\sites.db
+[23:21:00] Starting weekly refresh
+[23:21:00] Batch index: 7
+[23:21:00] Stealth Mode: Scanning REA only
+[23:21:00] REA suburbs: Warrandyte South, North Warrandyte
+[23:21:01] Visiting REA homepage...
+[23:21:14] Scraping REA: Warrandyte South
+[23:21:48]   Total for Warrandyte South: 0
+[23:22:40] Scraping REA: North Warrandyte
+[23:23:09]   Total for North Warrandyte: 0
+[23:23:58] REA: 0 new listings
+[23:23:58] Ingested: Domain 0, REA 0
+[23:23:58] No pending sites to geocode
+[23:23:58] Geocoded: 0 success, 0 failed
+[23:23:58] Report written: reports\weekly_ldrz_candidates_20260113.csv
+[23:23:58] Report written: reports\weekly_ldrz_candidates_latest.csv
+[23:23:58] Candidates found: 0
+[23:23:58] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x0000028B7AF75BC0>
+[23:23:58] Traceback (most recent call last):
+[23:23:58]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[23:23:58]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[23:23:58]                                ^^^^^^^^
+[23:23:58]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[23:23:58]     info.append(f'fd={self._sock.fileno()}')
+[23:23:58]                       ^^^^^^^^^^^^^^^^^^^
+[23:23:58]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[23:23:58]     raise ValueError("I/O operation on closed pipe")
+[23:23:58] ValueError: I/O operation on closed pipe
+[23:23:58] Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x0000028B7AF74400>
+[23:23:58] Traceback (most recent call last):
+[23:23:58]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 125, in __del__
+[23:23:58]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[23:23:58]                                ^^^^^^^^
+[23:23:58]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 70, in __repr__
+[23:23:58]     info.append(f'stdin={stdin.pipe}')
+[23:23:58]                         ^^^^^^^^^^^^
+[23:23:58]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[23:23:58]     info.append(f'fd={self._sock.fileno()}')
+[23:23:58]                       ^^^^^^^^^^^^^^^^^^^
+[23:23:58]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[23:23:58]     raise ValueError("I/O operation on closed pipe")
+[23:23:58] ValueError: I/O operation on closed pipe
+[23:23:58] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x0000028B7AF75BC0>
+[23:23:58] Traceback (most recent call last):
+[23:23:58]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[23:23:58]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[23:23:58]                                ^^^^^^^^
+[23:23:58]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[23:23:58]     info.append(f'fd={self._sock.fileno()}')
+[23:23:58]                       ^^^^^^^^^^^^^^^^^^^
+[23:23:58]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[23:23:58]     raise ValueError("I/O operation on closed pipe")
+[23:23:58] ValueError: I/O operation on closed pipe
+[2026-01-13 23:23:58] Batch 1 complete!
+[2026-01-13 23:23:58] 
+Sleeping for 79 seconds to randomize behavior...
+[2026-01-13 23:25:17] 
+=== Batch 2/2 ===
+[2026-01-13 23:25:17] Disconnecting/Resetting VPN...
+[2026-01-13 23:25:17] VPN OUT: Disconnected
+[2026-01-13 23:25:19] Connecting to ExpressVPN: Sydney - 2 (ID: 162)
+[2026-01-13 23:25:22] VPN OUT: Connected to Australia - Sydney - 2
+[2026-01-13 23:25:22] Successfully connected to Sydney - 2!
+[2026-01-13 23:25:22] Waiting 15 seconds for DNS/Routing to stabilize...
+[2026-01-13 23:25:37] 
+🚀 Launching Scanner...
+[23:25:38] Database initialized at C:\Users\Carter Xu\OneDrive\Antigravity Workspaces\db\sites.db
+[23:25:38] Starting weekly refresh
+[23:25:38] Batch index: 11
+[23:25:38] Stealth Mode: Scanning DOMAIN only
+[23:25:38] Domain suburbs: Nunawading, Vermont, Vermont South, Croydon Hills
+[23:25:39] Visiting homepage first...
+[23:25:48] Scraping Domain: Nunawading
+[23:25:48] Taking a short break...
+[23:26:56]   No cards found on page 1
+[23:26:56]   Total for Nunawading: 0
+[23:27:14] Scraping Domain: Vermont
+[23:27:30]   No cards found on page 1
+[23:27:30]   Total for Vermont: 0
+[23:27:47] Scraping Domain: Vermont South
+[23:28:01]   No cards found on page 1
+[23:28:01]   Total for Vermont South: 0
+[23:28:14] Scraping Domain: Croydon Hills
+[23:28:25]   No cards found on page 1
+[23:28:25]   Total for Croydon Hills: 0
+[23:28:36] Domain: 0 new listings
+[23:28:36] Ingested: Domain 0, REA 0
+[23:28:36] No pending sites to geocode
+[23:28:36] Geocoded: 0 success, 0 failed
+[23:28:36] Report written: reports\weekly_ldrz_candidates_20260113.csv
+[23:28:36] Report written: reports\weekly_ldrz_candidates_latest.csv
+[23:28:36] Candidates found: 0
+[23:28:36] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x000001DD7C305BC0>
+[23:28:36] Traceback (most recent call last):
+[23:28:36]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[23:28:36]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[23:28:36]                                ^^^^^^^^
+[23:28:36]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[23:28:36]     info.append(f'fd={self._sock.fileno()}')
+[23:28:36]                       ^^^^^^^^^^^^^^^^^^^
+[23:28:36]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[23:28:36]     raise ValueError("I/O operation on closed pipe")
+[23:28:36] ValueError: I/O operation on closed pipe
+[23:28:36] Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x000001DD7C304400>
+[23:28:36] Traceback (most recent call last):
+[23:28:36]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 125, in __del__
+[23:28:36]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[23:28:36]                                ^^^^^^^^
+[23:28:36]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 70, in __repr__
+[23:28:36]     info.append(f'stdin={stdin.pipe}')
+[23:28:36]                         ^^^^^^^^^^^^
+[23:28:36]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[23:28:36]     info.append(f'fd={self._sock.fileno()}')
+[23:28:36]                       ^^^^^^^^^^^^^^^^^^^
+[23:28:36]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[23:28:36]     raise ValueError("I/O operation on closed pipe")
+[23:28:36] ValueError: I/O operation on closed pipe
+[23:28:36] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x000001DD7C305BC0>
+[23:28:36] Traceback (most recent call last):
+[23:28:36]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[23:28:36]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[23:28:36]                                ^^^^^^^^
+[23:28:36]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[23:28:36]     info.append(f'fd={self._sock.fileno()}')
+[23:28:36]                       ^^^^^^^^^^^^^^^^^^^
+[23:28:36]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[23:28:36]     raise ValueError("I/O operation on closed pipe")
+[23:28:36] ValueError: I/O operation on closed pipe
+[2026-01-13 23:28:36] Batch 2 complete!
+[2026-01-13 23:28:36] 
+Loop Complete. Disconnecting...
+[2026-01-13 23:28:37] VPN OUT: Disconnected
+
+==================================================
+SESSION START: 2026-01-14 08:19:42.751935
+==================================================
+[2026-01-14 08:19:42] 🛡️  Secure Scanner Launcher
+[2026-01-14 08:19:42] Targeting 3 batches with source: random
+[2026-01-14 08:19:42] Logging to: C:\Users\Carter Xu\OneDrive\Antigravity Workspaces\site-scanner\scanner.log
+[2026-01-14 08:19:42] 
+=== Batch 1/3 ===
+[2026-01-14 08:19:42] Disconnecting/Resetting VPN...
+[2026-01-14 08:19:43] VPN OUT: Disconnected
+[2026-01-14 08:19:45] Connecting to ExpressVPN: Brisbane (ID: 208)
+[2026-01-14 08:19:47] VPN OUT: Connected to Australia - Brisbane
+[2026-01-14 08:19:47] Successfully connected to Brisbane!
+[2026-01-14 08:19:47] Waiting 15 seconds for DNS/Routing to stabilize...
+[2026-01-14 08:20:02] 
+🚀 Launching Scanner...
+[08:20:03] Database initialized at C:\Users\Carter Xu\OneDrive\Antigravity Workspaces\db\sites.db
+[08:20:03] Starting weekly refresh
+[08:20:03] Batch index: 15
+[08:20:03] Stealth Mode: Scanning DOMAIN only
+[08:20:03] Domain suburbs: Croydon North, Wonga Park, Warranwood, Croydon
+[08:20:04] Visiting homepage first...
+[08:20:13] Scraping Domain: Croydon North
+[08:20:27]   No cards found on page 1
+[08:20:27]   Total for Croydon North: 0
+[08:20:42] Scraping Domain: Wonga Park
+[08:20:57]   No cards found on page 1
+[08:20:57]   Total for Wonga Park: 0
+[08:21:14] Scraping Domain: Warranwood
+[08:21:30]   No cards found on page 1
+[08:21:30]   Total for Warranwood: 0
+[08:21:49] Scraping Domain: Croydon
+[08:22:05]   No cards found on page 1
+[08:22:05]   Total for Croydon: 0
+[08:22:19] Domain: 0 new listings
+[08:22:19] Ingested: Domain 0, REA 0
+[08:22:19] No pending sites to geocode
+[08:22:19] Geocoded: 0 success, 0 failed
+[08:22:19] Report written: reports\weekly_ldrz_candidates_20260114.csv
+[08:22:19] Report written: reports\weekly_ldrz_candidates_latest.csv
+[08:22:19] Candidates found: 0
+[08:22:19] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x0000025E4E7F5BC0>
+[08:22:19] Traceback (most recent call last):
+[08:22:19]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[08:22:19]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[08:22:19]                                ^^^^^^^^
+[08:22:19]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[08:22:19]     info.append(f'fd={self._sock.fileno()}')
+[08:22:19]                       ^^^^^^^^^^^^^^^^^^^
+[08:22:19]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[08:22:19]     raise ValueError("I/O operation on closed pipe")
+[08:22:19] ValueError: I/O operation on closed pipe
+[08:22:19] Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x0000025E4E7F4400>
+[08:22:19] Traceback (most recent call last):
+[08:22:19]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 125, in __del__
+[08:22:19]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[08:22:19]                                ^^^^^^^^
+[08:22:19]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 70, in __repr__
+[08:22:19]     info.append(f'stdin={stdin.pipe}')
+[08:22:19]                         ^^^^^^^^^^^^
+[08:22:19]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[08:22:19]     info.append(f'fd={self._sock.fileno()}')
+[08:22:19]                       ^^^^^^^^^^^^^^^^^^^
+[08:22:19]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[08:22:19]     raise ValueError("I/O operation on closed pipe")
+[08:22:19] ValueError: I/O operation on closed pipe
+[08:22:19] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x0000025E4E7F5BC0>
+[08:22:19] Traceback (most recent call last):
+[08:22:19]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[08:22:19]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[08:22:19]                                ^^^^^^^^
+[08:22:19]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[08:22:19]     info.append(f'fd={self._sock.fileno()}')
+[08:22:19]                       ^^^^^^^^^^^^^^^^^^^
+[08:22:19]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[08:22:19]     raise ValueError("I/O operation on closed pipe")
+[08:22:19] ValueError: I/O operation on closed pipe
+[2026-01-14 08:22:19] Batch 1 complete!
+[2026-01-14 08:22:19] 
+Sleeping for 74 seconds to randomize behavior...
+[2026-01-14 08:23:33] 
+=== Batch 2/3 ===
+[2026-01-14 08:23:33] Disconnecting/Resetting VPN...
+[2026-01-14 08:23:34] VPN OUT: Disconnected
+[2026-01-14 08:23:36] Connecting to ExpressVPN: Brisbane (ID: 208)
+[2026-01-14 08:23:39] VPN OUT: Connected to Australia - Brisbane
+[2026-01-14 08:23:39] Successfully connected to Brisbane!
+[2026-01-14 08:23:39] Waiting 15 seconds for DNS/Routing to stabilize...
+[2026-01-14 08:23:54] 
+🚀 Launching Scanner...
+[08:23:54] Database initialized at C:\Users\Carter Xu\OneDrive\Antigravity Workspaces\db\sites.db
+[08:23:54] Starting weekly refresh
+[08:23:54] Batch index: 19
+[08:23:54] Stealth Mode: Scanning DOMAIN only
+[08:23:54] Domain suburbs: Croydon South, Ringwood, Ringwood East, Heathmont
+[08:23:55] Visiting homepage first...
+[08:24:06] Scraping Domain: Croydon South
+[08:24:06] Taking a short break...
+[08:25:19]   No cards found on page 1
+[08:25:19]   Total for Croydon South: 0
+[08:25:31] Scraping Domain: Ringwood
+[08:25:47]   No cards found on page 1
+[08:25:47]   Total for Ringwood: 0
+[08:26:04] Scraping Domain: Ringwood East
+[08:26:21]   No cards found on page 1
+[08:26:21]   Total for Ringwood East: 0
+[08:26:38] Scraping Domain: Heathmont
+[08:26:52]   No cards found on page 1
+[08:26:52]   Total for Heathmont: 0
+[08:27:09] Domain: 0 new listings
+[08:27:10] Ingested: Domain 0, REA 0
+[08:27:10] No pending sites to geocode
+[08:27:10] Geocoded: 0 success, 0 failed
+[08:27:10] Report written: reports\weekly_ldrz_candidates_20260114.csv
+[08:27:10] Report written: reports\weekly_ldrz_candidates_latest.csv
+[08:27:10] Candidates found: 0
+[08:27:10] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x000001C06A6B5BC0>
+[08:27:10] Traceback (most recent call last):
+[08:27:10]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[08:27:10]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[08:27:10]                                ^^^^^^^^
+[08:27:10]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[08:27:10]     info.append(f'fd={self._sock.fileno()}')
+[08:27:10]                       ^^^^^^^^^^^^^^^^^^^
+[08:27:10]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[08:27:10]     raise ValueError("I/O operation on closed pipe")
+[08:27:10] ValueError: I/O operation on closed pipe
+[08:27:10] Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x000001C06A6B4400>
+[08:27:10] Traceback (most recent call last):
+[08:27:10]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 125, in __del__
+[08:27:10]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[08:27:10]                                ^^^^^^^^
+[08:27:10]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 70, in __repr__
+[08:27:10]     info.append(f'stdin={stdin.pipe}')
+[08:27:10]                         ^^^^^^^^^^^^
+[08:27:10]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[08:27:10]     info.append(f'fd={self._sock.fileno()}')
+[08:27:10]                       ^^^^^^^^^^^^^^^^^^^
+[08:27:10]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[08:27:10]     raise ValueError("I/O operation on closed pipe")
+[08:27:10] ValueError: I/O operation on closed pipe
+[08:27:10] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x000001C06A6B5BC0>
+[08:27:10] Traceback (most recent call last):
+[08:27:10]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[08:27:10]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[08:27:10]                                ^^^^^^^^
+[08:27:10]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[08:27:10]     info.append(f'fd={self._sock.fileno()}')
+[08:27:10]                       ^^^^^^^^^^^^^^^^^^^
+[08:27:10]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[08:27:10]     raise ValueError("I/O operation on closed pipe")
+[08:27:10] ValueError: I/O operation on closed pipe
+[2026-01-14 08:27:10] Batch 2 complete!
+[2026-01-14 08:27:10] 
+Sleeping for 163 seconds to randomize behavior...
+[2026-01-14 08:29:53] 
+=== Batch 3/3 ===
+[2026-01-14 08:29:53] Disconnecting/Resetting VPN...
+[2026-01-14 08:29:53] VPN OUT: Disconnected
+[2026-01-14 08:29:55] Connecting to ExpressVPN: Brisbane (ID: 208)
+[2026-01-14 08:29:58] VPN OUT: Connected to Australia - Brisbane
+[2026-01-14 08:29:58] Successfully connected to Brisbane!
+[2026-01-14 08:29:58] Waiting 15 seconds for DNS/Routing to stabilize...
+[2026-01-14 08:30:13] 
+🚀 Launching Scanner...
+[08:30:14] Database initialized at C:\Users\Carter Xu\OneDrive\Antigravity Workspaces\db\sites.db
+[08:30:14] Starting weekly refresh
+[08:30:14] Batch index: 23
+[08:30:14] Stealth Mode: Scanning REA only
+[08:30:14] REA suburbs: Bayswater, Bayswater North
+[08:30:15] Visiting REA homepage...
+[08:30:26] Scraping REA: Bayswater
+[08:30:57]   Total for Bayswater: 0
+[08:31:51] Scraping REA: Bayswater North
+[08:32:18]   Total for Bayswater North: 0
+[08:33:05] REA: 0 new listings
+[08:33:05] Ingested: Domain 0, REA 0
+[08:33:05] No pending sites to geocode
+[08:33:05] Geocoded: 0 success, 0 failed
+[08:33:05] Report written: reports\weekly_ldrz_candidates_20260114.csv
+[08:33:05] Report written: reports\weekly_ldrz_candidates_latest.csv
+[08:33:05] Candidates found: 0
+[08:33:05] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x0000023A92CD5BC0>
+[08:33:05] Traceback (most recent call last):
+[08:33:05]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[08:33:05]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[08:33:05]                                ^^^^^^^^
+[08:33:05]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[08:33:05]     info.append(f'fd={self._sock.fileno()}')
+[08:33:05]                       ^^^^^^^^^^^^^^^^^^^
+[08:33:05]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[08:33:05]     raise ValueError("I/O operation on closed pipe")
+[08:33:05] ValueError: I/O operation on closed pipe
+[08:33:05] Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x0000023A92CD4400>
+[08:33:05] Traceback (most recent call last):
+[08:33:05]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 125, in __del__
+[08:33:05]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[08:33:05]                                ^^^^^^^^
+[08:33:05]   File "C:\Python312\Lib\asyncio\base_subprocess.py", line 70, in __repr__
+[08:33:05]     info.append(f'stdin={stdin.pipe}')
+[08:33:05]                         ^^^^^^^^^^^^
+[08:33:05]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[08:33:05]     info.append(f'fd={self._sock.fileno()}')
+[08:33:05]                       ^^^^^^^^^^^^^^^^^^^
+[08:33:05]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[08:33:05]     raise ValueError("I/O operation on closed pipe")
+[08:33:05] ValueError: I/O operation on closed pipe
+[08:33:05] Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x0000023A92CD5BC0>
+[08:33:05] Traceback (most recent call last):
+[08:33:05]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 116, in __del__
+[08:33:05]     _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+[08:33:05]                                ^^^^^^^^
+[08:33:05]   File "C:\Python312\Lib\asyncio\proactor_events.py", line 80, in __repr__
+[08:33:05]     info.append(f'fd={self._sock.fileno()}')
+[08:33:05]                       ^^^^^^^^^^^^^^^^^^^
+[08:33:05]   File "C:\Python312\Lib\asyncio\windows_utils.py", line 102, in fileno
+[08:33:05]     raise ValueError("I/O operation on closed pipe")
+[08:33:05] ValueError: I/O operation on closed pipe
+[2026-01-14 08:33:05] Batch 3 complete!
+[2026-01-14 08:33:05] 
+Loop Complete. Disconnecting...
+[2026-01-14 08:33:05] VPN OUT: Disconnected

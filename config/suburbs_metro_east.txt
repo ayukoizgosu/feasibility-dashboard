@@ -1,0 +1,214 @@
+# Metro Melbourne - Eastern, South Eastern, North Eastern
+# One suburb per line. Update freely.
+
+# North Eastern
+Alphington
+Banyule
+Briar Hill
+Bundoora
+Diamond Creek
+Eaglemont
+Eltham
+Eltham North
+Fairfield
+Greensborough
+Heidelberg
+Heidelberg Heights
+Heidelberg West
+Ivanhoe
+Ivanhoe East
+Kangaroo Ground
+Lower Plenty
+Macleod
+Mill Park
+Montmorency
+Plenty
+Research
+Rosanna
+St Helena
+Viewbank
+Watsonia
+Watsonia North
+Wattle Glen
+Yallambie
+
+# Manningham / NE
+Bulleen
+Doncaster
+Doncaster East
+Donvale
+North Warrandyte
+Park Orchards
+Templestowe
+Templestowe Lower
+Warrandyte
+Warrandyte South
+Wonga Park
+
+# Eastern (Inner/Middle)
+Abbotsford
+Ashburton
+Ashwood
+Balwyn
+Balwyn North
+Blackburn
+Blackburn North
+Blackburn South
+Box Hill
+Box Hill North
+Box Hill South
+Burwood
+Burwood East
+Camberwell
+Canterbury
+Chadstone
+Deepdene
+Glen Iris
+Hawthorn
+Hawthorn East
+Kew
+Kew East
+Mont Albert
+Mont Albert North
+Surrey Hills
+Vermont
+Vermont South
+
+# Eastern (Outer)
+Bayswater
+Bayswater North
+Belgrave
+Belgrave Heights
+Belgrave South
+Boronia
+Chirnside Park
+Croydon
+Croydon Hills
+Croydon North
+Croydon South
+Ferntree Gully
+Forest Hill
+Heathmont
+Kilsyth
+Kilsyth South
+Knoxfield
+Lilydale
+Lysterfield
+Lysterfield South
+Mitcham
+Montrose
+Mooroolbark
+Mount Evelyn
+Nunawading
+Ringwood
+Ringwood East
+Ringwood North
+Rowville
+Scoresby
+Tecoma
+The Basin
+Upper Ferntree Gully
+Wantirna
+Wantirna South
+
+# South Eastern (Inner)
+Armadale
+Carnegie
+Caulfield
+Caulfield East
+Caulfield North
+Caulfield South
+Elsternwick
+Glen Huntly
+Malvern East
+McKinnon
+Murrumbeena
+Ormond
+Prahran
+South Yarra
+Windsor
+
+# South Eastern (Monash)
+Clayton
+Clayton South
+Glen Waverley
+Hughesdale
+Huntingdale
+Mount Waverley
+Mulgrave
+Notting Hill
+Oakleigh
+Oakleigh East
+Oakleigh South
+Wheelers Hill
+
+# South Eastern (Bayside/Kingston)
+Beaumaris
+Black Rock
+Brighton
+Brighton East
+Cheltenham
+Hampton
+Hampton East
+Highett
+Mentone
+Moorabbin
+Parkdale
+Sandringham
+
+# South Eastern (Kingston/Frankston)
+Aspendale
+Aspendale Gardens
+Bonbeach
+Carrum
+Carrum Downs
+Chelsea
+Chelsea Heights
+Edithvale
+Frankston
+Frankston East
+Frankston Heights
+Frankston North
+Frankston South
+Langwarrin
+Langwarrin South
+Mordialloc
+Patterson Lakes
+Seaford
+Skye
+
+# South Eastern (Greater Dandenong)
+Bangholme
+Dandenong
+Dandenong North
+Dandenong South
+Doveton
+Eumemmerring
+Keysborough
+Noble Park
+Noble Park North
+Springvale
+Springvale South
+
+# South Eastern (Casey)
+Berwick
+Beaconsfield
+Clyde
+Clyde North
+Cranbourne
+Cranbourne East
+Cranbourne North
+Cranbourne South
+Cranbourne West
+Endeavour Hills
+Hallam
+Hampton Park
+Lynbrook
+Lyndhurst
+Narre Warren
+Narre Warren East
+Narre Warren North
+Narre Warren South
+Officer
+Officer South
+Pakenham
