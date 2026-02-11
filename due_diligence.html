@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Due Diligence | Feasibility Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS + JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         :root {
             --bg-dark: #0f172a;
@@ -119,6 +122,29 @@
 
         .criteria-item:last-child {
             border-bottom: none;
+        }
+
+        .criteria-item[onclick] {
+            cursor: pointer;
+        }
+
+        .criteria-item[onclick]:hover {
+            background: rgba(59, 130, 246, 0.06);
+            border-radius: 8px;
+        }
+
+        .map-link-icon {
+            margin-left: auto;
+            font-size: 14px;
+            color: var(--text-light);
+            opacity: 0.5;
+            flex-shrink: 0;
+            padding-left: 8px;
+        }
+
+        .criteria-item[onclick]:hover .map-link-icon {
+            opacity: 1;
+            color: var(--primary);
         }
 
         .status-icon {
@@ -247,6 +273,182 @@
             padding: 20px;
             margin-top: 20px;
         }
+
+        /* Search Bar */
+        .search-container {
+            margin-bottom: 20px;
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-map-wrapper {
+            margin-bottom: 30px;
+        }
+
+        /* Dual Maps */
+        .maps-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .map-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .map-card-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .map-card-header span.dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .map-card-header h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0;
+        }
+
+        .map-legend {
+            padding: 8px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .legend-swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        #map-constraints,
+        #map-feasibility {
+            width: 100%;
+            height: 280px;
+            background: var(--bg-card);
+        }
+
+        .search-input {
+            flex: 1;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 16px;
+            min-width: 200px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--bg-dark);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        /* Autocomplete */
+        .autocomplete-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid var(--border);
+            border-top: none;
+            z-index: 1000;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border-radius: 0 0 8px 8px;
+            background-color: var(--bg-card);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .autocomplete-items div {
+            padding: 12px 16px;
+            cursor: pointer;
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .autocomplete-items div:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-items div:hover {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+        }
+
+        .autocomplete-active {
+            background-color: var(--primary) !important;
+            color: white !important;
+        }
     </style>
 </head>
 
@@ -261,11 +463,81 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
-                Back to Calculator
+                Back to Dashboard
             </a>
         </header>
 
         <h2 class="section-title">Site Due Diligence Report</h2>
+
+        <!-- Address Search -->
+        <div class="search-map-wrapper">
+            <div class="search-container">
+                <div class="autocomplete-wrapper">
+                    <input type="text" id="addressInput" class="search-input"
+                        placeholder="Enter Property Address (e.g. 150 Collins St, Melbourne)" autocomplete="off"
+                        style="width: 100%;">
+                    <div id="autocomplete-list" class="autocomplete-items"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dual Maps -->
+        <div class="maps-grid" style="margin-bottom: 30px;">
+            <!-- Constraints Map -->
+            <div class="map-card">
+                <div class="map-card-header">
+                    <span class="dot" style="background:#ef4444;"></span>
+                    <h4>Site Viability Constraints</h4>
+                </div>
+                <div class="map-legend">
+                    <label class="legend-item" style="cursor:pointer;"><input type="checkbox" id="toggle-bpa" checked
+                            onchange="toggleLayer(this.id, this.checked)" style="margin-right:5px;">
+                        <div class="legend-swatch" style="background:rgba(239,68,68,0.4);border:1px solid #ef4444;">
+                        </div>BPA
+                    </label>
+                    <label class="legend-item" style="cursor:pointer;"><input type="checkbox" id="toggle-overlays"
+                            checked onchange="toggleLayer(this.id, this.checked)" style="margin-right:5px;">
+                        <div class="legend-swatch" style="background:rgba(245,158,11,0.3);border:1px dashed #f59e0b;">
+                        </div>Planning Overlays
+                    </label>
+                    <label class="legend-item" style="cursor:pointer;"><input type="checkbox" id="toggle-hv" checked
+                            onchange="toggleLayer(this.id, this.checked)" style="margin-right:5px;">
+                        <div style="width:20px;height:3px;background:#a855f7;border-radius:2px;flex-shrink:0;"></div>HV
+                        Lines
+                    </label>
+                    <label class="legend-item" style="cursor:pointer;"><input type="checkbox" id="toggle-generators"
+                            checked onchange="toggleLayer(this.id, this.checked)" style="margin-right:5px;">
+                        <div class="legend-swatch"
+                            style="background:#f59e0b;border:1.5px solid #92400e;border-radius:50%;"></div>Generators
+                    </label>
+                    <label class="legend-item" style="cursor:pointer;"><input type="checkbox" id="toggle-epa" checked
+                            onchange="toggleLayer(this.id, this.checked)" style="margin-right:5px;">
+                        <div class="legend-swatch" style="background:#ef4444;border-radius:50%;"></div>EPA Sites
+                    </label>
+                </div>
+                <div id="map-constraints"></div>
+            </div>
+            <!-- Feasibility Map -->
+            <div class="map-card">
+                <div class="map-card-header">
+                    <span class="dot" style="background:#3b82f6;"></span>
+                    <h4>Development Feasibility</h4>
+                </div>
+                <div class="map-legend">
+                    <label class="legend-item" style="cursor:pointer;"><input type="checkbox" id="toggle-parcel" checked
+                            onchange="toggleLayer(this.id, this.checked)" style="margin-right:5px;">
+                        <div class="legend-swatch" style="background:rgba(59,130,246,0.25);border:2px solid #3b82f6;">
+                        </div>Property Parcel
+                    </label>
+                    <label class="legend-item" style="cursor:pointer;"><input type="checkbox" id="toggle-zone" checked
+                            onchange="toggleLayer(this.id, this.checked)" style="margin-right:5px;">
+                        <div class="legend-swatch"
+                            style="background:rgba(59,130,246,0.08);border:1.5px dashed #3b82f6;"></div>Planning Zone
+                    </label>
+                </div>
+                <div id="map-feasibility"></div>
+            </div>
+        </div>
 
         <div class="grid">
             <!-- 1. Kill Criteria -->
@@ -273,38 +545,46 @@
                 <h3 style="margin-bottom: 20px; display:flex; align-items:center; gap:10px;">
                     <span
                         style="width:8px; height:8px; background:#ef4444; border-radius:50%; display:inline-block;"></span>
-                    Quick Kill Criteria
+                    Site Viability Constraints
                 </h3>
                 <ul class="criteria-list">
-                    <li class="criteria-item">
+                    <li class="criteria-item" id="criteria-hv" onclick="focusConstraintLayer('hv')"
+                        title="Click to highlight on map">
                         <div class="status-icon status-pass">✓</div>
                         <div class="criteria-content">
                             <h4>High Voltage Transmission</h4>
                             <p>>500m clearance from 66kV+ lines. No easements detected on title.</p>
                         </div>
+                        <span class="map-link-icon">↗</span>
                     </li>
-                    <li class="criteria-item">
+                    <li class="criteria-item" id="criteria-heritage" onclick="focusConstraintLayer('overlays')"
+                        title="Click to highlight on map">
                         <div class="status-icon status-pass">✓</div>
                         <div class="criteria-content">
-                            <h4>Heritage Overlay</h4>
-                            <p>No HO or VHR listing found. Standard neighborhood character applies.</p>
+                            <h4>Planning Overlays</h4>
+                            <p>No Heritage or significant planning overlays found.</p>
                         </div>
+                        <span class="map-link-icon">↗</span>
                     </li>
-                    <li class="criteria-item">
+                    <li class="criteria-item" id="criteria-bpa" onclick="focusConstraintLayer('bpa')"
+                        title="Click to highlight on map">
                         <div class="status-icon status-warn">!</div>
                         <div class="criteria-content">
                             <h4>Bushfire Prone Area (BPA)</h4>
                             <p>Site is in BPA. BAL assessment required. Approx BAL-12.5 likely.</p>
                         </div>
+                        <span class="map-link-icon">↗</span>
                     </li>
-                    <li class="criteria-item">
+                    <li class="criteria-item" id="criteria-epa" onclick="focusConstraintLayer('epa')"
+                        title="Click to highlight on map">
                         <div class="status-icon status-pass">✓</div>
                         <div class="criteria-content">
                             <h4>Contamination (EPA)</h4>
                             <p>No Priority Sites Register matches within 1km radius.</p>
                         </div>
+                        <span class="map-link-icon">↗</span>
                     </li>
-                    <li class="criteria-item">
+                    <li class="criteria-item" id="criteria-noise">
                         <div class="status-icon status-pass">✓</div>
                         <div class="criteria-content">
                             <h4>Main Roads / Noise</h4>
@@ -322,9 +602,14 @@
                     Development Feasibility
                 </h3>
 
-                <div class="feature-tag">LDRZ Subdivision Candidate</div>
+                <div class="feature-tag" id="zone-tag">LDRZ Subdivision Candidate</div>
 
-                <div class="criteria-content" style="margin-bottom:20px;">
+                <!-- Parcel dimensions — populated by fetchPropertyParcel -->
+                <div id="parcel-stats" style="margin-bottom:16px;">
+                    <span style="color:var(--text-light);font-size:13px;">Enter an address to load parcel data</span>
+                </div>
+
+                <div class="criteria-content" style="margin-bottom:20px;" id="criteria-zoning">
                     <h4>Zoning Strategy</h4>
                     <p style="color:var(--text-light); font-size:14px; margin-top:5px;">
                         Low Density Residential Zone (LDRZ). Minimum lot size is <strong
@@ -440,6 +725,685 @@
         </div>
 
     </div>
+
+    <script>
+        // ==========================================
+        // MAP INITIALISATION
+        // ==========================================
+        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        const tileAttrib = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+        // Constraints map — zoomed out to show regional context
+        const mapConstraints = L.map('map-constraints', { zoomControl: true }).setView([-37.814, 144.963], 12);
+        L.tileLayer(tileUrl, { attribution: tileAttrib, maxZoom: 19 }).addTo(mapConstraints);
+        const constraintsMarker = L.layerGroup().addTo(mapConstraints);
+
+        // Feasibility map — zoomed in to site level
+        const mapFeasibility = L.map('map-feasibility', { zoomControl: true }).setView([-37.814, 144.963], 17);
+        L.tileLayer(tileUrl, { attribution: tileAttrib, maxZoom: 19 }).addTo(mapFeasibility);
+        const feasibilityMarker = L.layerGroup().addTo(mapFeasibility);
+
+        // Specific Layer Groups for Constraints Map
+        const layers = {
+            bpa: L.layerGroup().addTo(mapConstraints),
+            overlays: L.layerGroup().addTo(mapConstraints),
+            hv: L.layerGroup().addTo(mapConstraints),
+            generators: L.layerGroup().addTo(mapConstraints),
+            epa: L.layerGroup().addTo(mapConstraints),
+            parcel: L.layerGroup().addTo(mapFeasibility),
+            zone: L.layerGroup().addTo(mapFeasibility)
+        };
+
+        // Keep legacy references so existing check functions work without change
+        const map = mapConstraints;
+        const markersLayer = constraintsMarker;
+
+        // Toggle Logic — inline onchange calls this; avoids addEventListener/Leaflet conflicts
+        const layerToggleMap = {
+            'toggle-bpa': [layers.bpa, mapConstraints],
+            'toggle-overlays': [layers.overlays, mapConstraints],
+            'toggle-hv': [layers.hv, mapConstraints],
+            'toggle-generators': [layers.generators, mapConstraints],
+            'toggle-epa': [layers.epa, mapConstraints],
+            'toggle-parcel': [layers.parcel, mapFeasibility],
+            'toggle-zone': [layers.zone, mapFeasibility]
+        };
+        function toggleLayer(id, checked) {
+            const entry = layerToggleMap[id];
+            if (!entry) return;
+            const [lyr, mapInst] = entry;
+            if (checked) {
+                if (!mapInst.hasLayer(lyr)) mapInst.addLayer(lyr);
+            } else {
+                if (mapInst.hasLayer(lyr)) mapInst.removeLayer(lyr);
+            }
+        }
+
+        // Ensure maps render correctly after DOM paint
+        setTimeout(() => { mapConstraints.invalidateSize(); mapFeasibility.invalidateSize(); }, 100);
+
+        // ==========================================
+        // AUTOCOMPLETE LOGIC
+        // ==========================================
+        const addressInput = document.getElementById('addressInput');
+        const autocompleteList = document.getElementById('autocomplete-list');
+        let currentFocus = -1;
+        let debounceTimer;
+
+        addressInput.addEventListener('input', function (e) {
+            const val = this.value;
+            closeAllLists();
+            if (!val || val.length < 3) return;
+
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                fetchSuggestions(val);
+            }, 300);
+        });
+
+        addressInput.addEventListener("keydown", function (e) {
+            let x = document.getElementById("autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) { // DOWN
+                currentFocus++;
+                addActive(x);
+            } else if (e.keyCode == 38) { // UP
+                currentFocus--;
+                addActive(x);
+            } else if (e.keyCode == 13) { // ENTER
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    // If Item Selected, Click it
+                    if (x) x[currentFocus].click();
+                } else if (x && x.length > 0) {
+                    // If NOTHING selected, but options exist, click the FIRST one
+                    x[0].click();
+                } else {
+                    // If no options, try to fetch top result (Edge Case)
+                    // For now, focusing on the "I typed and hit enter" use case where list is visible
+                }
+            }
+        });
+
+        // Close list when clicking elsewhere (but not on the list itself)
+        document.addEventListener('click', function (e) {
+            if (e.target !== addressInput && !autocompleteList.contains(e.target)) {
+                closeAllLists();
+            }
+        });
+
+        async function fetchSuggestions(query) {
+            try {
+                // Use Photon API
+                const response = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5&lang=en`);
+                const data = await response.json();
+
+                closeAllLists();
+                if (!data.features || data.features.length === 0) return;
+
+                currentFocus = -1;
+
+                // Deduplication Set
+                const seen = new Set();
+
+                data.features.forEach(item => {
+                    const props = item.properties;
+                    const coords = item.geometry.coordinates; // [lon, lat]
+
+                    if (props.country && props.country !== 'Australia') return;
+
+                    const div = document.createElement('div');
+
+                    // Construct clean address
+                    let parts = [];
+
+                    // 1. Name / Street
+                    if (props.name) parts.push(props.name);
+                    if (props.housenumber && props.street) parts.push(`${props.housenumber} ${props.street}`);
+                    else if (props.street) parts.push(props.street);
+
+                    // 2. Suburb / Locality (Priority over City/LGA)
+                    // Photon often nests the suburb in 'locality', 'district', or 'suburb'
+                    // We want to avoid "City of X" or "Shire of Y"
+
+                    let location = props.suburb || props.district || props.locality || props.town || props.hamlet;
+
+                    // Fallback to city ONLY if it doesn't look like an LGA
+                    if (!location && props.city) {
+                        if (!/City of|Shire of|Council|Municipality/i.test(props.city)) {
+                            location = props.city;
+                        }
+                    }
+
+                    // If we found a valid location (Suburb), add it
+                    if (location && !/City of|Shire of|Council|Municipality/i.test(location)) {
+                        parts.push(location);
+                    }
+
+                    // 3. State & Postcode
+                    if (props.state) parts.push(props.state);
+                    if (props.postcode) parts.push(props.postcode);
+
+                    // Final Clean & Dedupe
+                    // Filter out any parts that crept in containing "City of" (just in case)
+                    parts = parts.filter(p => p && !/City of|Shire of|Council/i.test(p));
+
+                    let cleanAddress = [...new Set(parts)].join(', ');
+
+                    // Check Global Duplicates
+                    if (seen.has(cleanAddress)) return;
+                    seen.add(cleanAddress);
+
+                    // Display
+                    // Highlight matches
+                    // Regex to highlight query parts could be complex, simple strategy:
+                    // Just bold the start if it matches, else clear text.
+                    div.innerHTML = cleanAddress;
+                    div.innerHTML += `<input type='hidden' value='${cleanAddress}'>`;
+
+                    div.addEventListener('click', function (e) {
+                        addressInput.value = this.getElementsByTagName('input')[0].value;
+                        closeAllLists();
+                        runAutomatedChecks(coords[1], coords[0]); // Lat, Lon
+                    });
+
+                    autocompleteList.appendChild(div);
+                });
+            } catch (error) {
+                console.error('Error fetching address:', error);
+            }
+        }
+
+        function addActive(x) {
+            if (!x) return false;
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            x[currentFocus].classList.add('autocomplete-active');
+        }
+
+        function removeActive(x) {
+            for (let i = 0; i < x.length; i++) {
+                x[i].classList.remove('autocomplete-active');
+            }
+        }
+
+        function closeAllLists(elmnt) {
+            while (autocompleteList.firstChild) {
+                autocompleteList.removeChild(autocompleteList.firstChild);
+            }
+        }
+
+        // ==========================================
+        // AUTOMATED WFS CHECKS & MAPPING
+        // ==========================================
+
+        async function runAutomatedChecks(lat, lon) {
+            // Reset UI to "Scanning..." state
+            setLoadingState();
+
+            // Constraints map — regional zoom to show HV lines, BPA, EPA context
+            mapConstraints.flyTo([lat, lon], 13);
+            constraintsMarker.clearLayers();
+
+            // Clear specific layers
+            Object.values(layers).forEach(group => group.clearLayers());
+
+            L.marker([lat, lon]).addTo(constraintsMarker).bindPopup("Site Location").openPopup();
+
+            // Feasibility map — site-level zoom to show zoning + neighbours
+            mapFeasibility.flyTo([lat, lon], 17);
+            feasibilityMarker.clearLayers();
+            // (Feasibility layers cleared above in loop)
+            L.marker([lat, lon]).addTo(feasibilityMarker);
+
+            console.log(`Running checks for Lat: ${lat}, Lon: ${lon}`);
+
+            // Run checks in parallel
+            await Promise.all([
+                checkZoning(lat, lon),
+                checkOverlays(lat, lon),
+                checkTransmissionLines(lat, lon),
+                checkEPA(lat, lon)
+            ]);
+
+            console.log("Checks complete.");
+        }
+
+        function setLoadingState() {
+            const ids = ['criteria-hv', 'criteria-heritage', 'criteria-bpa', 'criteria-epa', 'criteria-zoning'];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const icon = el.querySelector('.status-icon');
+                    if (icon) {
+                        icon.className = 'status-icon';
+                        icon.style.background = 'rgba(59, 130, 246, 0.2)';
+                        icon.innerText = '⟳'; // Loading spinner char
+                    }
+                    const p = el.querySelector('p');
+                    if (p) p.innerText = 'Scanning government databases...';
+                }
+            });
+        }
+
+        function updateStatus(elementId, status, title, message) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+
+            const icon = el.querySelector('.status-icon');
+            const p = el.querySelector('p');
+            const h4 = el.querySelector('h4');
+
+            if (h4 && title) h4.innerText = title;
+            if (p) p.innerText = message;
+
+            // Reset Styles
+            icon.className = 'status-icon';
+            icon.style.background = '';
+
+            if (status === 'pass') {
+                icon.classList.add('status-pass');
+                icon.innerText = '✓';
+            } else if (status === 'fail') {
+                icon.classList.add('status-fail');
+                icon.innerText = '✗';
+            } else if (status === 'warn') {
+                icon.classList.add('status-warn');
+                icon.innerText = '!';
+            }
+        }
+
+        // --- CHECK 1: ZONING ---
+        async function checkZoning(lat, lon) {
+            try {
+                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=open-data-platform:plan_zone&outputFormat=application/json&srsName=EPSG:4326&cql_filter=INTERSECTS(geom, POINT(${lon} ${lat}))&maxFeatures=1`;
+                const resp = await fetch(url);
+                const data = await resp.json();
+
+                if (data.features && data.features.length > 0) {
+                    const props = data.features[0].properties;
+                    // VicMap field names can be upper or lower case depending on WFS version
+                    const zoneCode = props.ZONE_CODE || props.zone_code || props.ZONE_MAP_CODE || props.zone_map_code || "Unknown";
+                    const zoneDesc = props.ZONE_DESC || props.zone_desc || props.ZONE_DESCRIPTION || props.zone_description || "Unknown Zone";
+
+                    // Zoning polygon as a light background on the feasibility map
+                    L.geoJSON(data, {
+                        style: { color: "#3b82f6", weight: 1.5, fillOpacity: 0.08, dashArray: '4, 4' }
+                    }).bindPopup(`Zone: ${zoneCode} — ${zoneDesc}`).addTo(layers.zone);
+
+                    // Highlight the actual property parcel on top
+                    fetchPropertyParcel(lat, lon);
+
+                    const tag = document.getElementById('zone-tag');
+                    if (tag) tag.innerText = `${zoneCode} - ${zoneDesc}`;
+
+                    updateStatus('criteria-zoning', 'pass', 'Zoning Confirmed', `Confirmed ${zoneCode}: ${zoneDesc}.`);
+                } else {
+                    updateStatus('criteria-zoning', 'warn', 'Zoning Check', 'Could not retrieve zoning data.');
+                }
+            } catch (e) {
+                console.error("Zoning check failed", e);
+                updateStatus('criteria-zoning', 'warn', 'Zoning Check', 'Connection error.');
+            }
+        }
+
+        // Fetch the actual property parcel polygon (Vicmap parcel_view)
+        // Uses DWITHIN with a ~15m buffer so geocoded road-centroid points still find the parcel
+        async function fetchPropertyParcel(lat, lon) {
+            try {
+                // 0.00015 degrees ≈ 15m — handles Photon coords landing on the road rather than inside the parcel
+                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=open-data-platform:parcel_view&outputFormat=application/json&srsName=EPSG:4326&cql_filter=DWITHIN(geom, POINT(${lon} ${lat}), 0.00015, degrees)&maxFeatures=1`;
+                const resp = await fetch(url);
+                const data = await resp.json();
+                if (data.features && data.features.length > 0) {
+                    const layer = L.geoJSON(data, {
+                        style: { color: "#3b82f6", weight: 3, fillColor: "#3b82f6", fillOpacity: 0.25 }
+                    }).addTo(layers.parcel);
+
+                    computeParcelStats(data.features[0], layer);
+                } else {
+                    L.circle([lat, lon], { radius: 25, color: "#3b82f6", fillOpacity: 0.25 }).addTo(layers.parcel);
+                    updateParcelStats(null);
+                }
+            } catch (e) {
+                console.warn('Parcel fetch failed', e);
+                L.circle([lat, lon], { radius: 25, color: "#3b82f6", fillOpacity: 0.25 }).addTo(layers.parcel);
+                updateParcelStats(null);
+            }
+        }
+
+        // Compute area (sqm) and bounding dimensions — handles both Polygon and MultiPolygon
+        function computeParcelStats(feature, leafletLayer) {
+            try {
+                const bounds = leafletLayer.getBounds();
+                const geom = feature.geometry;
+                const R = 6371000;
+
+                // Collect outer rings regardless of geometry type
+                let outerRings = [];
+                if (geom.type === 'Polygon') {
+                    outerRings = [geom.coordinates[0]];
+                } else if (geom.type === 'MultiPolygon') {
+                    outerRings = geom.coordinates.map(poly => poly[0]);
+                } else {
+                    updateParcelStats(null);
+                    return;
+                }
+
+                // Single reference latitude across all rings for consistent projection
+                const allCoords = outerRings.flat();
+                const latRef = allCoords.reduce((sum, c) => sum + c[1], 0) / allCoords.length;
+                const cosLat = Math.cos(latRef * Math.PI / 180);
+                const degToM_lat = Math.PI / 180 * R;
+                const degToM_lon = degToM_lat * cosLat;
+
+                // Shoelace formula summed over all outer rings
+                let totalArea = 0;
+                for (const ring of outerRings) {
+                    let area = 0;
+                    for (let i = 0; i < ring.length - 1; i++) {
+                        const x1 = ring[i][0] * degToM_lon;
+                        const y1 = ring[i][1] * degToM_lat;
+                        const x2 = ring[i + 1][0] * degToM_lon;
+                        const y2 = ring[i + 1][1] * degToM_lat;
+                        area += (x1 * y2 - x2 * y1);
+                    }
+                    totalArea += Math.abs(area / 2);
+                }
+                const areaSqm = totalArea;
+
+                // Approximate dimensions from bounding box
+                const latMid = (bounds.getNorth() + bounds.getSouth()) / 2;
+                const widthM = (bounds.getEast() - bounds.getWest()) * Math.cos(latMid * Math.PI / 180) * Math.PI / 180 * R;
+                const depthM = (bounds.getNorth() - bounds.getSouth()) * Math.PI / 180 * R;
+
+                updateParcelStats({ areaSqm, widthM, depthM });
+
+                // Update parcel popup
+                leafletLayer.bindPopup(
+                    `<b>Property Parcel</b><br>` +
+                    `Area: <b>${Math.round(areaSqm).toLocaleString()} m²</b><br>` +
+                    `Approx. ${Math.round(widthM)}m wide × ${Math.round(depthM)}m deep`
+                );
+            } catch (e) {
+                console.warn('Parcel stats failed', e);
+                updateParcelStats(null);
+            }
+        }
+
+        function updateParcelStats(stats) {
+            const el = document.getElementById('parcel-stats');
+            if (!el) return;
+            if (!stats) {
+                el.innerHTML = '<span style="color:var(--text-light);font-size:13px;">Parcel data unavailable</span>';
+                return;
+            }
+            const { areaSqm, widthM, depthM } = stats;
+            el.innerHTML = `
+                <div class="stat-grid" style="margin-top:0;">
+                    <div class="stat-item">
+                        <span class="stat-label">Land Area</span>
+                        <span class="stat-value">${Math.round(areaSqm).toLocaleString()} m²</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Approx. Width</span>
+                        <span class="stat-value">${Math.round(widthM)}m</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Approx. Depth</span>
+                        <span class="stat-value">${Math.round(depthM)}m</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Area (ha)</span>
+                        <span class="stat-value">${(areaSqm / 10000).toFixed(3)} ha</span>
+                    </div>
+                </div>`;
+        }
+
+        // --- CHECK 2: OVERLAYS (Heritage, Environmental, Bushfire, etc.) ---
+        async function checkOverlays(lat, lon) {
+            try {
+                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=open-data-platform:plan_overlay&outputFormat=application/json&srsName=EPSG:4326&cql_filter=INTERSECTS(geom, POINT(${lon} ${lat}))`;
+
+                const resp = await fetch(url);
+                const data = await resp.json();
+
+                let hasHeritage = false;
+                let hasBMO = false;
+                let significantOverlays = []; // ESO, VPO, SLO, FO, DDO, DPO, etc.
+                let allCodes = [];
+
+                if (data.features && data.features.length > 0) {
+                    // All planning overlays go on the constraints map
+                    L.geoJSON(data, {
+                        style: { color: "#f59e0b", weight: 2, fillOpacity: 0.2, dashArray: '5, 5' }
+                    }).bindPopup(l => {
+                        const code = l.feature.properties.SCHEME_CODE || l.feature.properties.overlay_code || '';
+                        return `<b>Planning Overlay</b><br>${code}`;
+                    }).addTo(layers.overlays);
+
+                    data.features.forEach(f => {
+                        const code = f.properties.SCHEME_CODE || f.properties.overlay_code || f.properties.ZONE_CODE || '';
+                        if (!code) return;
+                        allCodes.push(code);
+
+                        if (code.startsWith('HO') || code.includes('HERITAGE')) hasHeritage = true;
+                        else if (code.startsWith('BMO') || code.includes('BUSHFIRE')) hasBMO = true;
+                        else {
+                            // ESO, VPO, SLO, FO, DDO, DPO, etc. — all significant
+                            significantOverlays.push(code);
+                        }
+                    });
+                }
+
+                // --- OVERLAY RESULT for criteria-heritage (renamed dynamically) ---
+                if (hasHeritage) {
+                    updateStatus('criteria-heritage', 'fail', 'Heritage Overlay Found',
+                        `Site covered by Heritage Overlay (${allCodes.filter(n => n.startsWith('HO')).join(', ')}). Development significantly restricted.`);
+                } else if (significantOverlays.length > 0) {
+                    // ESO, VPO, SLO, FO, etc. — require assessment but not a hard stop
+                    updateStatus('criteria-heritage', 'warn', 'Planning Overlays Detected',
+                        `Found: ${[...new Set(significantOverlays)].join(', ')}. Environmental/design assessment likely required.`);
+                } else {
+                    updateStatus('criteria-heritage', 'pass', 'Planning Overlays',
+                        'No Heritage or significant planning overlays found on this title.');
+                }
+
+                // --- BPA/BMO CHECK ---
+                if (!hasBMO) {
+                    await checkBPA(lat, lon);
+                } else {
+                    updateStatus('criteria-bpa', 'fail', 'Bushfire Management Overlay', 'Site is in BMO (High Risk). Complex BAL assessment required.');
+                }
+
+            } catch (e) {
+                console.error("Overlay check failed", e);
+                updateStatus('criteria-heritage', 'warn', 'Planning Overlays', 'Could not retrieve overlay data.');
+            }
+        }
+
+        async function checkBPA(lat, lon) {
+            try {
+                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=open-data-platform:bushfire_prone_area&outputFormat=application/json&srsName=EPSG:4326&cql_filter=INTERSECTS(geom, POINT(${lon} ${lat}))&maxFeatures=1`;
+                const resp = await fetch(url);
+                const data = await resp.json();
+
+                if (data.features && data.features.length > 0) {
+                    // BPA goes on the constraints map
+                    L.geoJSON(data, {
+                        style: { color: "#ef4444", weight: 1, fillOpacity: 0.3 }
+                    }).bindPopup("Bushfire Prone Area").addTo(layers.bpa);
+
+                    updateStatus('criteria-bpa', 'warn', 'Bushfire Prone Area', 'Site is in designated BPA. Standard BAL assessment required (likely BAL-12.5).');
+                } else {
+                    updateStatus('criteria-bpa', 'pass', 'Bushfire Prone Area', 'Not in a Bushfire Prone Area.');
+                }
+            } catch (e) {
+                updateStatus('criteria-bpa', 'warn', 'BPA Check', 'Could not confirm BPA status.');
+            }
+        }
+
+        // --- CHECK 3: TRANSMISSION LINES, SUBSTATIONS & POWER STATIONS (GA ArcGIS REST) ---
+        async function checkTransmissionLines(lat, lon) {
+            const boxSize = 0.15; // ~15km radius
+            // ArcGIS REST envelope uses lon,lat order: xmin,ymin,xmax,ymax
+            const envelope = `${lon - boxSize},${lat - boxSize},${lon + boxSize},${lat + boxSize}`;
+            const spatial = `geometry=${encodeURIComponent(envelope)}&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outSR=4326&f=geojson`;
+            const base = `https://services.ga.gov.au/gis/rest/services/National_Electricity_Infrastructure/MapServer`;
+
+            let foundMainLine = false;
+
+            await Promise.allSettled([
+                // Layer 2: Transmission Lines
+                fetch(`${base}/2/query?where=1%3D1&${spatial}&outFields=VOLTAGEKV,NAME,OPERATORNAM`)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (!data.features || !data.features.length) return;
+                        L.geoJSON(data, {
+                            style: { color: "#a855f7", weight: 3, opacity: 0.9 }
+                        }).bindPopup(l => {
+                            const p = l.feature.properties;
+                            const v = p.VOLTAGEKV || '?';
+                            const op = p.OPERATORNAM || p.NAME || '';
+                            return `<b>HV Transmission Line</b><br>${v}kV${op ? '<br>' + op : ''}`;
+                        }).on('click', () => scrollToConstraint('criteria-hv')).addTo(layers.hv);
+                        foundMainLine = data.features.length > 0;
+                    }),
+
+                // Layer 0: Transmission Substations
+                fetch(`${base}/0/query?where=1%3D1&${spatial}&outFields=NAME,VOLTAGEKV,OPERATORNAM`)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (!data.features || !data.features.length) return;
+                        L.geoJSON(data, {
+                            pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+                                radius: 7, fillColor: "#a855f7", color: "#6d28d9", weight: 2, fillOpacity: 0.9
+                            }),
+                            onEachFeature: (f, layer) => {
+                                const p = f.properties;
+                                layer.bindPopup(`<b>Substation</b><br>${p.NAME || 'Unknown'}${p.VOLTAGEKV ? '<br>' + p.VOLTAGEKV + 'kV' : ''}`);
+                                layer.on('click', () => scrollToConstraint('criteria-hv'));
+                            }
+                        }).addTo(layers.hv);
+                    }),
+
+                // Layer 1: Major Power Stations
+                fetch(`${base}/1/query?where=1%3D1&${spatial}&outFields=NAME,FUEL_TYPE,CAPACITY_MW`)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (!data.features || !data.features.length) return;
+                        L.geoJSON(data, {
+                            pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+                                radius: 7, fillColor: "#f59e0b", color: "#92400e", weight: 2, fillOpacity: 0.9
+                            }),
+                            onEachFeature: (f, layer) => {
+                                const p = f.properties;
+                                layer.bindPopup(`<b>Power Station</b><br>${p.NAME || 'Unknown'}${p.FUEL_TYPE ? '<br>Fuel: ' + p.FUEL_TYPE : ''}${p.CAPACITY_MW ? '<br>' + p.CAPACITY_MW + ' MW' : ''}`);
+                                layer.on('click', () => scrollToConstraint('criteria-hv'));
+                            }
+                        }).addTo(layers.generators);
+                    })
+            ]);
+
+            if (foundMainLine) {
+                updateStatus('criteria-hv', 'fail', 'Transmission Lines Detected', 'HV transmission lines detected nearby. Check clearance distances.');
+            } else {
+                updateStatus('criteria-hv', 'pass', 'Transmission Lines', 'No HV transmission lines detected in vicinity.');
+            }
+        }
+
+        // Scroll-to + flash highlight for a constraint card (called from map popups)
+        function scrollToConstraint(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            el.style.transition = 'background 0.3s';
+            el.style.background = 'rgba(59,130,246,0.18)';
+            setTimeout(() => { el.style.background = ''; }, 1600);
+        }
+
+        // Called from clicking a constraint card — scroll to map and flash the layer
+        function focusConstraintLayer(layerKey) {
+            const constraintsMap = document.getElementById('map-constraints');
+            if (constraintsMap) constraintsMap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            const layer = layers[layerKey];
+            if (!layer) return;
+
+            // Flash each feature in the layer
+            layer.eachLayer(l => {
+                if (l.setStyle) {
+                    const orig = l.options.style || {};
+                    l.setStyle({ weight: 5, opacity: 1 });
+                    setTimeout(() => l.setStyle({ weight: orig.weight || 2, opacity: orig.opacity || 0.85 }), 1200);
+                }
+                if (l.openPopup) l.openPopup();
+            });
+
+            // Also fit the map to the layer bounds if it has features
+            try {
+                const bounds = layer.getBounds ? layer.getBounds() : null;
+                if (bounds && bounds.isValid()) mapConstraints.flyToBounds(bounds, { padding: [40, 40], maxZoom: 15 });
+            } catch (e) { /* layer may be empty */ }
+        }
+
+        // --- CHECK 4: EPA (Contamination) ---
+        async function checkEPA(lat, lon) {
+            try {
+                // DWITHIN in EPSG:4326 uses decimal degrees; 0.005° ≈ 500m
+                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=open-data-platform:psr_point&outputFormat=application/json&srsName=EPSG:4326&cql_filter=DWITHIN(geom, POINT(${lon} ${lat}), 0.005, degrees)`;
+
+                const resp = await fetch(url);
+                const data = await resp.json();
+
+                if (data.features && data.features.length > 0) {
+                    // EPA sites go on the constraints map
+                    L.geoJSON(data, {
+                        pointToLayer: function (feature, latlng) {
+                            return L.circleMarker(latlng, {
+                                radius: 8,
+                                fillColor: "#ef4444",
+                                color: "#000",
+                                weight: 1,
+                                opacity: 1,
+                                fillOpacity: 0.8
+                            });
+                        }
+                    }).bindPopup("EPA Priority Site").addTo(layers.epa);
+
+                    updateStatus('criteria-epa', 'fail', 'EPA Priority Sites Found', `${data.features.length} priority sites found within 500m.`);
+                } else {
+                    updateStatus('criteria-epa', 'pass', 'Contamination (EPA)', 'No EPA Priority Sites found within 500m radius.');
+                }
+            } catch (e) {
+                updateStatus('criteria-epa', 'warn', 'EPA Check', 'Connection error.');
+            }
+        }
+
+        // Existing Map Functions
+        function openGoogleMaps() {
+            const address = document.getElementById('addressInput').value.trim();
+            if (!address) {
+                alert('Please enter an address first.');
+                return;
+            }
+            // Open Google Maps in Satellite View (layer=t)
+            const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}&layer=t`;
+            window.open(url, '_blank');
+        }
+
+        function openVicPlan() {
+            const address = document.getElementById('addressInput').value.trim();
+            if (!address) {
+                alert('Please enter an address first.');
+                return;
+            }
+            // Open VicPlan
+            const url = `https://mapshare.vic.gov.au/vicplan/?q=${encodeURIComponent(address)}`;
+            window.open(url, '_blank');
+        }
+    </script>
 
 </body>
 

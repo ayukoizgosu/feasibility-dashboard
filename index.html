@@ -4,149 +4,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feasibility Dashboard</title>
+    <title>Dashboard | Feasibility Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-color: #e0e0e0;
-            --accent-color: #bb86fc;
-            --secondary-color: #03dac6;
-            --error-color: #cf6679;
-            --border-color: #333;
-            --input-bg: #2c2c2c;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-light: #94a3b8;
+            --primary: #3b82f6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            padding: 40px;
+            line-height: 1.6;
         }
 
         .container {
-            width: 100%;
-            max-width: 900px;
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         header {
+            margin-bottom: 60px;
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 20px;
         }
 
-        h1 {
-            color: var(--accent-color);
-            margin: 0;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        h2 {
-            font-size: 1.2rem;
-            color: var(--secondary-color);
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 5px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        label {
+        .brand {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
             display: block;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-            color: #aaa;
+            margin-bottom: 8px;
         }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            color: var(--text-color);
-            font-size: 1rem;
-            box-sizing: border-box;
+        .brand span {
+            color: var(--primary);
         }
 
-        input:focus {
-            outline: none;
-            border-color: var(--accent-color);
+        .subtitle {
+            color: var(--text-light);
+            font-size: 16px;
+            font-weight: 300;
         }
 
-        .results {
-            background-color: #252526;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
         }
 
-        .metric {
+        .nav-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.2s ease;
+            text-decoration: none;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            align-items: flex-start;
+            height: 100%;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
             align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #333;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
         }
 
-        .metric:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
+        .nav-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 8px;
         }
 
-        .metric-label {
-            color: #ccc;
+        .nav-card p {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 24px;
+            line-height: 1.5;
         }
 
-        .metric-value {
-            font-weight: bold;
-            font-family: 'Consolas', monospace;
+        .card-link {
+            margin-top: auto;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .highlight-positive {
-            color: #4e9a06;
-        }
-
-        .highlight-neutral {
-            color: var(--text-color);
-        }
-
-        .title-highlight {
-            color: var(--accent-color);
-            font-size: 1.5em;
-        }
-
-        .notes {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            color: #888;
-            font-style: italic;
+        .beta-tag {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -155,217 +142,39 @@
 
     <div class="container">
         <header>
-            <h1>Feasibility Dashboard</h1>
-            <p>Real-time Property Development Feasibility Calculator</p>
-            <div style="margin-top: 15px;">
-                <a href="due_diligence.html"
-                    style="display: inline-block; padding: 8px 16px; background-color: var(--secondary-color); color: #000; text-decoration: none; border-radius: 4px; font-weight: 600; font-size: 0.9rem;">
-                    View Due Diligence Report &rarr;
-                </a>
-            </div>
+            <div class="brand">Feasibility<span>Dashboard</span></div>
+            <div class="subtitle">Property Development Analysis Toolkit</div>
         </header>
 
-        <div class="grid">
-            <!-- Inputs Section -->
-            <div>
-                <h2>1. Inputs</h2>
+        <div class="dashboard-grid">
+            <!-- Calculator Card -->
+            <a href="feasibility_calculator.html" class="nav-card">
+                <div class="card-icon">🧮</div>
+                <h3>
+                    Feasibility Calculator
+                    <span class="beta-tag">NEW</span>
+                </h3>
+                <p>
+                    Dynamic multi-unit development calculator.
+                    Configure unit mix, estimate construction costs based on rates/sqm, and analyse project margins &
+                    ROE.
+                </p>
+                <div class="card-link">Launch Calculator →</div>
+            </a>
 
-                <div class="input-group">
-                    <label for="purchasePrice">Purchase Price ($)</label>
-                    <input type="number" id="purchasePrice" value="1160000">
-                </div>
-
-                <div class="input-group">
-                    <label for="constructionCost">Construction Cost (Inc GST) ($)</label>
-                    <input type="number" id="constructionCost" value="1200000">
-                </div>
-
-                <div class="input-group">
-                    <label for="saleUnit1">Sale Price Unit 1 ($)</label>
-                    <input type="number" id="saleUnit1" value="1372000">
-                </div>
-
-                <div class="input-group">
-                    <label for="saleUnit2">Sale Price Unit 2 ($)</label>
-                    <input type="number" id="saleUnit2" value="1182000">
-                </div>
-
-                <div class="input-group">
-                    <label for="saleUnit3">Sale Price Unit 3 ($)</label>
-                    <input type="number" id="saleUnit3" value="1350000">
-                </div>
-
-                <div class="input-group">
-                    <label for="financeCost">Finance Costs ($)</label>
-                    <input type="number" id="financeCost" value="200000">
-                </div>
-
-                <div class="input-group">
-                    <label for="consultants">Planning/Consultants ($)</label>
-                    <input type="number" id="consultants" value="123000">
-                </div>
-            </div>
-
-            <!-- Results Section -->
-            <div>
-                <h2>2. Financial Analysis</h2>
-                <div class="results">
-                    <div class="metric">
-                        <span class="metric-label">Total Revenue (Gross)</span>
-                        <span class="metric-value" id="totalRevenue">$0</span>
-                    </div>
-
-                    <div class="metric">
-                        <span class="metric-label">Purchase Costs (Stamp Duty + Fees)</span>
-                        <span class="metric-value" id="purchaseCosts">$0</span>
-                    </div>
-
-                    <div class="metric">
-                        <span class="metric-label">Construction (Ex GST)</span>
-                        <span class="metric-value" id="constructionExGst">$0</span>
-                    </div>
-
-                    <div class="metric">
-                        <span class="metric-label">GST Payable (Margin Scheme)</span>
-                        <span class="metric-value" id="gstPayable">$0</span>
-                    </div>
-
-                    <div class="metric">
-                        <span class="metric-label">Selling Costs (Agent + Legal)</span>
-                        <span class="metric-value" id="sellingCosts">$0</span>
-                    </div>
-
-
-                    <div class="metric" style="margin-top: 20px; border-top: 2px solid #555; padding-top: 10px;">
-                        <span class="metric-label">Total Development Cost (TDC)</span>
-                        <span class="metric-value" id="totalCost">$0</span>
-                    </div>
-
-                    <div class="metric">
-                        <span class="metric-label title-highlight">Net Profit</span>
-                        <span class="metric-value title-highlight" id="netProfit">$0</span>
-                    </div>
-
-                    <div class="metric">
-                        <span class="metric-label">Margin on Cost</span>
-                        <span class="metric-value" id="marginCost">0%</span>
-                    </div>
-                </div>
-
-                <div class="notes">
-                    * Stamp Duty calculated at VIC rates (~5.5%).<br>
-                    * Agent Fees assumed at 2.2% inc GST.<br>
-                    * GST calculated using Margin Scheme.
-                </div>
-            </div>
+            <!-- Due Diligence Card -->
+            <a href="due_diligence.html" class="nav-card">
+                <div class="card-icon">🗺️</div>
+                <h3>Site Due Diligence</h3>
+                <p>
+                    Interactive GIS mapping tool.
+                    Check zoning, overlays, infrastructure constraints (HV lines), and environmental factors for
+                    candidate sites.
+                </p>
+                <div class="card-link">View Site Report →</div>
+            </a>
         </div>
     </div>
-
-    <script>
-        // --- Constants ---
-        const STAMP_DUTY_BASE = 63800; // Approx for >$960k
-        const STAMP_DUTY_FEES = 2000;
-        const OSL_RATE = 0.05; // 5% Open Space Levy
-        const AGENT_RATE = 0.022; // 2.2%
-        const LEGAL_RATE_PER_UNIT = 1500;
-
-        // --- Elements ---
-        const inputs = document.querySelectorAll('input');
-
-        // --- Formatter ---
-        const formatCurrency = (num) => {
-            return new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD', maximumFractionDigits: 0 }).format(num);
-        };
-
-        const formatPercent = (num) => {
-            return num.toFixed(1) + '%';
-        };
-
-        // --- Calculation Logic ---
-        function calculate() {
-            // Read Inputs
-            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-            const constructionIncGst = parseFloat(document.getElementById('constructionCost').value) || 0;
-            const sale1 = parseFloat(document.getElementById('saleUnit1').value) || 0;
-            const sale2 = parseFloat(document.getElementById('saleUnit2').value) || 0;
-            const sale3 = parseFloat(document.getElementById('saleUnit3').value) || 0;
-            const financeCost = parseFloat(document.getElementById('financeCost').value) || 0;
-            const consultants = parseFloat(document.getElementById('consultants').value) || 0;
-
-            // Revenue
-            const totalSales = sale1 + sale2 + sale3;
-
-            // Costs
-            // Stamp Duty
-            let stampDuty = 0;
-            if (purchasePrice > 960000) {
-                stampDuty = (purchasePrice * 0.055); // Simple 5.5% est for high value
-            } else {
-                stampDuty = 0.055 * purchasePrice; // Fallback simple
-            }
-            // Adjust to match script roughly around 1.16m -> 63800
-            // Script used: stamp_duty = 63800 + 2000
-            // We'll use the script's exact logic if it matches the case, or a general formula
-            // For dynamic calculator, let's use the script's exact logic for the demo default
-            // But for a real calc, we should be dynamic. 
-            // Let's use simple 5.5% + 2000 fees for now as a robust estimator
-            const purchaseOverheads = (purchasePrice * 0.055) + 2000;
-
-            // Construction Ex GST
-            const buildExGst = constructionIncGst / 1.1;
-
-            // Selling Costs
-            const agentFees = totalSales * AGENT_RATE;
-            const legalSales = 3 * LEGAL_RATE_PER_UNIT;
-            const sellingCostsIncGst = agentFees + legalSales;
-            const sellingCostsExGst = (agentFees / 1.1) + legalSales; // Claim back agent GST
-
-            // GST Calculation (Margin Scheme)
-            // GST Payable = (Total Sales - Purchase Price) / 11
-            const gstMarginScheme = Math.max(0, (totalSales - purchasePrice) / 11);
-
-            // Total Development Cost (TDC)
-            const totalDevCost =
-                purchasePrice +
-                purchaseOverheads +
-                buildExGst +
-                consultants +
-                financeCost +
-                sellingCostsExGst;
-
-            // Profit
-            const grossProfit = totalSales - totalDevCost - gstMarginScheme;
-            const margin = totalDevCost > 0 ? (grossProfit / totalDevCost) * 100 : 0;
-
-            // --- Update UI ---
-            document.getElementById('totalRevenue').textContent = formatCurrency(totalSales);
-            document.getElementById('purchaseCosts').textContent = formatCurrency(purchaseOverheads);
-            document.getElementById('constructionExGst').textContent = formatCurrency(buildExGst);
-            document.getElementById('gstPayable').textContent = formatCurrency(gstMarginScheme);
-            document.getElementById('sellingCosts').textContent = formatCurrency(sellingCostsExGst);
-
-            document.getElementById('totalCost').textContent = formatCurrency(totalDevCost + gstMarginScheme);
-            document.getElementById('netProfit').textContent = formatCurrency(grossProfit);
-            document.getElementById('marginCost').textContent = formatPercent(margin);
-
-            // Color coding
-            const profitEl = document.getElementById('netProfit');
-            if (grossProfit > 0) {
-                profitEl.style.color = '#4e9a06'; // Green
-            } else {
-                profitEl.style.color = '#cf6679'; // Red
-            }
-        }
-
-        // --- Listeners ---
-        inputs.forEach(input => {
-            input.addEventListener('input', calculate);
-        });
-
-        // --- Init ---
-        calculate();
-
-    </script>
 
 </body>
 

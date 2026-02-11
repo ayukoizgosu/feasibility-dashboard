@@ -1,10 +1,7 @@
 {
   "permissions": {
-    "additionalDirectories": [
-      "c:\\Users\\Carter Xu\\OneDrive\\Antigravity Workspaces\\site-scanner"
-    ],
     "allow": [
-      "Bash(dir:*)"
+      "WebFetch(domain:opendata.maps.vic.gov.au)"
     ]
   }
 }

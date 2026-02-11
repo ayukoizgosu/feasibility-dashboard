@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Feasibility | Feasibility Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-light: #94a3b8;
+            --primary: #3b82f6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --border: #334155;
+            --input-bg: #020617;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            padding: 40px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .brand span {
+            color: var(--primary);
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        /* Grid Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 800px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+            margin-top: 32px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .section-line {
+            height: 1px;
+            background: var(--border);
+            flex-grow: 1;
+        }
+
+        /* Inputs */
+        .input-group {
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-label {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 140px;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        .unit-symbol {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 12px;
+            pointer-events: none;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 10px 8px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: right;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        input[type="number"].has-unit,
+        input[type="text"].has-unit {
+            padding-right: 36px;
+        }
+
+        /* Dynamic Unit List */
+        .unit-list {
+            margin-bottom: 20px;
+        }
+
+        .unit-row {
+            display: grid;
+            grid-template-columns: 40px 1fr 1fr 30px;
+            gap: 10px;
+            align-items: center;
+            background: var(--bg-card);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .unit-name {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .btn-remove {
+            color: var(--danger);
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            opacity: 0.6;
+        }
+
+        .btn-remove:hover {
+            opacity: 1;
+        }
+
+        .btn-add {
+            width: 100%;
+            padding: 10px;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            border: 1px dashed var(--primary);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-add:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        /* Results Panel */
+        .results-panel {
+            position: sticky;
+            top: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            height: fit-content;
+        }
+
+        .metric-big {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .metric-value.positive {
+            color: var(--success);
+        }
+
+        .metric-value.negative {
+            color: var(--danger);
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-subval {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Progress Bars */
+        .bar-container {
+            margin-bottom: 16px;
+        }
+
+        .bar-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .bar-track {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .cost-legend {
+            display: flex;
+            gap: 12px;
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        .summary-table {
+            width: 100%;
+            font-size: 13px;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+            margin-top: 16px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .summary-row.total {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 14px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--border);
+        }
+
+        .loan-container {
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .loan-title {
+            font-size: 11px;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <a href="index.html" class="brand">Feasibility<span>Dashboard</span></a>
+            <a href="index.html" class="nav-link">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Dashboard
+            </a>
+        </header>
+
+        <div class="main-grid">
+            <!-- LEFT: INPUTS -->
+            <div>
+                <!-- PROJECT REVENUE -->
+                <div class="section-title">Project Revenue (GRV)<div class="section-line"></div>
+                </div>
+
+                <div class="unit-list" id="unitList">
+                    <!-- Unit Rows Injected Here -->
+                </div>
+                <button class="btn-add" onclick="addUnit()">+ Add Townhouse Unit</button>
+
+                <div class="summary-row total" style="margin-top:16px;">
+                    <span>Total Gross Realisation</span>
+                    <span id="display-grv">$0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Total Construction Area</span>
+                    <span><span id="display-sqm">0</span> m²</span>
+                </div>
+
+                <!-- ACQUISITION COSTS -->
+                <div class="section-title">Acquisition<div class="section-line"></div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Purchase Price</label>
+                    <div class="input-wrapper">
+                        <span class="currency-symbol">$</span>
+                        <input type="text" id="inp-purchase" value="1,160,000" oninput="formatInput(this); calculate()">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Stamp Duty (5.5%)</label>
+                    <div class="input-wrapper">
+                        <span class="currency-symbol">$</span>
+                        <input type="text" id="inp-stamp" value="63,800" oninput="formatInput(this); calculate()">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Legal & Closing</label>
+                    <div class="input-wrapper">
+                        <span class="currency-symbol">$</span>
+                        <input type="text" id="inp-legal" value="3,000" oninput="formatInput(this); calculate()">
+                    </div>
+                </div>
+
+                <!-- DEVELOPMENT COSTS -->
+                <div class="section-title">Development Costs<div class="section-line"></div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Construction Rate</label>
+                    <div class="input-wrapper" style="width:160px;">
+                        <span class="currency-symbol">$</span>
+                        <span class="unit-symbol">/m²</span>
+                        <input type="text" id="inp-buildrate" class="has-unit" value="2,600"
+                            oninput="formatInput(this); calculate()">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Consultants (Arch/Eng)</label>
+                    <div class="input-wrapper">
+                        <span class="currency-symbol">$</span>
+                        <input type="text" id="inp-consultants" value="45,000" oninput="formatInput(this); calculate()">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Council & Statutory</label>
+                    <div class="input-wrapper">
+                        <span class="currency-symbol">$</span>
+                        <input type="text" id="inp-council" value="25,000" oninput="formatInput(this); calculate()">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Contingency</label>
+                    <div class="input-wrapper">
+                        <span class="unit-symbol">%</span>
+                        <input type="number" id="inp-contingency" class="has-unit" value="5" oninput="calculate()">
+                    </div>
+                </div>
+
+                <!-- FINANCE & SELLING -->
+                <div class="section-title">Finance & Selling<div class="section-line"></div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Project Duration</label>
+                    <div class="input-wrapper">
+                        <span class="unit-symbol">mo</span>
+                        <input type="number" id="inp-months" class="has-unit" value="18" oninput="calculate()">
+                    </div>
+                </div>
+
+                <!-- Land Loan -->
+                <div class="loan-container">
+                    <div class="loan-title">Land Loan</div>
+                    <div class="input-group">
+                        <label class="input-label">Land LVR</label>
+                        <div class="input-wrapper">
+                            <span class="unit-symbol">%</span>
+                            <input type="number" id="inp-land-lvr" class="has-unit" value="65" oninput="calculate()">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Interest Rate</label>
+                        <div class="input-wrapper">
+                            <span class="unit-symbol">%</span>
+                            <input type="number" id="inp-land-rate" class="has-unit" value="7.5" oninput="calculate()">
+                        </div>
+                    </div>
+                    <div class="summary-row" style="margin-bottom:0; font-size:13px;">
+                        <span>Loan Amount</span>
+                        <span id="disp-land-loan" style="color:var(--primary);">$0</span>
+                    </div>
+                </div>
+
+                <!-- Construction Loan -->
+                <div class="loan-container">
+                    <div class="loan-title">Construction Loan</div>
+                    <div class="input-group">
+                        <label class="input-label">Construction LVR</label>
+                        <div class="input-wrapper">
+                            <span class="unit-symbol">%</span>
+                            <input type="number" id="inp-const-lvr" class="has-unit" value="100" oninput="calculate()">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Interest Rate</label>
+                        <div class="input-wrapper">
+                            <span class="unit-symbol">%</span>
+                            <input type="number" id="inp-const-rate" class="has-unit" value="8.0" oninput="calculate()">
+                        </div>
+                    </div>
+                    <div class="summary-row" style="margin-bottom:0; font-size:13px;">
+                        <span>Loan Amount</span>
+                        <span id="disp-const-loan" style="color:var(--primary);">$0</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Agent/Marketing Fees</label>
+                    <div class="input-wrapper">
+                        <span class="unit-symbol">%</span>
+                        <input type="number" id="inp-agent" class="has-unit" value="2.2" oninput="calculate()">
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- RIGHT: RESULTS -->
+            <div class="results-panel">
+                <div class="metric-big">
+                    <div class="metric-label">Projected Net Profit</div>
+                    <div id="res-profit" class="metric-value">$0</div>
+                </div>
+
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Dev Margin</div>
+                        <div id="res-margin" class="metric-subval">0%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Equity Required</div>
+                        <div id="res-equity" class="metric-subval" style="font-size:16px">$0</div>
+                    </div>
+                    <div class="metric-card" style="grid-column: span 2;">
+                        <div class="metric-label">ROE (Return on Equity)</div>
+                        <div id="res-roe" class="metric-subval" style="color:var(--primary)">0%</div>
+                    </div>
+                </div>
+
+                <!-- Visualization -->
+                <div class="bar-header">
+                    <span>Total Costs</span>
+                    <span id="vis-total-cost">$0</span>
+                </div>
+                <div class="bar-track"
+                    style="background:rgba(255,255,255,0.05); height:12px; margin-bottom:20px; display:flex;">
+                    <div id="bar-land" style="height:100%; background:#3b82f6;" title="Land & Acq"></div>
+                    <div id="bar-build" style="height:100%; background:#f59e0b;" title="Construction"></div>
+                    <div id="bar-soft" style="height:100%; background:#a855f7;" title="Soft Costs"></div>
+                    <div id="bar-finance" style="height:100%; background:#ef4444;" title="Finance & Sales"></div>
+                </div>
+                <div class="cost-legend">
+                    <div><span class="legend-dot" style="background:#3b82f6;"></span>Acquisition</div>
+                    <div><span class="legend-dot" style="background:#f59e0b;"></span>Build</div>
+                    <div><span class="legend-dot" style="background:#a855f7;"></span>Soft</div>
+                    <div><span class="legend-dot" style="background:#ef4444;"></span>Fin/Sale</div>
+                </div>
+
+                <div class="summary-table">
+                    <div class="summary-row">
+                        <span>Land & Acquisition</span>
+                        <span id="sum-land">$0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Construction (hard)</span>
+                        <span id="sum-build">$0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Soft Costs (fees/cont)</span>
+                        <span id="sum-soft">$0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Finance & Selling</span>
+                        <span id="sum-finance">$0</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total Development Cost</span>
+                        <span id="sum-total">$0</span>
+                    </div>
+                </div>
+
+                <button onclick="saveScenario()"
+                    style="width:100%; margin-top:24px; background:rgba(255,255,255,0.1); border:none; color:var(--text-light); padding:10px; border-radius:8px; cursor:pointer;">
+                    Save Scenario (Local Storage)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let units = [
+            { size: 210, price: 1050000 },
+            { size: 195, price: 980000 },
+            { size: 195, price: 980000 }
+        ];
+
+        function init() {
+            renderUnits();
+            calculate();
+        }
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function parseFormatted(str) {
+            if (!str) return 0;
+            return parseFloat(str.toString().replace(/,/g, '')) || 0;
+        }
+
+        function formatInput(input) {
+            let val = input.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+            if (val) {
+                const parts = val.split('.');
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                input.value = parts.join('.');
+            } else {
+                input.value = '';
+            }
+        }
+
+        function renderUnits() {
+            const container = document.getElementById('unitList');
+            container.innerHTML = '';
+            units.forEach((u, i) => {
+                const div = document.createElement('div');
+                div.className = 'unit-row';
+                div.innerHTML = `
+                <div class="unit-name">U${i + 1}</div>
+                <div class="input-wrapper" style="width:100%">
+                    <span class="unit-symbol" style="right:8px">m²</span>
+                    <input type="number" value="${u.size}" onchange="updateUnit(${i}, 'size', this.value)" style="padding-right:32px">
+                </div>
+                <div class="input-wrapper" style="width:100%">
+                    <span class="currency-symbol" style="left:8px; font-size:12px">$</span>
+                    <input type="text" value="${formatNumber(u.price)}" oninput="formatInput(this); updateUnit(${i}, 'price', this.value)" style="padding-left:20px">
+                </div>
+                <button class="btn-remove" onclick="removeUnit(${i})">×</button>
+            `;
+                container.appendChild(div);
+            });
+        }
+
+        function updateUnit(index, field, val) {
+            if (field === 'price') {
+                units[index][field] = parseFormatted(val);
+            } else {
+                units[index][field] = parseFloat(val) || 0;
+            }
+            calculate();
+        }
+
+        function addUnit() {
+            units.push({ size: 150, price: 850000 });
+            renderUnits();
+            calculate();
+        }
+
+        function removeUnit(index) {
+            if (units.length <= 1) return;
+            units.splice(index, 1);
+            renderUnits();
+            calculate();
+        }
+
+        function calculate() {
+            const getVal = (id) => parseFormatted(document.getElementById(id).value);
+
+            // 1. REVENUE
+            let totalGRV = 0;
+            let totalSqm = 0;
+            units.forEach(u => {
+                totalGRV += u.price;
+                totalSqm += u.size;
+            });
+
+            // 2. ACQUISITION
+            const purchase = getVal('inp-purchase');
+            const stamp = getVal('inp-stamp');
+            const legal = getVal('inp-legal');
+            const totalAcq = purchase + stamp + legal;
+
+            // 3. CONSTRUCTION
+            const buildRate = getVal('inp-buildrate');
+            const baseBuild = buildRate * totalSqm;
+
+            // 4. SOFT COSTS
+            const consultants = getVal('inp-consultants');
+            const council = getVal('inp-council');
+            const contingencyPct = getVal('inp-contingency');
+            const softBase = consultants + council;
+
+            // Contingency
+            const contingency = (baseBuild + softBase) * (contingencyPct / 100);
+            const totalSoft = softBase + contingency;
+
+            // 5. FINANCE & SALES
+            const agentPct = getVal('inp-agent');
+            const sellingCosts = totalGRV * (agentPct / 100);
+
+            const months = getVal('inp-months');
+            const years = months / 12;
+
+            // Land Loan
+            const landLvr = getVal('inp-land-lvr');
+            const landRate = getVal('inp-land-rate') / 100;
+            // Land Value is Purchase Price (usually, or Value if different). Using Purchase Price.
+            // Some banks might lend on Total Acq costs, but standard is usually Purchase Price or Value.
+            // Let's stick to Purchase Price for LVR base as per common practice.
+            const landLoan = purchase * (landLvr / 100);
+            const landInterest = landLoan * landRate * years;
+
+            // Construction Loan
+            const constLvr = getVal('inp-const-lvr');
+            const constRate = getVal('inp-const-rate') / 100;
+            // Construction Loan Base: usually Build + Statutory/Consultants (Soft Costs)
+            const constBase = baseBuild + totalSoft;
+            const constLoan = constBase * (constLvr / 100);
+            // S-curve factor 0.6 usually applied to construction interest
+            const constInterest = constLoan * constRate * years * 0.6;
+
+            const totalFinanceCost = landInterest + constInterest;
+            const totalFinSale = sellingCosts + totalFinanceCost;
+
+            // Update Loan Displays
+            document.getElementById('disp-land-loan').innerText = fmt(landLoan);
+            document.getElementById('disp-const-loan').innerText = fmt(constLoan);
+
+            // TOTALS
+            // Note: totalAcq, baseBuild, totalSoft are calculated above
+            const totalProjectCost = totalAcq + baseBuild + totalSoft + totalFinSale;
+            const netProfit = totalGRV - totalProjectCost;
+            const margin = (netProfit / totalProjectCost) * 100;
+
+            // EQUITY ROE
+            // Equity Required = Total Project Cost - Total Debt
+            const totalDebt = landLoan + constLoan;
+            const equity = totalProjectCost - totalDebt;
+            const roe = (netProfit / equity) * 100;
+
+            // UPDATE UI
+            document.getElementById('display-grv').innerText = fmt(totalGRV);
+            document.getElementById('display-sqm').innerText = Math.round(totalSqm);
+
+            document.getElementById('res-profit').innerText = fmt(netProfit);
+            if (netProfit >= 0) {
+                document.getElementById('res-profit').className = 'metric-value positive';
+                document.getElementById('res-profit').innerText = '+' + fmt(netProfit);
+            } else {
+                document.getElementById('res-profit').className = 'metric-value negative';
+            }
+
+            document.getElementById('res-margin').innerText = margin.toFixed(1) + '%';
+            document.getElementById('res-equity').innerText = fmt(equity);
+            document.getElementById('res-roe').innerText = roe.toFixed(1) + '%';
+
+            // Update Summary Table
+            document.getElementById('sum-land').innerText = fmt(totalAcq);
+            document.getElementById('sum-build').innerText = fmt(baseBuild);
+            document.getElementById('sum-soft').innerText = fmt(totalSoft);
+            document.getElementById('sum-finance').innerText = fmt(totalFinSale);
+            document.getElementById('sum-total').innerText = fmt(totalProjectCost);
+            document.getElementById('vis-total-cost').innerText = fmt(totalProjectCost);
+
+            // Update Bar Chart
+            const pLand = (totalAcq / totalProjectCost) * 100;
+            const pBuild = (baseBuild / totalProjectCost) * 100;
+            const pSoft = (totalSoft / totalProjectCost) * 100;
+            const pFin = (totalFinSale / totalProjectCost) * 100;
+
+            document.getElementById('bar-land').style.width = pLand + '%';
+            document.getElementById('bar-build').style.width = pBuild + '%';
+            document.getElementById('bar-soft').style.width = pSoft + '%';
+            document.getElementById('bar-finance').style.width = pFin + '%';
+        }
+
+        function fmt(num) {
+            return '$' + Math.round(num).toLocaleString();
+        }
+
+        function saveScenario() {
+            alert('Scenario saved to browser storage!');
+        }
+
+        // Auto-calc stamp duty on purchase change (approx VIC rule)
+        document.getElementById('inp-purchase').addEventListener('input', function () {
+            const val = parseFormatted(this.value);
+            const stamp = val * 0.055; // simple 5.5% rule
+            document.getElementById('inp-stamp').value = formatNumber(Math.round(stamp));
+            calculate();
+        });
+
+        init();
+
+    </script>
+</body>
+
+</html>
