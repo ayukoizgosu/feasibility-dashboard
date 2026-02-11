@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "site-scanner"
+name = "feasibility-dashboard"
 version = "0.1.0"
 description = "Melbourne property development opportunity scanner"
 authors = ["Developer"]
@@ -21,6 +21,7 @@ beautifulsoup4 = "^4.12.0"
 lxml = "^5.0.0"
 rich = "^13.7.0"
 requests = "^2.32.5"
+playwright-stealth = "^2.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"

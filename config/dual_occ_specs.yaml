@@ -1,0 +1,44 @@
+# Dual Occupancy Construction Specs & Costings
+
+products:
+  luxury_side_by_side:
+    name: "Luxury Side-by-Side"
+    description: "High-spec, >25sq townhouses, 4 bed, 3 bath, double garage."
+    build_cost_per_m2: 3500  # High end finish
+    target_gfa_sq: 25   # Squares (approx 232 m2)
+    garages: 2
+    sales_marketing_pct: 0.035
+    contingency_pct: 0.10
+    
+  standard_townhouse:
+    name: "Standard Independent Townhouse"
+    description: "Mid-spec, ~20sq townhouses, 3-4 bed, 2 bath."
+    build_cost_per_m2: 2800
+    target_gfa_sq: 20   # Squares (approx 185 m2)
+    garages: 2
+    sales_marketing_pct: 0.035
+    contingency_pct: 0.10
+
+  developer_wholesale:
+    name: "Developer Wholesale / Efficient"
+    description: "High-efficiency volume build. Calibrated to ~$1.2M for 3 units (2021). ~40% below retail."
+    build_cost_per_m2: 2350  # 2026 calibrated rate (approx $1850 in 2021 + 25% escalation)
+    target_gfa_sq: 22
+    garages: 2
+    sales_marketing_pct: 0.025 # Leaner marketing
+    contingency_pct: 0.05      # Tighter management
+    
+assumptions:
+  soft_costs:
+    planning_permits: 30000
+    architect_engineering: 40000
+    subdivision_fees: 15000
+    open_space_contribution_pct: 0.05
+    interest_rate_pa: 0.080
+    project_duration_months: 18  # Purchase to Settle
+    
+  site_requirements:
+    min_width_side_by_side_m: 15.0
+    min_width_battleaxe_m: 3.5 # Driveway
+    min_area_m2: 650
+    preferred_orientation: ["North", "North East", "North West"]

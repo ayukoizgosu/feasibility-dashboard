@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "additionalDirectories": [
+      "c:\\Users\\Carter Xu\\OneDrive\\Antigravity Workspaces\\site-scanner"
+    ],
+    "allow": [
+      "Bash(dir:*)"
+    ]
+  }
+}

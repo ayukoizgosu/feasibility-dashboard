@@ -23,8 +23,8 @@ filters:
   property_types:
     - house
     - vacant_land
-  price_max: 2000000
-  land_size_min_m2: 400  # Minimum for subdivision potential
+  price_max: 5000000
+  land_size_min_m2: 3000  # Minimum for subdivision potential
   exclude_keywords:
     - apartment
     - unit

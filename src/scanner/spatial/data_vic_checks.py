@@ -59,13 +59,13 @@ def check_bushfire_prone_area(lat: float, lon: float) -> tuple[bool, dict | None
     """Check if location is in a Designated Bushfire Prone Area (BPA)."""
     params = {
         "service": "WFS",
-        "version": "2.0.0",
+        "version": "1.1.0",
         "request": "GetFeature",
-        "typeName": "open-data-platform:bpa_bushfire_prone_area_current",
+        "typeName": "open-data-platform:bushfire_prone_area",
         "outputFormat": "application/json",
         "srsName": "EPSG:4326",
-        "CQL_FILTER": f"INTERSECTS(geom, POINT({lon} {lat}))",
-        "count": 1,
+        "CQL_FILTER": f"INTERSECTS(geom, POINT({lat} {lon}))",
+        "maxFeatures": 1,
     }
 
     try:
@@ -95,7 +95,7 @@ def check_epa_priority_sites(lat: float, lon: float, radius_m: int = 500) -> lis
         "typeName": "open-data-platform:psr_point",
         "outputFormat": "application/json",
         "srsName": "EPSG:4326",
-        "CQL_FILTER": f"DWITHIN(geom, POINT({lon} {lat}), {radius_deg}, meters)",
+        "CQL_FILTER": f"DWITHIN(geom, POINT({lat} {lon}), {radius_deg}, meters)",
         "count": 10,
     }
 

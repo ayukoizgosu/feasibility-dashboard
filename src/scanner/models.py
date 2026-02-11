@@ -1,7 +1,7 @@
 """SQLAlchemy models for Site Scanner."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     JSON,
@@ -33,7 +33,7 @@ class RawListing(Base):
     id = Column(String(64), primary_key=True)  # source:listing_id
     source = Column(String(20), nullable=False)  # 'domain' or 'rea'
     listing_id = Column(String(32), nullable=False)
-    fetched_at = Column(DateTime, default=datetime.utcnow)
+    fetched_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     url = Column(Text)
     payload = Column(JSON)
 
@@ -92,16 +92,20 @@ class Site(Base):
     listing_status = Column(
         String(20), default="active"
     )  # 'active', 'under_offer', 'sold'
-    first_seen = Column(DateTime, default=datetime.utcnow)
-    last_seen = Column(DateTime, default=datetime.utcnow)
+    first_seen = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    last_seen = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Processing flags
     requires_manual_review = Column(Boolean, default=False)
     review_reason = Column(Text)
 
     # Timestamps
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
 
     # Relationships
     constraints = relationship(
@@ -137,6 +141,10 @@ class PlanningZone(Base):
     geom_wkt = Column(Text)
     centroid_lat = Column(Float)
     centroid_lon = Column(Float)
+    min_lat = Column(Float, index=True)
+    max_lat = Column(Float, index=True)
+    min_lon = Column(Float, index=True)
+    max_lon = Column(Float, index=True)
     attributes = Column(JSON)
 
 
@@ -172,7 +180,7 @@ class SiteConstraint(Base):
     description = Column(Text)
     details = Column(JSON)
 
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     site = relationship("Site", back_populates="constraints")
 
@@ -220,7 +228,7 @@ class FeasibilityRun(Base):
     # Final score (higher = better opportunity)
     score = Column(Float, index=True)
 
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     site = relationship("Site", back_populates="feasibility_runs")
 
@@ -258,7 +266,7 @@ class TransmissionLine(Base):
     min_lon = Column(Float)
     max_lon = Column(Float)
     attributes = Column(JSON)  # Full properties from WFS
-    fetched_at = Column(DateTime, default=datetime.utcnow)
+    fetched_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 class CachedZone(Base):
@@ -272,7 +280,7 @@ class CachedZone(Base):
     zone_code = Column(String(20))
     lga = Column(String(50))
     properties = Column(JSON)
-    fetched_at = Column(DateTime, default=datetime.utcnow)
+    fetched_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 class CachedOverlay(Base):
@@ -307,7 +315,7 @@ class CachedFengShui(Base):
     bbox_max_lat = Column(Float)
     bbox_max_lon = Column(Float)
 
-    fetched_at = Column(DateTime, default=datetime.utcnow)
+    fetched_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 # Indexes for common queries
@@ -317,3 +325,64 @@ Index("ix_sites_listing_status", Site.listing_status)
 Index("ix_sites_geocode_status", Site.geocode_status)
 
 Index("ix_cached_zones_lat_lon", CachedZone.lat_round, CachedZone.lon_round)
+
+
+class CachedSchoolZone(Base):
+    """Cached school zone polygon and ranking."""
+
+    __tablename__ = "cached_school_zones"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    school_name = Column(String(200), index=True)
+    school_type = Column(String(50))  # 'Primary', 'Secondary', 'Combined'
+    year = Column(Integer, default=2024)
+    rank_score = Column(Float, nullable=True)  # e.g. 0-100 or specific ranking
+    rank_description = Column(String(100), nullable=True)  # e.g. "Top 1% State"
+
+    geom_wkt = Column(Text)
+    attributes = Column(JSON)
+
+    # Bbox
+    min_lat = Column(Float)
+    max_lat = Column(Float)
+    min_lon = Column(Float)
+    max_lon = Column(Float)
+
+    fetched_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    __table_args__ = (
+        UniqueConstraint("school_name", "year", "school_type", name="uq_school_zone"),
+    )
+
+
+class PlanningApplication(Base):
+    """Historical planning permit application."""
+
+    __tablename__ = "planning_applications"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    # Unique identifier from council/source (e.g. PLN20/0123)
+    application_number = Column(String(50), index=True)
+
+    address_text = Column(String(255))
+    description = Column(Text)
+    status = Column(String(50))  # Approved, Refused, Pending, etc.
+    decision_date = Column(DateTime, nullable=True)
+    received_date = Column(DateTime, nullable=True)
+
+    # Financials
+    estimated_cost = Column(Float, nullable=True)
+
+    # Location (if scraped with coords)
+    lat = Column(Float, nullable=True)
+    lon = Column(Float, nullable=True)
+
+    # Source metadata
+    council_name = Column(String(100))
+    info_url = Column(Text)
+
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    __table_args__ = (
+        UniqueConstraint("application_number", "council_name", name="uq_app_council"),
+    )

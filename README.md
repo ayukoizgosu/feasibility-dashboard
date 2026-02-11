@@ -1,4 +1,4 @@
-# Melbourne Property Site Scanner
+# Feasibility Dashboard
 
 Automated pipeline to identify sub-$2M subdivision opportunities in Melbourne.
 
@@ -42,6 +42,7 @@ Download these files from data.vic.gov.au and save to `data/`:
    - Save as: `data/planning_overlays.gpkg`
 
 Then run:
+
 ```bash
 make load-spatial
 ```
@@ -49,6 +50,7 @@ make load-spatial
 ## Configuration
 
 Edit `config.yaml` to customize:
+
 - Target suburbs
 - Price/land size filters
 - Feasibility assumptions
@@ -57,6 +59,7 @@ Edit `config.yaml` to customize:
 ## Output
 
 Reports are generated in `reports/`:
+
 - `top_sites.csv` - Summary of top 25 opportunities
 - `site_<id>.md` - Detailed Markdown report per site
 - `site_<id>.json` - Machine-readable data per site

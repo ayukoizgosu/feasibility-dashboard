@@ -53,3 +53,18 @@ Run batch scan (if multiple addresses provided):
 ```bash
 poetry run python run_new_candidates.py
 ```
+
+## Stealth Discovery & Ingestion (VPN + Rotation)
+
+To find **new** candidates by scraping Domain and RealEstate.com.au with VPN rotation:
+
+```bash
+# Runs 5 batches, rotating VPN location and Source (Domain/REA) each time for stealth
+python scripts/run_with_vpn.py --loops 5
+```
+
+**Note:** This script automatically:
+1. Disconnects/Connects ExpressVPN to random Australian locations.
+2. Rotates between 'domain' and 'rea' sources (or both) to avoid blocking.
+3. Scrapes listings and filters for LDRZ candidates.
+4. Generates a report in `reports/weekly_ldrz_candidates_latest.csv`.

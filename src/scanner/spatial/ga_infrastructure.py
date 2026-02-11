@@ -16,7 +16,7 @@ console = Console()
 
 # GA Electricity Infrastructure WFS
 # Note: Use Foundation_Electricity_Infrastructure for Substations/Power Stations
-GA_WFS_URL = "https://services.ga.gov.au/gis/services/Foundation_Electricity_Infrastructure/MapServer/WFSServer"
+GA_WFS_URL = "https://services.ga.gov.au/gis/services/National_Electricity_Infrastructure/MapServer/WFSServer"
 TIMEOUT_SEC = 20
 
 
@@ -117,7 +117,7 @@ def check_substation_proximity(
         "service": "WFS",
         "version": "1.1.0",
         "request": "GetFeature",
-        "typeName": "Foundation_Electricity_Infrastructure:Transmission_Substations",
+        "typeName": "National_Electricity_Infrastructure:Electricity_Transmission_Substations",
         "srsName": "EPSG:4326",
         "bbox": f"{bbox[1]},{bbox[0]},{bbox[3]},{bbox[2]},EPSG:4326",
         "maxFeatures": "1",
@@ -149,7 +149,7 @@ def check_power_station_proximity(
         "service": "WFS",
         "version": "1.1.0",
         "request": "GetFeature",
-        "typeName": "Foundation_Electricity_Infrastructure:Major_Power_Stations",
+        "typeName": "National_Electricity_Infrastructure:Major_Power_Stations",
         "srsName": "EPSG:4326",
         "bbox": f"{bbox[1]},{bbox[0]},{bbox[3]},{bbox[2]},EPSG:4326",
         "maxFeatures": "1",
@@ -166,5 +166,4 @@ def check_power_station_proximity(
         return False, None, None
     except Exception as e:
         console.print(f"[yellow]  ! Power station check warning: {e}[/yellow]")
-        return False, None, None
         return False, None, None

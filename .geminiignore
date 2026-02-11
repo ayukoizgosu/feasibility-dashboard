@@ -1,0 +1,13 @@
+# Gemini specific ignores
+templates/antigravity/**/node_modules/
+templates/antigravity/**/.venv/
+templates/antigravity/**/dist/
+templates/antigravity/**/build/
+templates/antigravity/**/.git/
+
+archive/
+data/
+db/
+reports/
+__pycache__/
+*.log

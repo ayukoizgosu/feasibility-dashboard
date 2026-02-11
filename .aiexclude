@@ -1,0 +1,14 @@
+# Exclude template internals to keep context clean
+templates/antigravity/**/node_modules/
+templates/antigravity/**/.venv/
+templates/antigravity/**/dist/
+templates/antigravity/**/build/
+templates/antigravity/**/.git/
+
+# Standard excludes
+archive/
+data/
+db/
+reports/
+__pycache__/
+*.log

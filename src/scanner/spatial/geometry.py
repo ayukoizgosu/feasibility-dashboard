@@ -39,11 +39,12 @@ def get_property_polygon(lat: float, lon: float) -> Polygon | None:
     type_name = "open-data-platform:v_property_mp"
 
     # Try CQL Filter with different geometry column names
-    # Vicmap uses various names: SHAPE, the_geom, geom, geometry
-    geom_columns = ["SHAPE", "the_geom", "geom", "geometry"]
+    # Prioritize standard GeoServer names
+    geom_columns = ["geom", "the_geom", "geometry", "SHAPE"]
 
     for geom_col in geom_columns:
-        cql = f"INTERSECTS({geom_col}, POINT({lon} {lat}))"
+        # NOTE: Vicmap WFS CQL expects (Lat Lon) for EPSG:4326 POINT
+        cql = f"INTERSECTS({geom_col}, POINT({lat} {lon}))"
 
         params = {
             "service": "WFS",
@@ -52,7 +53,7 @@ def get_property_polygon(lat: float, lon: float) -> Polygon | None:
             "typeName": type_name,
             "outputFormat": "application/json",
             "srsName": "EPSG:4326",
-            "cql_filter": cql,
+            "CQL_FILTER": cql,
             "maxFeatures": 1,
         }
 

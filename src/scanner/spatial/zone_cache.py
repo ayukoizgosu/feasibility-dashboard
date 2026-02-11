@@ -32,6 +32,7 @@ def get_zone_at_point_cached(
     cutoff = datetime.utcnow() - timedelta(days=max_age_days)
 
     with get_session() as session:
+        # 1. Check Point Cache
         cached = (
             session.query(CachedZone)
             .filter(
@@ -49,6 +50,56 @@ def get_zone_at_point_cached(
                 "cached": True,
             }
 
+        # 2. Check Whole-of-Melbourne Polygon Cache (PlanningZone table)
+        # Using BBOX subset filtering + Shapely precise check
+        try:
+            from shapely import Point, wkt
+
+            from scanner.models import PlanningZone
+
+            candidates = (
+                session.query(PlanningZone)
+                .filter(
+                    PlanningZone.min_lat <= lat,
+                    PlanningZone.max_lat >= lat,
+                    PlanningZone.min_lon <= lon,
+                    PlanningZone.max_lon >= lon,
+                )
+                .all()
+            )
+
+            p = Point(lon, lat)
+            for cand in candidates:
+                try:
+                    poly = wkt.loads(cand.geom_wkt)
+                    if poly.contains(p):
+                        # Found in local cache!
+                        # Populate point cache for future fast lookup
+                        c_zone = CachedZone(
+                            lat_round=lat_round,
+                            lon_round=lon_round,
+                            zone_code=cand.zone_code,
+                            lga=cand.lga,
+                            properties=cand.attributes,
+                            fetched_at=datetime.utcnow(),
+                        )
+                        session.add(c_zone)
+                        session.commit()
+
+                        return {
+                            "code": cand.zone_code,
+                            "lga": cand.lga,
+                            "properties": cand.attributes,
+                            "cached": True,  # Technically cached now
+                            "source": "local_polygon",
+                        }
+                except Exception:
+                    continue
+        except Exception as e:
+            # Fallback to WFS if DB error or missing table
+            console.print(f"[yellow]Local zone lookup failed: {e}[/yellow]")
+
+    # 3. Fallback to WFS
     zones = get_zones_at_point(lat, lon)
     zone = zones[0] if zones else None
 
@@ -68,4 +119,5 @@ def get_zone_at_point_cached(
         return None
 
     zone["cached"] = False
+    return zone
     return zone

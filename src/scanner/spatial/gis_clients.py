@@ -197,6 +197,7 @@ def query_ga_wfs_features(
         "srsName": "EPSG:4326",
         "bbox": f"{bbox[1]},{bbox[0]},{bbox[3]},{bbox[2]},EPSG:4326",
         "maxFeatures": str(max_features),
+        "outputFormat": "geoJSON",  # Try requesting JSON explicitly
     }
 
     session = _get_session()

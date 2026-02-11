@@ -22,3 +22,15 @@ reports/
 # OS
 .DS_Store
 Thumbs.db
+
+# Logs and Databases
+*.log
+*.db
+harvest.log
+scanner.log
+market_data.db
+
+# Temporary / Testing
+temp_test.txt
+debug_domain_playwright.html
+planning_debug.html
