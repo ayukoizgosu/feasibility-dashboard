@@ -1017,7 +1017,7 @@
         // --- CHECK 1: ZONING ---
         async function checkZoning(lat, lon) {
             try {
-                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=open-data-platform:plan_zone&outputFormat=application/json&srsName=EPSG:4326&cql_filter=INTERSECTS(geom, POINT(${lon} ${lat}))&maxFeatures=1`;
+                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=open-data-platform:plan_zone&outputFormat=application/json&srsName=EPSG:4326&cql_filter=INTERSECTS(geom, POINT(${lat} ${lon}))&maxFeatures=1`;
                 const resp = await fetch(url);
                 const data = await resp.json();
 
@@ -1053,7 +1053,7 @@
         async function fetchPropertyParcel(lat, lon) {
             try {
                 // 0.00015 degrees ≈ 15m — handles Photon coords landing on the road rather than inside the parcel
-                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=open-data-platform:parcel_view&outputFormat=application/json&srsName=EPSG:4326&cql_filter=DWITHIN(geom, POINT(${lon} ${lat}), 0.00015, degrees)&maxFeatures=1`;
+                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=open-data-platform:parcel_view&outputFormat=application/json&srsName=EPSG:4326&cql_filter=DWITHIN(geom, POINT(${lat} ${lon}), 0.00015, degrees)&maxFeatures=1`;
                 const resp = await fetch(url);
                 const data = await resp.json();
                 if (data.features && data.features.length > 0) {
@@ -1164,7 +1164,7 @@
         // --- CHECK 2: OVERLAYS (Heritage, Environmental, Bushfire, etc.) ---
         async function checkOverlays(lat, lon) {
             try {
-                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=open-data-platform:plan_overlay&outputFormat=application/json&srsName=EPSG:4326&cql_filter=INTERSECTS(geom, POINT(${lon} ${lat}))`;
+                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=open-data-platform:plan_overlay&outputFormat=application/json&srsName=EPSG:4326&cql_filter=INTERSECTS(geom, POINT(${lat} ${lon}))`;
 
                 const resp = await fetch(url);
                 const data = await resp.json();
@@ -1179,12 +1179,13 @@
                     L.geoJSON(data, {
                         style: { color: "#f59e0b", weight: 2, fillOpacity: 0.2, dashArray: '5, 5' }
                     }).bindPopup(l => {
-                        const code = l.feature.properties.SCHEME_CODE || l.feature.properties.overlay_code || '';
+                        const p = l.feature.properties;
+                        const code = p.scheme_code || p.SCHEME_CODE || p.overlay_code || p.OVERLAY_CODE || '';
                         return `<b>Planning Overlay</b><br>${code}`;
                     }).addTo(layers.overlays);
 
                     data.features.forEach(f => {
-                        const code = f.properties.SCHEME_CODE || f.properties.overlay_code || f.properties.ZONE_CODE || '';
+                        const code = f.properties.scheme_code || f.properties.SCHEME_CODE || f.properties.overlay_code || f.properties.OVERLAY_CODE || f.properties.zone_code || f.properties.ZONE_CODE || '';
                         if (!code) return;
                         allCodes.push(code);
 
@@ -1225,7 +1226,7 @@
 
         async function checkBPA(lat, lon) {
             try {
-                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=open-data-platform:bushfire_prone_area&outputFormat=application/json&srsName=EPSG:4326&cql_filter=INTERSECTS(geom, POINT(${lon} ${lat}))&maxFeatures=1`;
+                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=open-data-platform:bushfire_prone_area&outputFormat=application/json&srsName=EPSG:4326&cql_filter=INTERSECTS(geom, POINT(${lat} ${lon}))&maxFeatures=1`;
                 const resp = await fetch(url);
                 const data = await resp.json();
 
@@ -1352,7 +1353,7 @@
         async function checkEPA(lat, lon) {
             try {
                 // DWITHIN in EPSG:4326 uses decimal degrees; 0.005° ≈ 500m
-                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=open-data-platform:psr_point&outputFormat=application/json&srsName=EPSG:4326&cql_filter=DWITHIN(geom, POINT(${lon} ${lat}), 0.005, degrees)`;
+                const url = `https://opendata.maps.vic.gov.au/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=open-data-platform:psr_point&outputFormat=application/json&srsName=EPSG:4326&cql_filter=DWITHIN(geom, POINT(${lat} ${lon}), 0.005, degrees)`;
 
                 const resp = await fetch(url);
                 const data = await resp.json();

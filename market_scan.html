@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSW Market Scan | Feasibility Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-surface: #0f172a;
+            --text-main: #f8fafc;
+            --text-light: #94a3b8;
+            --primary: #3b82f6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ── Top Bar ──────────────────────────────── */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .brand span {
+            color: var(--primary);
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--text-main);
+        }
+
+        /* ── Container ────────────────────────────── */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 32px 40px;
+        }
+
+        /* ── Page Header ──────────────────────────── */
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        /* ── KPI Strip ────────────────────────────── */
+        .kpi-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+
+        .kpi-card:hover {
+            border-color: var(--primary);
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .kpi-sub {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .kpi-kill {
+            color: var(--danger);
+        }
+
+        .kpi-go {
+            color: var(--success);
+        }
+
+        /* ── Filters ──────────────────────────────── */
+        .filters-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .filter-select,
+        .filter-btn {
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .filter-select:hover,
+        .filter-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .filter-btn-kill.active {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .filter-btn-go.active {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        /* ── Tabs ─────────────────────────────────── */
+        .tab-bar {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 4px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ── Data Table ───────────────────────────── */
+        .data-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            padding: 14px 18px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        thead th:hover {
+            color: var(--text-main);
+        }
+
+        tbody td {
+            padding: 14px 18px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            transition: background 0.15s;
+        }
+
+        tbody tr:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ── Badges ───────────────────────────────── */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-kill {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .badge-go {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .badge-warn {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        /* ── Growth Indicators ────────────────────── */
+        .growth-pos {
+            color: var(--success);
+        }
+
+        .growth-neg {
+            color: var(--danger);
+        }
+
+        .growth-flat {
+            color: var(--text-light);
+        }
+
+        /* ── DA Alarm Cell ────────────────────────── */
+        .da-alarm {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 4px 10px;
+            display: inline-block;
+        }
+
+        .da-ok {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* ── Competition Bars ─────────────────────── */
+        .share-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 180px;
+        }
+
+        .share-bar-track {
+            flex: 1;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .share-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .share-bar-pct {
+            font-size: 13px;
+            font-weight: 600;
+            min-width: 36px;
+            text-align: right;
+        }
+
+        /* ── Friction Detail Section ──────────────── */
+        .friction-detail {
+            margin-top: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .friction-detail h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .friction-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .friction-stat {
+            text-align: center;
+        }
+
+        .friction-stat .stat-num {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .friction-stat .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        /* ── No Data State ────────────────────────── */
+        .no-data {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .no-data span {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        /* ── Responsive ──────────────────────────── */
+        @media (max-width: 768px) {
+
+            .top-bar,
+            .container {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .kpi-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .filters-bar {
+                flex-direction: column;
+            }
+        }
+
+        /* ── Tooltip ─────────────────────────────── */
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a2e;
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+
+        /* ── Pulse animation ─────────────────────── */
+        @keyframes pulse-danger {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+            }
+        }
+
+        .pulse-kill {
+            animation: pulse-danger 2s infinite;
+        }
+
+        /* ── Timestamp ───────────────────────────── */
+        .data-timestamp {
+            font-size: 12px;
+            color: var(--text-light);
+            text-align: right;
+            padding: 10px 18px;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <nav class="top-bar">
+        <a href="index.html" class="brand">Feasibility<span>Dashboard</span></a>
+        <a href="index.html" class="nav-link">← Back to Dashboard</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>📊 NSW Market Opportunity Scan</h1>
+            <p>Regional demographics, competition analysis, DA friction scores &amp; kill criteria</p>
+        </div>
+
+        <!-- KPI Strip -->
+        <div class="kpi-strip" id="kpi-strip">
+            <div class="kpi-card" id="kpi-friction">
+                <div class="kpi-label">Friction Score (Median DA Days)</div>
+                <div class="kpi-value" id="kpi-friction-val">—</div>
+                <div class="kpi-sub" id="kpi-friction-sub">Loading...</div>
+            </div>
+            <div class="kpi-card" id="kpi-status">
+                <div class="kpi-label">Kill Status</div>
+                <div class="kpi-value" id="kpi-status-val">—</div>
+                <div class="kpi-sub">Threshold: 90 days</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Regions Tracked</div>
+                <div class="kpi-value" id="kpi-regions-val">—</div>
+                <div class="kpi-sub">Active markets</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Top Growth Sector</div>
+                <div class="kpi-value" id="kpi-top-sector" style="font-size:18px;">—</div>
+                <div class="kpi-sub" id="kpi-top-sector-sub"></div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label>Region</label>
+                <select class="filter-select" id="filter-region">
+                    <option value="all">All Regions</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Priority</label>
+                <button class="filter-btn active" data-priority="all" onclick="setPriority('all')">All</button>
+                <button class="filter-btn" data-priority="high" onclick="setPriority('high')">High</button>
+                <button class="filter-btn" data-priority="medium" onclick="setPriority('medium')">Medium</button>
+            </div>
+            <div class="filter-group">
+                <label>Kill Status</label>
+                <button class="filter-btn filter-btn-go active" data-kill="all"
+                    onclick="setKillFilter('all')">All</button>
+                <button class="filter-btn filter-btn-go" data-kill="GO" onclick="setKillFilter('GO')">GO</button>
+                <button class="filter-btn filter-btn-kill" data-kill="KILL"
+                    onclick="setKillFilter('KILL')">KILL</button>
+            </div>
+            <div class="filter-group" style="margin-left: auto;">
+                <button class="filter-btn" onclick="exportData('filtered')">⬇ Export View</button>
+                <button class="filter-btn" onclick="exportData('all')">⬇ Export All</button>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tab-bar" id="tab-bar">
+            <button class="tab-btn active" onclick="switchTab('regions')">Regions</button>
+            <button class="tab-btn" onclick="switchTab('market')">Market Size</button>
+            <button class="tab-btn" onclick="switchTab('competition')">Competition</button>
+            <button class="tab-btn" onclick="switchTab('feasibility')">Feasibility</button>
+            <button class="tab-btn" onclick="switchTab('dashboard')">Dashboard</button>
+        </div>
+
+        <!-- Data Panel -->
+        <div class="data-panel">
+            <div class="table-wrapper" id="table-container">
+                <div class="no-data"><span>⏳</span>Loading data...</div>
+            </div>
+            <div class="data-timestamp" id="data-timestamp"></div>
+        </div>
+
+        <!-- Friction Detail (live API data) -->
+        <div class="friction-detail" id="friction-detail" style="display:none;">
+            <h3>🔬 Live DA Friction Analysis — Wollongong City Council</h3>
+            <div class="friction-stats" id="friction-stats"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // ══════════════════════════════════════════
+        // STATE
+        // ══════════════════════════════════════════
+        let allData = [];
+        let frictionSummary = null;
+        let currentTab = 'regions';
+        let filterRegion = 'all';
+        let filterPriority = 'all';
+        let filterKill = 'all';
+
+        // Priority heuristic based on growth + sector
+        function assignPriority(row) {
+            const gr = parseFloat(row.Growth_Rate);
+            if (isNaN(gr)) return 'medium';
+            if (gr >= 0.02) return 'high';
+            if (gr >= 0) return 'medium';
+            return 'low';
+        }
+
+        // Kill criteria: DA Time > 90 OR Yield < 4%
+        function computeKillScore(row) {
+            const val = row.Value || '';
+            const gr = parseFloat(row.Growth_Rate);
+
+            // Check DA determination time
+            const daDaysMatch = val.match(/(\d+)\s*[Dd]ays/);
+            if (daDaysMatch) {
+                const daDays = parseInt(daDaysMatch[1], 10);
+                if (daDays > 90) return { status: 'KILL', score: 0, reason: `DA ${daDays}d > 90d` };
+            }
+
+            // Check yield (Growth_Rate as proxy)
+            if (!isNaN(gr) && gr < 0.04 && row.Tab === 'Feasibility') {
+                return { status: 'KILL', score: 0, reason: `Yield ${(gr * 100).toFixed(1)}% < 4%` };
+            }
+
+            if (!isNaN(gr)) {
+                const score = Math.round((gr + (gr > 0 ? gr : 0)) * 100);
+                return { status: 'GO', score: Math.max(score, 1), reason: '' };
+            }
+
+            return { status: 'GO', score: '-', reason: '' };
+        }
+
+        // ══════════════════════════════════════════
+        // DATA LOADING
+        // ══════════════════════════════════════════
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            if (lines.length < 2) return [];
+            const headers = parseCSVLine(lines[0]);
+            const rows = [];
+            for (let i = 1; i < lines.length; i++) {
+                const vals = parseCSVLine(lines[i]);
+                const row = {};
+                headers.forEach((h, idx) => { row[h.trim()] = (vals[idx] || '').trim(); });
+                rows.push(row);
+            }
+            return rows;
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const c = line[i];
+                if (c === '"') { inQuotes = !inQuotes; }
+                else if (c === ',' && !inQuotes) { result.push(current); current = ''; }
+                else { current += c; }
+            }
+            result.push(current);
+            return result;
+        }
+
+        async function loadData() {
+            try {
+                const csvResp = await fetch('data/market_scan_data.csv');
+                if (!csvResp.ok) throw new Error('CSV not found');
+                const csvText = await csvResp.text();
+                allData = parseCSV(csvText);
+
+                // Enrich with computed fields
+                allData.forEach(row => {
+                    row._priority = assignPriority(row);
+                    row._kill = computeKillScore(row);
+                });
+
+                // Populate region filter
+                const regions = [...new Set(allData.map(r => r.Region))];
+                const select = document.getElementById('filter-region');
+                regions.forEach(r => {
+                    const opt = document.createElement('option');
+                    opt.value = r; opt.textContent = r;
+                    select.appendChild(opt);
+                });
+                select.addEventListener('change', () => {
+                    filterRegion = select.value;
+                    render();
+                });
+
+            } catch (e) {
+                console.error('CSV load failed:', e);
+                // Use embedded fallback data
+                allData = getEmbeddedData();
+                allData.forEach(row => {
+                    row._priority = assignPriority(row);
+                    row._kill = computeKillScore(row);
+                });
+            }
+
+            // Try loading live friction data
+            try {
+                const jsonResp = await fetch('data/wollongong_friction_summary.json');
+                if (jsonResp.ok) {
+                    frictionSummary = await jsonResp.json();
+                }
+            } catch (e) {
+                console.log('No live friction data available — using seed data');
+            }
+
+            updateKPIs();
+            render();
+        }
+
+        // ══════════════════════════════════════════
+        // EXPORT
+        // ══════════════════════════════════════════
+        function exportData(type) {
+            const dataToExport = type === 'filtered' ? getFilteredData() : allData;
+
+            if (!dataToExport || dataToExport.length === 0) {
+                alert('No data to export');
+                return;
+            }
+
+            // Prepare export objects (flatten/clean)
+            const exportRows = dataToExport.map(row => ({
+                Tab: row.Tab,
+                Region: row.Region,
+                Metric: row.Metric,
+                Value: row.Value,
+                Growth_Rate: row.Growth_Rate,
+                Source: row.Source,
+                Notes: row.Notes,
+                Priority: row._priority,
+                Kill_Status: row._kill.status,
+                Kill_Score: row._kill.score,
+                Kill_Reason: row._kill.reason || ''
+            }));
+
+            const now = new Date().toISOString().slice(0, 10);
+            const filename = `NSW_Market_Scan_${type}_${now}.csv`;
+            downloadCSV(exportRows, filename);
+        }
+
+        function downloadCSV(data, filename) {
+            const headers = Object.keys(data[0]);
+            const csvContent = [
+                headers.join(','),
+                ...data.map(row => headers.map(h => {
+                    const val = (row[h] !== undefined && row[h] !== null) ? String(row[h]) : '';
+                    return `"${val.replace(/"/g, '""')}"`;
+                }).join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (navigator.msSaveBlob) { // IE 10+
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        function getEmbeddedData() {
+            return [
+                { Tab: 'Regions', Region: 'Wollongong', Metric: 'Population (2026f)', Value: '225607', Growth_Rate: '0.0095', Source: 'ABS', Notes: 'High migration; GRP neg growth' },
+                { Tab: 'Regions', Region: 'Wollongong', Metric: 'GRP ($B)', Value: '17.61', Growth_Rate: '-0.01', Source: 'Economy.id', Notes: 'Economic cooling detected' },
+                { Tab: 'Regions', Region: 'Shellharbour', Metric: 'Population (2026f)', Value: '82400', Growth_Rate: '0.021', Source: 'Economy.id', Notes: 'Marina effect driving premium' },
+                { Tab: 'Regions', Region: 'Newcastle', Metric: 'Population (2026f)', Value: '175000', Growth_Rate: '0.011', Source: 'ABS', Notes: 'High volume low yield' },
+                { Tab: 'MarketSize', Region: 'Wollongong', Metric: 'Resi Unit Revenue (2025)', Value: '$1350M', Growth_Rate: '0.02', Source: 'NSW Planning', Notes: 'Supply squeeze imminent' },
+                { Tab: 'MarketSize', Region: 'Wollongong', Metric: 'Resi House Revenue (2025)', Value: '$82M', Growth_Rate: '0.00', Source: 'CoreLogic', Notes: 'Low liquidity; 57 days on market' },
+                { Tab: 'MarketSize', Region: 'Wollongong', Metric: 'Aged Care Revenue', Value: '$250M', Growth_Rate: '0.06', Source: 'Cordell', Notes: 'High conviction sector' },
+                { Tab: 'Competition', Region: 'Wollongong', Metric: 'Level 33 (Share)', Value: '0.15', Growth_Rate: 'N/A', Source: 'Internal', Notes: 'High Density / Shop Top Domination' },
+                { Tab: 'Competition', Region: 'Wollongong', Metric: 'Meriton (Share)', Value: '0.10', Growth_Rate: 'N/A', Source: 'Internal', Notes: 'Only fights on massive sites' },
+                { Tab: 'Feasibility', Region: 'Wollongong', Metric: 'DA Determination Time', Value: '100 Days', Growth_Rate: 'N/A', Source: 'API_Script', Notes: 'KILL CRITERIA: >90 Days' },
+                { Tab: 'Feasibility', Region: 'Wollongong', Metric: 'Construction Cost', Value: '$3200/sqm', Growth_Rate: '0.05', Source: 'RLB', Notes: 'Margins erode >$3.5k' },
+            ];
+        }
+
+        // ══════════════════════════════════════════
+        // KPIs
+        // ══════════════════════════════════════════
+        function updateKPIs() {
+            // Friction KPI
+            let frictionDays = null;
+            let frictionStatus = null;
+
+            if (frictionSummary) {
+                frictionDays = frictionSummary.median_days;
+                frictionStatus = frictionSummary.kill_status;
+            } else {
+                // Fallback: parse from seed data
+                const daRow = allData.find(r => r.Metric && r.Metric.includes('DA Determination'));
+                if (daRow) {
+                    const match = daRow.Value.match(/(\d+)/);
+                    frictionDays = match ? parseInt(match[1], 10) : null;
+                    frictionStatus = frictionDays > 90 ? 'KILL' : 'GO';
+                }
+            }
+
+            const frictionEl = document.getElementById('kpi-friction-val');
+            const frictionSubEl = document.getElementById('kpi-friction-sub');
+            const frictionCard = document.getElementById('kpi-friction');
+            if (frictionDays !== null) {
+                frictionEl.textContent = `${frictionDays}d`;
+                frictionEl.className = 'kpi-value ' + (frictionDays > 90 ? 'kpi-kill' : 'kpi-go');
+                frictionSubEl.textContent = frictionDays > 90 ? '⚠️ Over 90-day threshold' : '✅ Within threshold';
+                if (frictionDays > 90) frictionCard.classList.add('pulse-kill');
+            }
+
+            // Status KPI
+            const statusEl = document.getElementById('kpi-status-val');
+            if (frictionStatus) {
+                statusEl.textContent = frictionStatus;
+                statusEl.className = 'kpi-value ' + (frictionStatus === 'KILL' ? 'kpi-kill' : 'kpi-go');
+            }
+
+            // Regions KPI
+            const regions = [...new Set(allData.map(r => r.Region))];
+            document.getElementById('kpi-regions-val').textContent = regions.length;
+
+            // Top growth sector
+            const withGrowth = allData
+                .filter(r => r.Growth_Rate && r.Growth_Rate !== 'N/A')
+                .map(r => ({ ...r, _gr: parseFloat(r.Growth_Rate) }))
+                .filter(r => !isNaN(r._gr))
+                .sort((a, b) => b._gr - a._gr);
+
+            if (withGrowth.length > 0) {
+                const top = withGrowth[0];
+                document.getElementById('kpi-top-sector').textContent = top.Metric;
+                document.getElementById('kpi-top-sector-sub').textContent =
+                    `${(top._gr * 100).toFixed(1)}% growth — ${top.Region}`;
+            }
+
+            // Friction detail panel
+            if (frictionSummary) {
+                document.getElementById('friction-detail').style.display = 'block';
+                document.getElementById('friction-stats').innerHTML = `
+                    <div class="friction-stat">
+                        <div class="stat-num ${frictionSummary.median_days > 90 ? 'kpi-kill' : 'kpi-go'}">${frictionSummary.median_days}d</div>
+                        <div class="stat-label">Median</div>
+                    </div>
+                    <div class="friction-stat">
+                        <div class="stat-num">${frictionSummary.mean_days}d</div>
+                        <div class="stat-label">Mean</div>
+                    </div>
+                    <div class="friction-stat">
+                        <div class="stat-num">${frictionSummary.p90_days}d</div>
+                        <div class="stat-label">P90</div>
+                    </div>
+                    <div class="friction-stat">
+                        <div class="stat-num">${frictionSummary.sample_size}</div>
+                        <div class="stat-label">Sample Size</div>
+                    </div>
+                    <div class="friction-stat">
+                        <div class="stat-num kpi-kill">${frictionSummary.over_threshold_pct}%</div>
+                        <div class="stat-label">Over ${frictionSummary.threshold_days}d</div>
+                    </div>
+                `;
+            }
+
+            // Timestamp
+            const ts = frictionSummary
+                ? `Live API data from ${new Date(frictionSummary.generated_at).toLocaleString()}`
+                : 'Seed data — run nsw_friction_score.py for live updates';
+            document.getElementById('data-timestamp').textContent = ts;
+        }
+
+        // ══════════════════════════════════════════
+        // FILTERS
+        // ══════════════════════════════════════════
+        function setPriority(val) {
+            filterPriority = val;
+            document.querySelectorAll('[data-priority]').forEach(b => {
+                b.classList.toggle('active', b.dataset.priority === val);
+            });
+            render();
+        }
+
+        function setKillFilter(val) {
+            filterKill = val;
+            document.querySelectorAll('[data-kill]').forEach(b => {
+                b.classList.toggle('active', b.dataset.kill === val);
+            });
+            render();
+        }
+
+        function getFilteredData() {
+            const tabMap = {
+                regions: 'Regions',
+                market: 'MarketSize',
+                competition: 'Competition',
+                feasibility: 'Feasibility',
+                dashboard: null,
+            };
+
+            let data = [...allData];
+
+            // Tab filter (dashboard shows all)
+            if (tabMap[currentTab]) {
+                data = data.filter(r => r.Tab === tabMap[currentTab]);
+            }
+
+            // Region filter
+            if (filterRegion !== 'all') {
+                data = data.filter(r => r.Region === filterRegion);
+            }
+
+            // Priority filter
+            if (filterPriority !== 'all') {
+                data = data.filter(r => r._priority === filterPriority);
+            }
+
+            // Kill filter
+            if (filterKill !== 'all') {
+                data = data.filter(r => r._kill.status === filterKill);
+            }
+
+            return data;
+        }
+
+        // ══════════════════════════════════════════
+        // TABS
+        // ══════════════════════════════════════════
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.toggle('active', b.textContent.toLowerCase().replace(' ', '') === tab ||
+                    (tab === 'market' && b.textContent === 'Market Size') ||
+                    (tab === 'regions' && b.textContent === 'Regions') ||
+                    (tab === 'competition' && b.textContent === 'Competition') ||
+                    (tab === 'feasibility' && b.textContent === 'Feasibility') ||
+                    (tab === 'dashboard' && b.textContent === 'Dashboard'));
+            });
+            render();
+        }
+
+        // ══════════════════════════════════════════
+        // RENDER
+        // ══════════════════════════════════════════
+        function formatGrowth(val) {
+            if (!val || val === 'N/A') return '<span class="growth-flat">—</span>';
+            const n = parseFloat(val);
+            if (isNaN(n)) return '<span class="growth-flat">—</span>';
+            const pct = (n * 100).toFixed(1);
+            if (n > 0) return `<span class="growth-pos">▲ ${pct}%</span>`;
+            if (n < 0) return `<span class="growth-neg">▼ ${pct}%</span>`;
+            return `<span class="growth-flat">— ${pct}%</span>`;
+        }
+
+        function formatValue(val, metric) {
+            if (!val) return '—';
+
+            // DA days — alarm styling
+            const daDaysMatch = val.match(/^(\d+)\s*[Dd]ays$/);
+            if (daDaysMatch) {
+                const d = parseInt(daDaysMatch[1], 10);
+                return d > 90
+                    ? `<span class="da-alarm">⚠ ${d} Days</span>`
+                    : `<span class="da-ok">✅ ${d} Days</span>`;
+            }
+
+            // Numeric with commas
+            const numVal = parseFloat(val.replace(/[,$]/g, ''));
+            if (!isNaN(numVal) && numVal > 1000 && !val.includes('/')) {
+                return numVal.toLocaleString();
+            }
+
+            return val;
+        }
+
+        function formatKillStatus(kill) {
+            if (kill.status === 'KILL') {
+                return `<span class="badge badge-kill" ${kill.reason ? `title="${kill.reason}"` : ''}>✕ KILL</span>`;
+            }
+            const scoreDisplay = kill.score === '-' ? '' : ` (${kill.score})`;
+            return `<span class="badge badge-go">✓ GO${scoreDisplay}</span>`;
+        }
+
+        function renderCompetitionBar(val) {
+            const n = parseFloat(val);
+            if (isNaN(n)) return val;
+            const pct = Math.round(n * 100);
+            return `
+                <div class="share-bar-container">
+                    <div class="share-bar-track">
+                        <div class="share-bar-fill" style="width:${pct}%"></div>
+                    </div>
+                    <div class="share-bar-pct">${pct}%</div>
+                </div>
+            `;
+        }
+
+        function render() {
+            const data = getFilteredData();
+            const container = document.getElementById('table-container');
+
+            if (data.length === 0) {
+                container.innerHTML = `<div class="no-data"><span>🔍</span>No data matching filters</div>`;
+                return;
+            }
+
+            // Determine columns by tab
+            let html = '<table><thead><tr>';
+
+            if (currentTab === 'competition') {
+                html += '<thead><tr><th>Region</th><th>Competitor</th><th>Market Share</th><th>Notes</th><th>Kill Status</th></tr></thead><tbody>';
+                data.forEach(row => {
+                    // Competition logic: metric is competitor name, value is share
+                    const shareVal = parseFloat(row.Value);
+                    const pct = isNaN(shareVal) ? 0 : Math.round(shareVal * 100);
+
+                    html += `<tr>
+                        <td>${row.Region}</td>
+                        <td style="font-weight:600">${row.Metric}</td>
+                        <td>
+                            <div class="share-bar-container">
+                                <div class="share-bar-track">
+                                    <div class="share-bar-fill" style="width:${pct}%"></div>
+                                </div>
+                                <div class="share-bar-pct">${pct}%</div>
+                            </div>
+                        </td>
+                        <td style="color:var(--text-light);font-size:13px">${row.Notes || ''}</td>
+                        <td>${formatKillStatus(row._kill)}</td>
+                    </tr>`;
+                });
+            } else {
+                html += '<thead><tr><th>Region</th><th>Metric</th><th>Value</th><th>Growth</th><th>Source</th><th>Notes</th><th>Kill Status</th></tr></thead><tbody>';
+                data.forEach(row => {
+                    html += `<tr>
+                        <td>${row.Region}</td>
+                        <td style="font-weight:600">${row.Metric}</td>
+                        <td>${formatValue(row.Value)}</td>
+                        <td>${formatGrowth(row.Growth_Rate)}</td>
+                        <td><span class="badge badge-warn">${row.Source || ''}</span></td>
+                        <td style="color:var(--text-light);font-size:13px;max-width:200px;white-space:normal">${row.Notes || ''}</td>
+                        <td>${formatKillStatus(row._kill)}</td>
+                    </tr>`;
+                });
+            }
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // ══════════════════════════════════════════
+        // INIT
+        // ══════════════════════════════════════════
+        loadData();
+    </script>
+</body>
+
+</html>
