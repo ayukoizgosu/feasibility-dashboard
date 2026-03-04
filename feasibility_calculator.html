@@ -4408,6 +4408,23 @@
 
             const landLoan = purchase * (landLvr / 100);
             const landInterest = landLoan * landRate * years;
+            const currentUnitCount = Math.max(1, units.length || fitUnits);
+            const currentTotalInternal = Math.max(0, Number(totalSqm) || 0);
+            const currentTotalGRV = units.reduce((sum, unit) => sum + (Number(unit.price) || 0), 0);
+            const currentSalePerUnit = currentUnitCount > 0 ? currentTotalGRV / currentUnitCount : 0;
+            const currentInputRate = currentTotalInternal > 0 ? currentTotalGRV / currentTotalInternal : 0;
+            const currentBaseBuild = buildRate * currentTotalInternal;
+            const currentSoftBase = consultants + council;
+            const currentContingency = (currentBaseBuild + currentSoftBase) * (contingencyPct / 100);
+            const currentTotalSoft = currentSoftBase + currentContingency;
+            const currentSellingCosts = currentTotalGRV * (agentPct / 100);
+            const currentConstBase = currentBaseBuild + currentTotalSoft;
+            const currentConstLoan = currentConstBase * (constLvr / 100);
+            const currentConstInterest = currentConstLoan * constRate * years * 0.6;
+            const currentTotalFinanceCost = landInterest + currentConstInterest;
+            const currentTotalProjectCost = totalAcq + currentBaseBuild + currentTotalSoft + currentSellingCosts + currentTotalFinanceCost;
+            const currentNetProfit = currentTotalGRV - currentTotalProjectCost;
+            const currentMarginPct = currentTotalProjectCost > 0 ? (currentNetProfit / currentTotalProjectCost) * 100 : 0;
 
             const unitMin = fitUnits;
             const unitMax = fitUnits;
@@ -4513,10 +4530,10 @@
                 });
             }
 
-            const rateLabel = `$${Math.round(saleRate).toLocaleString()}/m2`;
             const capNote = planningStoreyCap < 4
                 ? ` Storey options capped at ${planningStoreyCap} by planning controls.`
                 : '';
+            const currentRateLabel = currentInputRate > 0 ? `$${Math.round(currentInputRate).toLocaleString()}/m2` : 'N/A';
             const compRateNote = !compRateAccepted
                 ? (compRate > 0
                     ? ` Comparable rate ignored as outlier ($${Math.round(compRate).toLocaleString()}/m2).`
@@ -4527,12 +4544,12 @@
             const precedentNote = precedentHint.sampleCount > 0 && patternHint
                 ? ` Precedent hint: ${patternHint.cols}x${patternHint.rows} from ${precedentHint.sampleCount} cached project(s).`
                 : '';
-            if (best.netProfit >= 0) {
+            if (currentTotalGRV > 0) {
                 bestNoteEl.innerText =
-                    `Estimated sale/unit ${fmt(best.salePerUnit)}, GRV ${fmt(best.totalGRV)}, profit ${fmt(best.netProfit)} (${best.marginPct.toFixed(1)}% margin) using ${compRateAccepted ? 'comparable' : 'input'} rate ${rateLabel} with a ${Math.round(coverageCapRatio * 100)}% footprint cap.${capNote}${compRateNote}${precedentNote}`;
+                    `Current calculator scenario: sale/unit ${fmt(currentSalePerUnit)}, GRV ${fmt(currentTotalGRV)}, profit ${fmt(currentNetProfit)} (${currentMarginPct.toFixed(1)}% margin) at input rate ${currentRateLabel}. Fit guide uses a ${Math.round(coverageCapRatio * 100)}% footprint cap.${capNote}${compRateNote}${precedentNote}`;
             } else {
                 bestNoteEl.innerText =
-                    `No profitable option found for ${fitUnits} TH with current inputs. Least-loss layout shown: sale/unit ${fmt(best.salePerUnit)}, GRV ${fmt(best.totalGRV)}, profit ${fmt(best.netProfit)} (${best.marginPct.toFixed(1)}% margin) at ${rateLabel}.${capNote}${compRateNote}${precedentNote}`;
+                    `Current calculator scenario has no valid unit revenue yet. Add unit prices to align fit guidance with calculator totals.${capNote}${compRateNote}${precedentNote}`;
             }
 
             siteGeoData.layoutPreview = activeLayout;
