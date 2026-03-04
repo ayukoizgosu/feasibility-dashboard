@@ -4,20 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quick Feasibility | Feasibility Dashboard</title>
+    <title>Feasibility Studio | Feasibility Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --text-main: #f8fafc;
-            --text-light: #94a3b8;
-            --primary: #3b82f6;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --border: #334155;
-            --input-bg: #020617;
+            --bg-dark: #f5f2eb;
+            --bg-card: #ffffff;
+            --text-main: #0a1965;
+            --text-light: #5b6691;
+            --primary: #001fb9;
+            --accent: #f92044;
+            --success: #198754;
+            --danger: #d7263d;
+            --warning: #f3a100;
+            --border: #d7dff1;
+            --input-bg: #f8faff;
+            --panel-muted-bg: #eef3ff;
+            --panel-shadow: 0 10px 28px rgba(10, 25, 101, 0.08);
         }
 
         * {
@@ -29,13 +32,17 @@
 
         body {
             background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(circle at 12% 8%, rgba(0, 31, 185, 0.07), transparent 30%),
+                radial-gradient(circle at 90% 2%, rgba(249, 32, 68, 0.07), transparent 24%),
+                linear-gradient(180deg, #f9f7f2 0%, #f5f2eb 100%);
             color: var(--text-main);
             padding: 40px;
             line-height: 1.6;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1080px;
             margin: 0 auto;
         }
 
@@ -45,23 +52,38 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 40px;
-            padding-bottom: 20px;
+            padding: 16px 18px;
+            background: var(--bg-card);
+            border-radius: 14px;
             border-bottom: 1px solid var(--border);
+            box-shadow: var(--panel-shadow);
+        }
+
+        .brand-wrap {
+            display: flex;
+            flex-direction: column;
         }
 
         .brand {
             font-size: 24px;
             font-weight: 700;
-            color: var(--text-main);
+            color: var(--primary);
             text-decoration: none;
         }
 
         .brand span {
-            color: var(--primary);
+            color: var(--accent);
+        }
+
+        .brand-sub {
+            font-size: 12px;
+            color: var(--text-light);
+            letter-spacing: 0.03em;
+            margin-top: 2px;
         }
 
         .nav-link {
-            color: var(--text-light);
+            color: var(--primary);
             text-decoration: none;
             font-weight: 500;
             display: flex;
@@ -70,7 +92,7 @@
         }
 
         .nav-link:hover {
-            color: var(--primary);
+            color: var(--accent);
         }
 
         /* Grid Layout */
@@ -882,13 +904,253 @@
             background: rgba(59, 130, 246, 0.16);
         }
 
+        /* Barry Plant light theme overrides */
+        .section-title,
+        .assist-label,
+        .metric-label,
+        .loan-title {
+            color: var(--primary);
+        }
+
+        .section-line {
+            background: linear-gradient(90deg, rgba(0, 31, 185, 0.25), rgba(0, 31, 185, 0.05));
+        }
+
+        input[type="number"],
+        input[type="text"],
+        .select-input {
+            border-color: #c9d4ee;
+            background: var(--input-bg);
+            color: var(--text-main);
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        .select-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 31, 185, 0.1);
+        }
+
+        .btn-add,
+        .mini-add-btn {
+            background: rgba(0, 31, 185, 0.05);
+            border-color: rgba(0, 31, 185, 0.35);
+            color: var(--primary);
+        }
+
+        .btn-add:hover,
+        .mini-add-btn:hover {
+            background: rgba(0, 31, 185, 0.11);
+        }
+
+        .results-panel,
+        .assist-card,
+        .loan-container {
+            background: var(--bg-card);
+            box-shadow: var(--panel-shadow);
+        }
+
+        .metric-card {
+            background: var(--panel-muted-bg);
+            border: 1px solid #d8e0f4;
+        }
+
+        .bar-track {
+            background: #dbe4f7;
+        }
+
+        .results-panel .bar-track {
+            background: #dbe4f7 !important;
+        }
+
+        .summary-table {
+            border-top-color: #d6deef;
+        }
+
+        .summary-row.total {
+            border-top-color: #c9d4ee;
+        }
+
+        .link-pill {
+            color: var(--primary);
+            background: rgba(0, 31, 185, 0.05);
+            border-color: rgba(0, 31, 185, 0.28);
+        }
+
+        .link-pill:hover {
+            background: rgba(0, 31, 185, 0.12);
+            color: var(--primary);
+        }
+
+        .query-input {
+            background: #f7f9ff !important;
+            color: var(--text-main) !important;
+        }
+
+        .predictive-list {
+            background: #ffffff;
+        }
+
+        .predictive-item {
+            color: var(--text-main);
+            border-bottom-color: rgba(0, 31, 185, 0.12);
+        }
+
+        .predictive-item:hover {
+            background: rgba(0, 31, 185, 0.08);
+        }
+
+        .site-preview {
+            background: var(--panel-muted-bg);
+            border-color: #cdd8ef;
+        }
+
+        .site-preview-meta,
+        .comp-meta {
+            color: var(--primary);
+        }
+
+        .site-preview svg {
+            background: #f4f7ff;
+            border-color: #c9d5f0;
+        }
+
+        .comparable-row {
+            background: #fbfcff;
+            border-color: #d5deef;
+        }
+
+        .comp-meta a {
+            color: var(--primary);
+            border-bottom-color: rgba(0, 31, 185, 0.4);
+        }
+
+        .comp-meta a:hover {
+            color: var(--accent);
+            border-bottom-color: rgba(249, 32, 68, 0.45);
+        }
+
+        .comp-progress-track {
+            background: #dde6f8;
+            border-color: #c9d5ef;
+        }
+
+        .save-btn {
+            width: 100%;
+            margin-top: 24px;
+            background: rgba(0, 31, 185, 0.07);
+            border: 1px solid rgba(0, 31, 185, 0.2);
+            color: var(--primary);
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .save-btn:hover {
+            background: rgba(0, 31, 185, 0.13);
+        }
+
+        .agent-spotlight {
+            margin-top: 14px;
+            border: 1px solid #d9e2f4;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #ffffff 0%, #f7f9ff 100%);
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 72px 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .agent-photo {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 31, 185, 0.14);
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .agent-kicker {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-light);
+            margin-bottom: 1px;
+        }
+
+        .agent-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .agent-role {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .agent-contacts {
+            margin-top: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 12px;
+        }
+
+        .agent-contacts a,
+        .agent-profile-link {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .agent-contacts a:hover,
+        .agent-profile-link:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        .agent-profile-link {
+            display: inline-block;
+            margin-top: 4px;
+            font-size: 12px;
+        }
+
+        .agent-source-note {
+            margin-top: 6px;
+            font-size: 10px;
+            color: var(--text-light);
+        }
+
         @media (max-width: 800px) {
+            body {
+                padding: 18px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
             .assist-grid {
                 grid-template-columns: 1fr;
             }
 
             .comparable-row {
                 grid-template-columns: 1fr;
+            }
+
+            .agent-spotlight {
+                grid-template-columns: 60px 1fr;
+            }
+
+            .agent-photo {
+                width: 60px;
+                height: 60px;
             }
         }
     </style>
@@ -898,7 +1160,10 @@
 
     <div class="container">
         <header>
-            <a href="index.html" class="brand">Feasibility<span>Dashboard</span></a>
+            <div class="brand-wrap">
+                <a href="index.html" class="brand">Feasibility<span>Studio</span></a>
+                <div class="brand-sub">Barry Plant-inspired interface for agents and developers</div>
+            </div>
             <a href="index.html" class="nav-link">
                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1355,17 +1620,17 @@
                     <span id="vis-total-cost">$0</span>
                 </div>
                 <div class="bar-track"
-                    style="background:rgba(255,255,255,0.05); height:12px; margin-bottom:20px; display:flex;">
-                    <div id="bar-land" style="height:100%; background:#3b82f6;" title="Land & Acq"></div>
-                    <div id="bar-build" style="height:100%; background:#f59e0b;" title="Construction"></div>
-                    <div id="bar-soft" style="height:100%; background:#a855f7;" title="Soft Costs"></div>
-                    <div id="bar-finance" style="height:100%; background:#ef4444;" title="Finance & Sales"></div>
+                    style="height:12px; margin-bottom:20px; display:flex;">
+                    <div id="bar-land" style="height:100%; background:#001fb9;" title="Land & Acq"></div>
+                    <div id="bar-build" style="height:100%; background:#f3a100;" title="Construction"></div>
+                    <div id="bar-soft" style="height:100%; background:#3c74d9;" title="Soft Costs"></div>
+                    <div id="bar-finance" style="height:100%; background:#f92044;" title="Finance & Sales"></div>
                 </div>
                 <div class="cost-legend">
-                    <div><span class="legend-dot" style="background:#3b82f6;"></span>Acquisition</div>
-                    <div><span class="legend-dot" style="background:#f59e0b;"></span>Build</div>
-                    <div><span class="legend-dot" style="background:#a855f7;"></span>Soft</div>
-                    <div><span class="legend-dot" style="background:#ef4444;"></span>Fin/Sale</div>
+                    <div><span class="legend-dot" style="background:#001fb9;"></span>Acquisition</div>
+                    <div><span class="legend-dot" style="background:#f3a100;"></span>Build</div>
+                    <div><span class="legend-dot" style="background:#3c74d9;"></span>Soft</div>
+                    <div><span class="legend-dot" style="background:#f92044;"></span>Fin/Sale</div>
                 </div>
 
                 <div class="summary-table">
@@ -1391,10 +1656,28 @@
                     </div>
                 </div>
 
-                <button onclick="saveScenario()"
-                    style="width:100%; margin-top:24px; background:rgba(255,255,255,0.1); border:none; color:var(--text-light); padding:10px; border-radius:8px; cursor:pointer;">
-                    Save Scenario (Local Storage)
+                <button onclick="saveScenario()" class="save-btn">
+                    Save Current Scenario
                 </button>
+
+                <div class="agent-spotlight" aria-label="Agent spotlight">
+                    <img class="agent-photo"
+                        src="https://images2.barryplant.com.au/media/images/Todd_001_Blog.max-1800x1350.format-webp.webp"
+                        alt="Todd Lucas">
+                    <div>
+                        <div class="agent-kicker">Local Contact</div>
+                        <div class="agent-name">Todd Lucas</div>
+                        <div class="agent-role">Director &amp; Auctioneer</div>
+                        <div class="agent-contacts">
+                            <a href="tel:+61398428888">Office: 03 9842 8888</a>
+                            <a href="tel:+61408044658">Mobile: 0408 044 658</a>
+                        </div>
+                        <a class="agent-profile-link"
+                            href="https://www.barryplant.com.au/offices/manningham/our-team/todd-lucas/"
+                            target="_blank" rel="noopener noreferrer">View profile</a>
+                        <div class="agent-source-note">Source: Barry Plant Manningham team page.</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
