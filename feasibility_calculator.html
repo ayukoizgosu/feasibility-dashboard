@@ -97,10 +97,43 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 22px;
         }
 
         .section-title:first-of-type {
             margin-top: 0;
+        }
+
+        .collapsible-headline {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+
+        .collapsible-headline::after {
+            content: "v";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 11px;
+            transition: transform 0.18s ease;
+        }
+
+        .collapsible-headline.is-collapsed::after {
+            transform: translateY(-50%) rotate(-90deg);
+        }
+
+        .collapsible-content {
+            display: block;
+        }
+
+        .collapsible-content.is-collapsed {
+            display: none;
         }
 
         .section-line {
@@ -169,6 +202,71 @@
         input[type="number"].has-unit,
         input[type="text"].has-unit {
             padding-right: 36px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        .input-wrapper.with-slider {
+            position: static;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-shell {
+            position: relative;
+            width: 100%;
+        }
+
+        .slider-wrap {
+            margin-top: 2px;
+        }
+
+        .slider-wrap input[type="range"]::-webkit-slider-runnable-track {
+            height: 7px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #d7dbe2 0%, #c8ced9 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .slider-wrap input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-top: -5px;
+            background: var(--primary);
+            border: 2px solid #93c5fd;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            cursor: pointer;
+        }
+
+        .slider-wrap input[type="range"]::-moz-range-track {
+            height: 7px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #d7dbe2 0%, #c8ced9 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .slider-wrap input[type="range"]::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2px solid #93c5fd;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            cursor: pointer;
+        }
+
+        .slider-wrap input[type="range"]:focus-visible {
+            outline: none;
         }
 
         /* Dynamic Unit List */
@@ -367,6 +465,366 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
+        .assist-card {
+            margin-top: 16px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+        .assist-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .assist-grid .input-group {
+            margin-bottom: 0;
+        }
+
+        .assist-grid .input-wrapper {
+            width: 100%;
+        }
+
+        .input-wrapper.wide {
+            width: 240px;
+            max-width: 100%;
+        }
+
+        .input-left {
+            text-align: left !important;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+
+        .select-input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: left;
+            transition: border-color 0.2s;
+        }
+
+        .select-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .assist-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 18px;
+        }
+
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid transparent;
+            margin-bottom: 10px;
+        }
+
+        .status-chip.good {
+            color: #86efac;
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+
+        .status-chip.warn {
+            color: #fcd34d;
+            background: rgba(245, 158, 11, 0.15);
+            border-color: rgba(245, 158, 11, 0.35);
+        }
+
+        .status-chip.bad {
+            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.35);
+        }
+
+        .status-chip.neutral {
+            color: var(--text-light);
+            background: rgba(148, 163, 184, 0.12);
+            border-color: rgba(148, 163, 184, 0.35);
+        }
+
+        .assist-note {
+            color: var(--text-light);
+            font-size: 12px;
+            line-height: 1.4;
+            margin-top: 10px;
+        }
+
+        .link-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+            margin-bottom: 10px;
+        }
+
+        .link-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            color: #bfdbfe;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            padding: 6px 10px;
+            border-radius: 999px;
+        }
+
+        .link-pill:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .link-pill.btn-pill {
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            border-radius: 999px;
+        }
+
+        .link-pill.btn-pill[disabled] {
+            cursor: not-allowed;
+            opacity: 0.55;
+            pointer-events: none;
+        }
+
+        .query-input {
+            background: rgba(2, 6, 23, 0.85) !important;
+            color: #dbeafe !important;
+            font-size: 12px !important;
+        }
+
+        .field-note {
+            color: var(--text-light);
+            font-size: 11px;
+            margin-top: 8px;
+        }
+
+        .field-note.status-busy {
+            color: #93c5fd;
+        }
+
+        .field-note.status-ok {
+            color: #86efac;
+        }
+
+        .field-note.status-error {
+            color: #fca5a5;
+        }
+
+        .predictive-list {
+            margin-top: 6px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(2, 6, 23, 0.95);
+            overflow: hidden;
+            max-height: 210px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .predictive-item {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #dbeafe;
+            text-align: left;
+            padding: 9px 10px;
+            font-size: 13px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+        }
+
+        .predictive-item:last-child {
+            border-bottom: none;
+        }
+
+        .predictive-item:hover {
+            background: rgba(59, 130, 246, 0.18);
+        }
+
+        .assist-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        .site-preview {
+            margin-top: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(2, 6, 23, 0.7);
+            padding: 10px;
+        }
+
+        .site-preview-title {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 18px;
+        }
+
+        .site-preview-meta {
+            font-size: 12px;
+            color: #bfdbfe;
+            margin-bottom: 6px;
+        }
+
+        .site-preview svg {
+            width: 100%;
+            height: 170px;
+            display: block;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            border-radius: 6px;
+            background: #0b1223;
+        }
+
+        .comparable-list {
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+
+        .comparable-row {
+            display: grid;
+            grid-template-columns: 1.5fr 0.9fr 0.7fr 0.7fr 34px;
+            gap: 8px;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 8px;
+            background: rgba(2, 6, 23, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .comparable-row input[type="text"],
+        .comparable-row input[type="number"] {
+            text-align: left;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .comp-meta {
+            margin-top: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-size: 11px;
+            color: #bfdbfe;
+        }
+
+        .comp-meta a {
+            color: #93c5fd;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(147, 197, 253, 0.45);
+        }
+
+        .comp-meta a:hover {
+            color: #dbeafe;
+            border-color: rgba(219, 234, 254, 0.7);
+        }
+
+        .comp-visual {
+            margin-top: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(148, 163, 184, 0.2);
+            overflow: hidden;
+        }
+
+        .comp-visual-meta {
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: var(--text-light);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .comp-visual-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #38bdf8, #34d399);
+            border-radius: 999px;
+        }
+
+        .comp-col-label {
+            font-size: 10px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .comp-remove {
+            border: none;
+            background: transparent;
+            color: var(--danger);
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .comp-remove:hover {
+            opacity: 1;
+        }
+
+        .mini-add-btn {
+            width: 100%;
+            border: 1px dashed rgba(59, 130, 246, 0.7);
+            color: var(--primary);
+            background: rgba(59, 130, 246, 0.08);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .mini-add-btn:hover {
+            background: rgba(59, 130, 246, 0.16);
+        }
+
+        @media (max-width: 800px) {
+            .assist-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparable-row {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -402,7 +860,256 @@
                 </div>
                 <div class="summary-row">
                     <span>Total Construction Area</span>
-                    <span><span id="display-sqm">0</span> m²</span>
+                    <span><span id="display-sqm">0</span> m2</span>
+                </div>
+
+                <!-- SITE FIT + LOCAL COMPARABLES -->
+                <div class="section-title">Site Fit + Local Comps<div class="section-line"></div>
+                </div>
+
+                <div class="assist-card">
+                    <div class="input-group">
+                        <label class="input-label">Site Address (Exact)</label>
+                        <div class="input-wrapper wide">
+                            <input type="text" id="inp-site-location" class="input-left"
+                                list="site-address-options"
+                                value="21 Ringwood St, Ringwood VIC 3134"
+                                oninput="onSiteAddressInput(this.value)"
+                                onchange="lookupSiteFromAddress()"
+                                onblur="lookupSiteFromAddress()"
+                                onkeydown="if(event.key==='Enter'){ event.preventDefault(); lookupSiteFromAddress(); }">
+                        </div>
+                    </div>
+                    <datalist id="site-address-options"></datalist>
+                    <div id="site-predictive-list" class="predictive-list"></div>
+                    <div class="input-group" style="margin-top:8px;">
+                        <label class="input-label">Quick Select</label>
+                        <div class="input-wrapper wide">
+                            <select id="sel-site-address" class="select-input input-left"
+                                onchange="applySiteAddressSelection(this.value)">
+                                <option value="">Select a saved/common address...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field-note">Use full street address so nearby comparable searches are centered correctly.</div>
+                    <div class="field-note" id="site-suggest-note">Type at least 4 characters for predictive address suggestions.</div>
+                    <div class="assist-actions">
+                        <button type="button" class="link-pill btn-pill" onclick="lookupSiteFromAddress()">Fetch GIS Site
+                            Data</button>
+                    </div>
+                    <div class="field-note" id="site-gis-note">Address lookup idle.</div>
+
+                    <div class="assist-grid">
+                        <div class="input-group">
+                            <label class="input-label">Site Area</label>
+                            <div class="input-wrapper">
+                                <span class="unit-symbol">m2</span>
+                                <input type="text" id="inp-site-area" class="has-unit" value="760"
+                                    oninput="formatInput(this); handleSiteMetricInput('area')">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Frontage</label>
+                            <div class="input-wrapper">
+                                <span class="unit-symbol">m</span>
+                                <input type="number" id="inp-site-frontage" class="has-unit" value="18"
+                                    oninput="handleSiteMetricInput('frontage')">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Depth</label>
+                            <div class="input-wrapper">
+                                <span class="unit-symbol">m</span>
+                                <input type="number" id="inp-site-depth" class="has-unit" value="42"
+                                    oninput="handleSiteMetricInput('depth')">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Townhouses</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inp-fit-units" value="3" oninput="calculate()">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Assumed Storeys</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inp-fit-storeys" value="2" oninput="calculate()">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Open Space / TH</label>
+                            <div class="input-wrapper">
+                                <span class="unit-symbol">m2</span>
+                                <input type="number" id="inp-fit-open-space" class="has-unit" value="40"
+                                    oninput="calculate()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="link-row" style="margin-top:10px; margin-bottom:0;">
+                        <button type="button" class="link-pill btn-pill" onclick="interpolateSiteMetrics(true); calculate()">Interpolate
+                            Missing Metric</button>
+                    </div>
+                    <div class="field-note" id="site-interpolation-note">Enter any 2 of area/frontage/depth to
+                        interpolate the 3rd.</div>
+                    <div class="site-preview">
+                        <div class="site-preview-title">GIS Footprint Preview</div>
+                        <div class="site-preview-meta" id="site-preview-meta">No GIS footprint loaded.</div>
+                        <div id="site-footprint-preview"></div>
+                    </div>
+
+                    <div class="summary-row" style="margin-top:12px;">
+                        <span>Fit Check Status</span>
+                        <span id="fit-status" class="status-chip neutral">Need site inputs</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Estimated Land Required</span>
+                        <span id="fit-required-land">0 m2</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Land Surplus / Shortfall</span>
+                        <span id="fit-surplus">0 m2</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Indicative Required Depth</span>
+                        <span id="fit-depth-needed">0 m</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Max Internal Area (Guide)</span>
+                        <span id="fit-max-internal">0 m2</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Max Avg Internal / TH</span>
+                        <span id="fit-max-each">0 m2</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Suggested Config</span>
+                        <span id="fit-best-config">N/A</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Indicative Footprint / TH</span>
+                        <span id="fit-footprint-each">0 m2</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Planning Zone</span>
+                        <span id="fit-zone">N/A</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Planning Overlays</span>
+                        <span id="fit-overlays">N/A</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Contour Fall (Front-Rear)</span>
+                        <span id="fit-fall">N/A</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Avg Site Slope</span>
+                        <span id="fit-slope">N/A</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Elevation Range</span>
+                        <span id="fit-elev-range">N/A</span>
+                    </div>
+
+                    <div class="assist-note">
+                        Rule-of-thumb check only. Final fit depends on council setbacks, crossover, turning circles and
+                        detailed architectural design.
+                    </div>
+                    <div class="assist-note" id="fit-best-note">
+                        Suggested config uses comparable sale rates (or current inputs) and a 50% footprint cap.
+                    </div>
+                    <div class="assist-note" id="fit-zone-recommend">
+                        Planning format suggestion loads after GIS lookup.
+                    </div>
+                    <div class="link-row" style="margin-top:8px; margin-bottom:0;">
+                        <button type="button" class="link-pill btn-pill" onclick="exportSubdivisionCache()">Export Subdivision Cache</button>
+                        <button type="button" class="link-pill btn-pill" onclick="triggerSubdivisionImport()">Import Subdivision Cache</button>
+                        <input type="file" id="subdivision-cache-file" accept=".json,application/json" style="display:none;"
+                            onchange="importSubdivisionCacheFile(event)">
+                    </div>
+                    <div class="field-note" id="subdivision-cache-note">Subdivision learning cache is empty.</div>
+                </div>
+
+                <div class="assist-card" style="margin-top:0;">
+                    <div class="assist-label">Latest Comparable Townhouse Sales</div>
+
+                    <div class="assist-grid">
+                        <div class="input-group">
+                            <label class="input-label">Beds (target)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="inp-comp-beds" value="3" oninput="updateComparableLinks()">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Size Tolerance</label>
+                            <div class="input-wrapper">
+                                <span class="unit-symbol">%</span>
+                                <input type="number" id="inp-comp-tolerance" class="has-unit" value="15"
+                                    oninput="updateComparableLinks()">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Radius</label>
+                            <div class="input-wrapper">
+                                <span class="unit-symbol">km</span>
+                                <input type="number" id="inp-comp-radius" class="has-unit" value="2"
+                                    oninput="updateComparableLinks()">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Lookback</label>
+                            <div class="input-wrapper">
+                                <span class="unit-symbol">mo</span>
+                                <input type="number" id="inp-comp-lookback" class="has-unit" value="6"
+                                    oninput="updateComparableLinks()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assist-note" id="comp-size-band">
+                        Target comparable size band: 0-0 m2 internal.
+                    </div>
+                    <div class="input-group" style="margin-top:8px;">
+                        <label class="input-label">Search Query</label>
+                        <div class="input-wrapper" style="width:100%;">
+                            <input type="text" id="comp-search-query" class="input-left query-input"
+                                readonly>
+                        </div>
+                    </div>
+                    <div class="link-row">
+                        <button type="button" id="btn-comp-autofill" class="link-pill btn-pill" onclick="autoPopulateComparableSales()">Auto Fill 5
+                            Comps</button>
+                        <button type="button" id="btn-comp-rerun" class="link-pill btn-pill" onclick="autoPopulateComparableSales(true)">Run Search Again</button>
+                        <button type="button" class="link-pill btn-pill" onclick="copyComparableQuery()">Copy
+                            Query</button>
+                        <button type="button" class="link-pill btn-pill" onclick="openComparableSearches()">Open All
+                            Searches</button>
+                        <a id="lnk-comp-domain" class="link-pill" href="#" target="_blank" rel="noopener noreferrer">Open
+                            Domain sold comps</a>
+                        <a id="lnk-comp-rea" class="link-pill" href="#" target="_blank" rel="noopener noreferrer">Open REA
+                            sold comps</a>
+                        <a id="lnk-comp-map" class="link-pill" href="#" target="_blank" rel="noopener noreferrer">Open map
+                            search</a>
+                    </div>
+                    <div class="field-note" id="comp-search-state">Search idle. Click Auto Fill 5 Comps to run.</div>
+
+                    <div class="comparable-list" id="comparableList"></div>
+                    <button class="mini-add-btn" onclick="addComparable()">+ Add Comparable Sale</button>
+
+                    <div class="summary-row" style="margin-top:12px;">
+                        <span>Average Comp Price</span>
+                        <span id="comp-avg-price">$0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Average $/m2 (comps)</span>
+                        <span id="comp-avg-rate">$0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Implied Sell Price / Unit</span>
+                        <span id="comp-implied-price">$0</span>
+                    </div>
+                    <div class="assist-note" id="comp-coverage-note">
+                        Add sold comps to benchmark whether your townhouse sell prices are realistic.
+                    </div>
                 </div>
 
                 <!-- ACQUISITION COSTS -->
@@ -410,9 +1117,16 @@
                 </div>
                 <div class="input-group">
                     <label class="input-label">Purchase Price</label>
-                    <div class="input-wrapper">
+                    <div class="input-wrapper with-slider">
+                        <div class="input-shell">
                         <span class="currency-symbol">$</span>
-                        <input type="text" id="inp-purchase" value="1,160,000" oninput="formatInput(this); calculate()">
+                        <input type="text" id="inp-purchase" value="1,160,000"
+                            oninput="formatInput(this); syncRangeFromInput('inp-purchase', 'rng-purchase'); calculate()">
+                        </div>
+                        <div class="slider-wrap">
+                            <input type="range" id="rng-purchase" min="400000" max="5000000" step="10000" value="1160000"
+                                oninput="syncInputFromRange('rng-purchase', 'inp-purchase', true); calculate()">
+                        </div>
                     </div>
                 </div>
                 <div class="input-group">
@@ -435,11 +1149,17 @@
                 </div>
                 <div class="input-group">
                     <label class="input-label">Construction Rate</label>
-                    <div class="input-wrapper" style="width:160px;">
+                    <div class="input-wrapper with-slider" style="width:160px;">
+                        <div class="input-shell">
                         <span class="currency-symbol">$</span>
-                        <span class="unit-symbol">/m²</span>
+                        <span class="unit-symbol">/m2</span>
                         <input type="text" id="inp-buildrate" class="has-unit" value="2,600"
-                            oninput="formatInput(this); calculate()">
+                            oninput="formatInput(this); syncRangeFromInput('inp-buildrate', 'rng-buildrate'); calculate()">
+                        </div>
+                        <div class="slider-wrap">
+                            <input type="range" id="rng-buildrate" min="1500" max="6000" step="50" value="2600"
+                                oninput="syncInputFromRange('rng-buildrate', 'inp-buildrate', true); calculate()">
+                        </div>
                     </div>
                 </div>
                 <div class="input-group">
@@ -605,7 +1325,7 @@
         </div>
     </div>
 
-    <script>
+            <script>
         // State
         let units = [
             { size: 210, price: 1050000 },
@@ -613,13 +1333,240 @@
             { size: 195, price: 980000 }
         ];
 
+        let comparables = [
+            {
+                address: '',
+                soldPrice: 0,
+                size: 0,
+                distance: 0,
+                url: '',
+                soldDate: '',
+                beds: 0,
+                baths: 0,
+                parking: 0,
+                relevance: 0
+            }
+        ];
+
+        let siteGeoData = {
+            lat: null,
+            lon: null,
+            parcelCoords: [],
+            frontageEdgeIndex: -1,
+            frontageEdgeIndices: [],
+            areaSqm: 0,
+            frontageM: 0,
+            depthM: 0,
+            depthGeomM: 0,
+            depthAreaM: 0,
+            bboxWidth: 0,
+            bboxHeight: 0,
+            frontageRoadName: '',
+            alternativeFrontageM: 0,
+            alternativeRoadName: '',
+            frontageSource: '',
+            planningZoneCode: '',
+            planningZoneDesc: '',
+            planningOverlays: [],
+            layoutPreview: null,
+            fallMeters: null,
+            slopePct: null,
+            minElevation: null,
+            maxElevation: null
+        };
+
+        const SITE_ADDRESS_RECENT_KEY = 'feasibility_recent_site_addresses_v1';
+        const SUBDIVISION_PRECEDENT_KEY = 'feasibility_subdivision_precedents_v1';
+        const SUBDIVISION_PRECEDENT_LIMIT = 800;
+        const COMPARABLE_MIN_SIZE = 60;
+        const COMPARABLE_MAX_SIZE = 450;
+        const COMPARABLE_MIN_PRICE = 150000;
+        const COMPARABLE_MAX_PRICE = 12000000;
+        const COMPARABLE_MIN_RATE = 1200;
+        const COMPARABLE_MAX_RATE = 20000;
+        const DEFAULT_SITE_ADDRESSES = [
+            '13 Jilpanger Road, Donvale VIC 3111',
+            '21 Ringwood St, Ringwood VIC 3134',
+            '12 Tunstall Square, Doncaster East VIC 3109',
+            '8 Elgar Road, Box Hill VIC 3128',
+            '25 Mitcham Road, Mitcham VIC 3132',
+            '4 Blackburn Road, Blackburn VIC 3130'
+        ];
+        const SITE_ADDRESS_SUGGEST_MIN_CHARS = 4;
+        const SITE_ADDRESS_SUGGEST_LIMIT = 6;
+        let predictiveSiteAddresses = [];
+        let siteSuggestTimer = null;
+        let siteSuggestRequestToken = 0;
+        const geocodeDistanceCache = new Map();
+        let comparableAutoFillInFlight = false;
+        let comparableAutoFilledAddress = '';
+        let comparableLastSearchAt = null;
+        let collapsibleSetupDone = false;
+
+        function toCollapseStorageKey(prefix, text) {
+            const slug = String(text || '')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+            return `feasibility_collapse_${prefix}_${slug || 'section'}`;
+        }
+
+        function bindCollapsibleHeadline(headline, content, storageKey, defaultCollapsed = false) {
+            if (!headline || !content || headline.dataset.collapsibleInit === '1') return;
+
+            const applyState = collapsed => {
+                headline.classList.toggle('is-collapsed', collapsed);
+                content.classList.toggle('is-collapsed', collapsed);
+                headline.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+            };
+
+            let collapsed = defaultCollapsed;
+            try {
+                const raw = localStorage.getItem(storageKey);
+                if (raw === '1') collapsed = true;
+                if (raw === '0') collapsed = false;
+            } catch (_) {
+                // Ignore storage access issues.
+            }
+
+            headline.classList.add('collapsible-headline');
+            headline.setAttribute('role', 'button');
+            headline.setAttribute('tabindex', '0');
+            applyState(collapsed);
+
+            const toggle = () => {
+                collapsed = !collapsed;
+                applyState(collapsed);
+                try {
+                    localStorage.setItem(storageKey, collapsed ? '1' : '0');
+                } catch (_) {
+                    // Ignore storage write issues.
+                }
+            };
+
+            headline.addEventListener('click', toggle);
+            headline.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    toggle();
+                }
+            });
+            headline.dataset.collapsibleInit = '1';
+        }
+
+        function setupSectionTitleCollapsibles() {
+            const leftColumn = document.querySelector('.main-grid > div');
+            if (!leftColumn) return;
+
+            let node = leftColumn.firstElementChild;
+            while (node) {
+                const current = node;
+                node = node.nextElementSibling;
+
+                if (!current.classList || !current.classList.contains('section-title')) continue;
+                if (current.dataset.sectionWrapped === '1') continue;
+
+                const content = document.createElement('div');
+                content.className = 'collapsible-content';
+
+                let cursor = current.nextElementSibling;
+                while (cursor && !(cursor.classList && cursor.classList.contains('section-title'))) {
+                    const move = cursor;
+                    cursor = cursor.nextElementSibling;
+                    content.appendChild(move);
+                }
+
+                leftColumn.insertBefore(content, cursor);
+                const key = toCollapseStorageKey('section', current.innerText);
+                bindCollapsibleHeadline(current, content, key, false);
+                current.dataset.sectionWrapped = '1';
+            }
+        }
+
+        function setupAssistCardCollapsibles() {
+            document.querySelectorAll('.assist-card').forEach((card, idx) => {
+                const first = card.firstElementChild;
+                if (!first || !first.classList || !first.classList.contains('assist-label')) return;
+                if (first.dataset.sectionWrapped === '1') return;
+
+                const content = document.createElement('div');
+                content.className = 'collapsible-content';
+
+                while (first.nextElementSibling) {
+                    content.appendChild(first.nextElementSibling);
+                }
+                card.appendChild(content);
+
+                const key = toCollapseStorageKey('assist', `${idx}_${first.innerText}`);
+                bindCollapsibleHeadline(first, content, key, false);
+                first.dataset.sectionWrapped = '1';
+            });
+        }
+
+        function setupSitePreviewCollapsible() {
+            const preview = document.querySelector('.site-preview');
+            if (!preview) return;
+
+            const title = preview.querySelector('.site-preview-title');
+            if (!title || title.dataset.sectionWrapped === '1') return;
+
+            const content = document.createElement('div');
+            content.className = 'collapsible-content';
+            while (title.nextElementSibling) {
+                content.appendChild(title.nextElementSibling);
+            }
+            preview.appendChild(content);
+
+            const key = toCollapseStorageKey('preview', title.innerText);
+            bindCollapsibleHeadline(title, content, key, false);
+            title.dataset.sectionWrapped = '1';
+        }
+
+        function setupLoanCollapsibles() {
+            document.querySelectorAll('.loan-container').forEach((loan, idx) => {
+                const title = loan.querySelector('.loan-title');
+                if (!title || title.dataset.sectionWrapped === '1') return;
+
+                const content = document.createElement('div');
+                content.className = 'collapsible-content';
+                while (title.nextElementSibling) {
+                    content.appendChild(title.nextElementSibling);
+                }
+                loan.appendChild(content);
+
+                const key = toCollapseStorageKey('loan', `${idx}_${title.innerText}`);
+                bindCollapsibleHeadline(title, content, key, false);
+                title.dataset.sectionWrapped = '1';
+            });
+        }
+
+        function setupCollapsibleHeadlines() {
+            if (collapsibleSetupDone) return;
+            setupSectionTitleCollapsibles();
+            setupAssistCardCollapsibles();
+            setupSitePreviewCollapsible();
+            setupLoanCollapsibles();
+            collapsibleSetupDone = true;
+        }
+
         function init() {
+            setupCollapsibleHeadlines();
             renderUnits();
+            renderComparables();
+            populateSiteAddressOptions();
+            hidePredictiveSiteList();
+            setSiteSuggestNote('Type at least 4 characters for predictive address suggestions.');
+            syncRangeFromInput('inp-purchase', 'rng-purchase');
+            syncRangeFromInput('inp-buildrate', 'rng-buildrate');
+            updateComparableLinks();
+            updatePlanningDisplay(null);
+            updateSubdivisionCacheNote();
+            setComparableSearchState('idle', 'Search idle. Click Auto Fill 5 Comps to run.');
             calculate();
         }
 
         function formatNumber(num) {
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
 
         function parseFormatted(str) {
@@ -631,11 +1578,1632 @@
             let val = input.value.replace(/,/g, '').replace(/[^\d.]/g, '');
             if (val) {
                 const parts = val.split('.');
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                 input.value = parts.join('.');
             } else {
                 input.value = '';
             }
+        }
+
+        function syncRangeFromInput(inputId, rangeId) {
+            const input = document.getElementById(inputId);
+            const range = document.getElementById(rangeId);
+            if (!input || !range) return;
+            const value = parseFormatted(input.value);
+            const min = parseFloat(range.min);
+            const max = parseFloat(range.max);
+            const clamped = Math.min(max, Math.max(min, value || 0));
+            range.value = clamped;
+        }
+
+        function syncInputFromRange(rangeId, inputId, format = false) {
+            const range = document.getElementById(rangeId);
+            const input = document.getElementById(inputId);
+            if (!range || !input) return;
+            const value = parseFloat(range.value) || 0;
+            input.value = format ? formatNumber(Math.round(value)) : value;
+        }
+
+        function setSiteSuggestNote(message, isError = false) {
+            const el = document.getElementById('site-suggest-note');
+            if (!el) return;
+            el.innerText = message;
+            el.style.color = isError ? '#fca5a5' : 'var(--text-light)';
+        }
+
+        function getPredictiveRankedSuggestions(query) {
+            const normalizedQuery = normalizeAddress(query).toLowerCase();
+            const words = normalizedQuery.split(' ').filter(w => w.length >= 2);
+            const scored = predictiveSiteAddresses.map(address => {
+                const lower = address.toLowerCase();
+                let score = 0;
+
+                if (!normalizedQuery) {
+                    score = 10;
+                } else {
+                    if (lower.startsWith(normalizedQuery)) score += 40;
+                    if (lower.includes(normalizedQuery)) score += 25;
+                    words.forEach(word => {
+                        if (lower.includes(word)) score += 8;
+                    });
+                }
+
+                return { address, score };
+            });
+
+            scored.sort((a, b) => b.score - a.score || a.address.localeCompare(b.address));
+            return scored.map(item => item.address).slice(0, 5);
+        }
+
+        function renderPredictiveSiteList(query = '') {
+            const list = document.getElementById('site-predictive-list');
+            if (!list) return;
+
+            const suggestions = getPredictiveRankedSuggestions(query);
+            list.innerHTML = '';
+
+            if (!suggestions.length) {
+                list.style.display = 'none';
+                return;
+            }
+
+            suggestions.forEach(address => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'predictive-item';
+                button.innerText = address;
+                button.addEventListener('mousedown', event => {
+                    event.preventDefault();
+                });
+                button.addEventListener('click', () => {
+                    applySiteAddressSelection(address);
+                });
+                list.appendChild(button);
+            });
+
+            list.style.display = 'block';
+        }
+
+        function hidePredictiveSiteList() {
+            const list = document.getElementById('site-predictive-list');
+            if (!list) return;
+            list.style.display = 'none';
+        }
+
+        function onSiteAddressInput(value) {
+            updateComparableLinks();
+            fetchPredictiveSiteAddressesDebounced(value);
+        }
+
+        function cleanCouncilLabel(value) {
+            const cleaned = normalizeAddress(value);
+            if (!cleaned) return '';
+            const councilPattern = /^(city|shire|rural city|borough|municipality|town)\s+of\s+/i;
+            if (councilPattern.test(cleaned)) return '';
+            return cleaned;
+        }
+
+        function toStateCode(value) {
+            const cleaned = normalizeAddress(value).toLowerCase();
+            const map = {
+                victoria: 'VIC',
+                'new south wales': 'NSW',
+                queensland: 'QLD',
+                'south australia': 'SA',
+                'western australia': 'WA',
+                tasmania: 'TAS',
+                'australian capital territory': 'ACT',
+                'northern territory': 'NT'
+            };
+            return map[cleaned] || normalizeAddress(value).toUpperCase();
+        }
+
+        function normalizeAddress(address) {
+            return (address || '').replace(/\s+/g, ' ').trim();
+        }
+
+        function normalizeStreetLabel(value) {
+            return normalizeAddress(value)
+                .toLowerCase()
+                .replace(/[^a-z0-9\s]/g, ' ')
+                .replace(/\b(street|st|road|rd|avenue|ave|drive|dr|court|ct|crescent|cres|place|pl|lane|ln|boulevard|blvd|highway|hwy|way|close|cl|terrace|tce|parade|pde)\b/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function streetNameMatch(a, b) {
+            const left = normalizeStreetLabel(a);
+            const right = normalizeStreetLabel(b);
+            if (!left || !right) return false;
+            if (left === right) return true;
+            if (left.includes(right) || right.includes(left)) return true;
+
+            const leftTokens = left.split(' ').filter(token => token.length >= 4);
+            const rightTokens = right.split(' ').filter(token => token.length >= 4);
+            return leftTokens.some(token => rightTokens.includes(token));
+        }
+
+        function extractStreetFromAddress(address) {
+            const cleaned = normalizeAddress(address);
+            if (!cleaned) return '';
+
+            let firstPart = cleaned.split(',')[0] || cleaned;
+            firstPart = firstPart.replace(/\b(VIC|NSW|QLD|SA|WA|TAS|ACT|NT)\b.*$/i, '').trim();
+            firstPart = firstPart.replace(/^(unit|apt|apartment|lot)\s*[a-z0-9/-]+\s+/i, '');
+            firstPart = firstPart.replace(/^\d+[a-z]?(?:\/\d+[a-z]?)?\s+/i, '');
+
+            return normalizeStreetLabel(firstPart);
+        }
+
+        function buildPhotonAddress(feature) {
+            const props = (feature && feature.properties) ? feature.properties : {};
+            const houseNumber = normalizeAddress(props.housenumber || '');
+            const street = normalizeAddress(props.street || '');
+            const name = normalizeAddress(props.name || '');
+            const suburb = normalizeAddress(
+                props.suburb
+                || props.district
+                || props.locality
+                || props.neighbourhood
+                || props.village
+                || props.hamlet
+                || cleanCouncilLabel(props.city)
+                || cleanCouncilLabel(props.county)
+                || cleanCouncilLabel(props.state_district)
+                || ''
+            );
+            const state = toStateCode(props.state || '');
+            const postcode = normalizeAddress(props.postcode || '');
+
+            const roadPart = normalizeAddress([houseNumber, street || name].filter(Boolean).join(' '));
+            const localityPart = normalizeAddress([suburb, state, postcode].filter(Boolean).join(' '));
+
+            if (roadPart && localityPart) {
+                return `${roadPart}, ${localityPart}`;
+            }
+            if (name && localityPart) {
+                return `${name}, ${localityPart}`;
+            }
+            if (roadPart) return roadPart;
+            if (localityPart) return localityPart;
+            return normalizeAddress(props.country || '');
+        }
+
+        async function fetchPredictiveSiteAddresses(query) {
+            const normalizedQuery = normalizeAddress(query);
+            if (normalizedQuery.length < SITE_ADDRESS_SUGGEST_MIN_CHARS) {
+                predictiveSiteAddresses = [];
+                populateSiteAddressOptions();
+                hidePredictiveSiteList();
+                setSiteSuggestNote(`Type at least ${SITE_ADDRESS_SUGGEST_MIN_CHARS} characters for predictive address suggestions.`);
+                return;
+            }
+
+            const requestToken = ++siteSuggestRequestToken;
+            setSiteSuggestNote('Fetching predictive suggestions...');
+
+            try {
+                const q = encodeURIComponent(`${normalizedQuery}, Victoria Australia`);
+                const url = `https://photon.komoot.io/api/?q=${q}&limit=${SITE_ADDRESS_SUGGEST_LIMIT}`;
+                const resp = await fetch(url, { headers: { Accept: 'application/json' } });
+
+                if (requestToken !== siteSuggestRequestToken) return;
+                if (!resp.ok) {
+                    throw new Error(`Suggestion request failed (${resp.status}).`);
+                }
+
+                const data = await resp.json();
+                const seen = new Set();
+                const suggestions = [];
+
+                (data.features || []).forEach(feature => {
+                    const address = normalizeAddress(buildPhotonAddress(feature));
+                    if (!address) return;
+                    const key = address.toLowerCase();
+                    if (seen.has(key)) return;
+                    seen.add(key);
+                    suggestions.push(address);
+                });
+
+                predictiveSiteAddresses = suggestions;
+                populateSiteAddressOptions();
+                renderPredictiveSiteList(normalizedQuery);
+
+                if (suggestions.length) {
+                    setSiteSuggestNote(`Showing ${Math.min(5, suggestions.length)} predictive suggestion(s).`);
+                } else {
+                    setSiteSuggestNote('No predictive suggestions found. Keep typing or use quick select.');
+                }
+            } catch (err) {
+                if (requestToken !== siteSuggestRequestToken) return;
+                predictiveSiteAddresses = [];
+                populateSiteAddressOptions();
+                hidePredictiveSiteList();
+                setSiteSuggestNote(`Predictive lookup unavailable: ${err.message}`, true);
+            }
+        }
+
+        function fetchPredictiveSiteAddressesDebounced(query) {
+            if (siteSuggestTimer) {
+                clearTimeout(siteSuggestTimer);
+            }
+            siteSuggestTimer = setTimeout(() => {
+                fetchPredictiveSiteAddresses(query);
+            }, 280);
+        }
+
+        function loadRecentSiteAddresses() {
+            try {
+                const raw = localStorage.getItem(SITE_ADDRESS_RECENT_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                if (!Array.isArray(parsed)) return [];
+                const councilPattern = /(^|,\s*)(city|shire|rural city|borough|municipality|town)\s+of\s+/i;
+                return parsed
+                    .map(normalizeAddress)
+                    .filter(item => item && !councilPattern.test(item));
+            } catch (_) {
+                return [];
+            }
+        }
+
+        function saveRecentSiteAddress(address) {
+            const normalized = normalizeAddress(address);
+            if (!normalized) return;
+
+            const recent = loadRecentSiteAddresses().filter(item => item.toLowerCase() !== normalized.toLowerCase());
+            recent.unshift(normalized);
+            const trimmed = recent.slice(0, 10);
+
+            try {
+                localStorage.setItem(SITE_ADDRESS_RECENT_KEY, JSON.stringify(trimmed));
+            } catch (_) {
+                // Ignore storage write issues (private mode/full storage).
+            }
+        }
+
+        function getSiteAddressOptions(currentQuery = '') {
+            const query = normalizeAddress(currentQuery).toLowerCase();
+            const recent = loadRecentSiteAddresses();
+            const merged = [...predictiveSiteAddresses, ...recent, ...DEFAULT_SITE_ADDRESSES];
+            const seen = new Set();
+            const deduped = merged.filter(item => {
+                const key = item.toLowerCase();
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+
+            if (!query) return deduped;
+
+            const starts = [];
+            const contains = [];
+            const rest = [];
+            deduped.forEach(item => {
+                const lower = item.toLowerCase();
+                if (lower.startsWith(query)) {
+                    starts.push(item);
+                } else if (lower.includes(query)) {
+                    contains.push(item);
+                } else {
+                    rest.push(item);
+                }
+            });
+            return [...starts, ...contains, ...rest];
+        }
+
+        function populateSiteAddressOptions() {
+            const input = document.getElementById('inp-site-location');
+            const datalist = document.getElementById('site-address-options');
+            const select = document.getElementById('sel-site-address');
+            if (!input || !datalist || !select) return;
+
+            const options = getSiteAddressOptions(input.value);
+
+            datalist.innerHTML = '';
+            options.forEach(value => {
+                const opt = document.createElement('option');
+                opt.value = value;
+                datalist.appendChild(opt);
+            });
+
+            const current = normalizeAddress(input.value);
+            select.innerHTML = '';
+
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.innerText = 'Select a predictive/saved address...';
+            select.appendChild(placeholder);
+
+            options.forEach(value => {
+                const opt = document.createElement('option');
+                opt.value = value;
+                opt.innerText = value;
+                if (current && current.toLowerCase() === value.toLowerCase()) {
+                    opt.selected = true;
+                }
+                select.appendChild(opt);
+            });
+        }
+
+        function applySiteAddressSelection(value) {
+            const normalized = normalizeAddress(value);
+            if (!normalized) return;
+
+            const input = document.getElementById('inp-site-location');
+            if (!input) return;
+
+            input.value = normalized;
+            hidePredictiveSiteList();
+            updateComparableLinks();
+            lookupSiteFromAddress();
+        }
+
+        function setInterpolationNote(message) {
+            const note = document.getElementById('site-interpolation-note');
+            if (note) {
+                note.innerText = message;
+            }
+        }
+
+        function handleSiteMetricInput(changedField) {
+            interpolateSiteMetrics(false, changedField);
+            calculate();
+        }
+
+        function interpolateSiteMetrics(manualTrigger = false, changedField = '') {
+            const areaInput = document.getElementById('inp-site-area');
+            const frontageInput = document.getElementById('inp-site-frontage');
+            const depthInput = document.getElementById('inp-site-depth');
+            if (!areaInput || !frontageInput || !depthInput) return;
+
+            let area = parseFormatted(areaInput.value);
+            let frontage = parseFloat(frontageInput.value) || 0;
+            let depth = parseFloat(depthInput.value) || 0;
+            let interpolated = '';
+
+            if (area > 0 && frontage > 0 && depth <= 0) {
+                depth = area / frontage;
+                depthInput.value = depth.toFixed(2);
+                interpolated = 'depth';
+            } else if (area > 0 && depth > 0 && frontage <= 0) {
+                frontage = area / depth;
+                frontageInput.value = frontage.toFixed(2);
+                interpolated = 'frontage';
+            } else if (frontage > 0 && depth > 0 && area <= 0) {
+                area = frontage * depth;
+                areaInput.value = formatNumber(Math.round(area));
+                interpolated = 'site area';
+            }
+
+            if (interpolated) {
+                setInterpolationNote(`Interpolated ${interpolated} from the other two site metrics.`);
+            } else if (manualTrigger) {
+                setInterpolationNote('No interpolation applied. Clear one metric and keep the other two filled.');
+            } else if (changedField) {
+                setInterpolationNote(`Updated ${changedField}. Enter any 2 of area/frontage/depth to interpolate the 3rd.`);
+            }
+        }
+
+        function getSearchLocality(address) {
+            const cleaned = (address || '').replace(/\s+/g, ' ').trim();
+            if (!cleaned) {
+                return { exact: '', locality: 'Melbourne VIC' };
+            }
+
+            const suffixMatch = cleaned.match(/([A-Za-z][A-Za-z\s'-]+)\s+(VIC|NSW|QLD|SA|WA|TAS|ACT|NT)\s*(\d{4})?$/i);
+            if (suffixMatch) {
+                const suburb = suffixMatch[1].trim();
+                const state = suffixMatch[2].toUpperCase();
+                const postcode = suffixMatch[3] ? ` ${suffixMatch[3]}` : '';
+                return { exact: cleaned, locality: `${suburb} ${state}${postcode}`.trim() };
+            }
+
+            const commaParts = cleaned.split(',').map(part => part.trim()).filter(Boolean);
+            if (commaParts.length >= 2) {
+                return { exact: cleaned, locality: commaParts[commaParts.length - 1] };
+            }
+
+            return { exact: cleaned, locality: cleaned };
+        }
+
+        function setGisNote(message, isError = false) {
+            const el = document.getElementById('site-gis-note');
+            if (!el) return;
+            el.innerText = message;
+            el.style.color = isError ? '#fca5a5' : 'var(--text-light)';
+        }
+
+        function metersPerLonDegree(lat) {
+            return 111111 * Math.cos((lat * Math.PI) / 180);
+        }
+
+        function normalizeParcelRing(coords) {
+            if (!Array.isArray(coords)) return [];
+            const ring = coords.filter(c => Array.isArray(c) && c.length >= 2)
+                .map(c => [Number(c[0]), Number(c[1])])
+                .filter(c => Number.isFinite(c[0]) && Number.isFinite(c[1]));
+            if (ring.length < 3) return [];
+
+            const first = ring[0];
+            const last = ring[ring.length - 1];
+            if (Math.abs(first[0] - last[0]) < 1e-12 && Math.abs(first[1] - last[1]) < 1e-12) {
+                ring.pop();
+            }
+            return ring;
+        }
+
+        function polygonAreaSqm(coords) {
+            const ring = normalizeParcelRing(coords);
+            if (ring.length < 3) return 0;
+
+            const lat0 = ring.reduce((sum, p) => sum + p[1], 0) / ring.length;
+            const lon0 = ring.reduce((sum, p) => sum + p[0], 0) / ring.length;
+            const lonScale = metersPerLonDegree(lat0);
+            const latScale = 111111;
+
+            const xy = ring.map(p => [
+                (p[0] - lon0) * lonScale,
+                (p[1] - lat0) * latScale
+            ]);
+
+            let sum = 0;
+            for (let i = 0; i < xy.length; i += 1) {
+                const j = (i + 1) % xy.length;
+                sum += (xy[i][0] * xy[j][1]) - (xy[j][0] * xy[i][1]);
+            }
+
+            return Math.abs(sum) / 2;
+        }
+
+        function segmentLengthMeters(a, b) {
+            const midLat = (a[1] + b[1]) / 2;
+            const dx = (b[0] - a[0]) * metersPerLonDegree(midLat);
+            const dy = (b[1] - a[1]) * 111111;
+            return Math.hypot(dx, dy);
+        }
+
+        function segmentVectorMeters(a, b, refLat = null) {
+            const lat = Number.isFinite(refLat) ? refLat : ((a[1] + b[1]) / 2);
+            return [
+                (b[0] - a[0]) * metersPerLonDegree(lat),
+                (b[1] - a[1]) * 111111
+            ];
+        }
+
+        function orientationDiffDegrees(vecA, vecB) {
+            const ax = vecA[0] || 0;
+            const ay = vecA[1] || 0;
+            const bx = vecB[0] || 0;
+            const by = vecB[1] || 0;
+            const lenA = Math.hypot(ax, ay);
+            const lenB = Math.hypot(bx, by);
+            if (lenA < 1e-9 || lenB < 1e-9) return 90;
+
+            const dot = (ax * bx) + (ay * by);
+            const cos = Math.max(-1, Math.min(1, Math.abs(dot / (lenA * lenB))));
+            return (Math.acos(cos) * 180) / Math.PI;
+        }
+
+        function pointToSegmentDistanceMeters(point, a, b) {
+            const refLat = point[1];
+            const lonScale = metersPerLonDegree(refLat);
+            const p = { x: point[0] * lonScale, y: point[1] * 111111 };
+            const p1 = { x: a[0] * lonScale, y: a[1] * 111111 };
+            const p2 = { x: b[0] * lonScale, y: b[1] * 111111 };
+
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            const len2 = (dx * dx) + (dy * dy);
+            if (len2 <= 1e-9) {
+                return Math.hypot(p.x - p1.x, p.y - p1.y);
+            }
+
+            let t = ((p.x - p1.x) * dx + (p.y - p1.y) * dy) / len2;
+            t = Math.max(0, Math.min(1, t));
+
+            const projX = p1.x + t * dx;
+            const projY = p1.y + t * dy;
+            return Math.hypot(p.x - projX, p.y - projY);
+        }
+
+        function distanceMeters(a, b) {
+            const midLat = (a[1] + b[1]) / 2;
+            const dx = (b[0] - a[0]) * metersPerLonDegree(midLat);
+            const dy = (b[1] - a[1]) * 111111;
+            return Math.hypot(dx, dy);
+        }
+
+        function haversineKm(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const toRad = deg => (deg * Math.PI) / 180;
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lon2 - lon1);
+            const a = Math.sin(dLat / 2) ** 2
+                + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+            return 2 * R * Math.asin(Math.sqrt(a));
+        }
+
+        function pointInPolygon(point, polygonRing) {
+            const ring = normalizeParcelRing(polygonRing);
+            if (ring.length < 3) return false;
+
+            const x = point[0];
+            const y = point[1];
+            let inside = false;
+
+            for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+                const xi = ring[i][0];
+                const yi = ring[i][1];
+                const xj = ring[j][0];
+                const yj = ring[j][1];
+
+                const intersects = ((yi > y) !== (yj > y))
+                    && (x < ((xj - xi) * (y - yi)) / ((yj - yi) || 1e-12) + xi);
+                if (intersects) inside = !inside;
+            }
+
+            return inside;
+        }
+
+        function getBounds(coords) {
+            const ring = normalizeParcelRing(coords);
+            if (!ring.length) return null;
+
+            let minLon = Infinity;
+            let minLat = Infinity;
+            let maxLon = -Infinity;
+            let maxLat = -Infinity;
+
+            ring.forEach(p => {
+                minLon = Math.min(minLon, p[0]);
+                minLat = Math.min(minLat, p[1]);
+                maxLon = Math.max(maxLon, p[0]);
+                maxLat = Math.max(maxLat, p[1]);
+            });
+
+            return { minLon, minLat, maxLon, maxLat };
+        }
+
+        async function geocodeAddress(address) {
+            const locationInfo = getSearchLocality(address);
+            const searchTerms = [
+                `${address}, Australia`,
+                `${locationInfo.locality}, Australia`
+            ];
+
+            let feature = null;
+            let lastStatus = 0;
+
+            for (const term of searchTerms) {
+                const q = encodeURIComponent(term);
+                const url = `https://photon.komoot.io/api/?q=${q}&limit=1`;
+                const resp = await fetch(url, { headers: { Accept: 'application/json' } });
+                lastStatus = resp.status;
+                if (!resp.ok) {
+                    continue;
+                }
+
+                const data = await resp.json();
+                if (data.features && data.features.length) {
+                    feature = data.features[0];
+                    break;
+                }
+            }
+
+            if (!feature) {
+                throw new Error(lastStatus ? `Geocoder request failed (${lastStatus})` : 'Address not found in geocoder.');
+            }
+
+            const coords = feature.geometry && feature.geometry.coordinates ? feature.geometry.coordinates : [];
+            if (!Array.isArray(coords) || coords.length < 2) {
+                throw new Error('Geocoder did not return coordinates.');
+            }
+
+            return {
+                lon: Number(coords[0]),
+                lat: Number(coords[1]),
+                label: feature.properties && feature.properties.name ? feature.properties.name : ''
+            };
+        }
+
+        function getParcelRingFromGeometry(geometry) {
+            if (!geometry || !geometry.type || !geometry.coordinates) return [];
+            if (geometry.type === 'Polygon') {
+                return normalizeParcelRing(geometry.coordinates[0] || []);
+            }
+            if (geometry.type === 'MultiPolygon') {
+                let bestRing = [];
+                let bestArea = 0;
+
+                (geometry.coordinates || []).forEach(poly => {
+                    const ring = normalizeParcelRing(poly && poly[0] ? poly[0] : []);
+                    const area = polygonAreaSqm(ring);
+                    if (area > bestArea) {
+                        bestArea = area;
+                        bestRing = ring;
+                    }
+                });
+
+                return bestRing;
+            }
+            return [];
+        }
+
+        async function fetchParcelAtPoint(lat, lon) {
+            const baseUrl = 'https://opendata.maps.vic.gov.au/geoserver/wfs';
+            const filters = [
+                `INTERSECTS(geom, POINT(${lon} ${lat}))`,
+                `INTERSECTS(geom, POINT(${lat} ${lon}))`
+            ];
+
+            for (const filter of filters) {
+                const params = new URLSearchParams({
+                    service: 'WFS',
+                    version: '1.1.0',
+                    request: 'GetFeature',
+                    typeName: 'open-data-platform:v_property_mp',
+                    outputFormat: 'application/json',
+                    srsName: 'EPSG:4326',
+                    CQL_FILTER: filter,
+                    maxFeatures: '1'
+                });
+
+                const resp = await fetch(`${baseUrl}?${params.toString()}`, {
+                    headers: { Accept: 'application/json' }
+                });
+
+                if (!resp.ok) {
+                    continue;
+                }
+
+                const data = await resp.json();
+                const feature = data.features && data.features.length ? data.features[0] : null;
+                if (feature) {
+                    return feature;
+                }
+            }
+
+            throw new Error('No parcel footprint returned for this address.');
+        }
+
+        async function fetchNearbyRoadLines(parcelCoords) {
+            const bounds = getBounds(parcelCoords);
+            if (!bounds) return [];
+
+            const baseUrl = 'https://opendata.maps.vic.gov.au/geoserver/wfs';
+            const pad = 0.001;
+            const bbox = `${bounds.minLon - pad},${bounds.minLat - pad},${bounds.maxLon + pad},${bounds.maxLat + pad},EPSG:4326`;
+
+            const params = new URLSearchParams({
+                service: 'WFS',
+                version: '1.1.0',
+                request: 'GetFeature',
+                typeName: 'open-data-platform:tr_road',
+                outputFormat: 'application/json',
+                srsName: 'EPSG:4326',
+                bbox,
+                maxFeatures: '80'
+            });
+
+            try {
+                const resp = await fetch(`${baseUrl}?${params.toString()}`, {
+                    headers: { Accept: 'application/json' }
+                });
+                if (!resp.ok) return [];
+
+                const data = await resp.json();
+                const lines = [];
+
+                (data.features || []).forEach(feature => {
+                    const geometry = feature.geometry || {};
+                    const properties = feature.properties || {};
+                    const roadLabel = normalizeAddress(
+                        properties.ezi_road_name_label
+                        || properties.ezi_road_name
+                        || [properties.road_name, properties.road_type].filter(Boolean).join(' ')
+                    );
+                    if (geometry.type === 'LineString' && Array.isArray(geometry.coordinates)) {
+                        lines.push({ coords: geometry.coordinates, label: roadLabel });
+                    } else if (geometry.type === 'MultiLineString' && Array.isArray(geometry.coordinates)) {
+                        geometry.coordinates.forEach(line => {
+                            if (Array.isArray(line)) {
+                                lines.push({ coords: line, label: roadLabel });
+                            }
+                        });
+                    }
+                });
+
+                return lines;
+            } catch (_) {
+                return [];
+            }
+        }
+
+        function parseContourElevation(properties = {}) {
+            const keys = ['ALTITUDE', 'altitude', 'ELEVATION', 'elevation', 'CONTOUR', 'contour', 'LEVEL', 'level'];
+            for (const key of keys) {
+                const value = parseFloat(properties[key]);
+                if (Number.isFinite(value)) {
+                    return value;
+                }
+            }
+            return null;
+        }
+
+        async function fetchContourLines(parcelCoords) {
+            const bounds = getBounds(parcelCoords);
+            if (!bounds) return [];
+
+            const baseUrl = 'https://opendata.maps.vic.gov.au/geoserver/wfs';
+            const pad = 0.001;
+            const bbox = `${bounds.minLon - pad},${bounds.minLat - pad},${bounds.maxLon + pad},${bounds.maxLat + pad},EPSG:4326`;
+
+            const params = new URLSearchParams({
+                service: 'WFS',
+                version: '1.1.0',
+                request: 'GetFeature',
+                typeName: 'open-data-platform:el_contour_1to5m',
+                outputFormat: 'application/json',
+                srsName: 'EPSG:4326',
+                bbox,
+                maxFeatures: '300'
+            });
+
+            try {
+                const resp = await fetch(`${baseUrl}?${params.toString()}`, {
+                    headers: { Accept: 'application/json' }
+                });
+                if (!resp.ok) return [];
+                const data = await resp.json();
+
+                const contours = [];
+                (data.features || []).forEach(feature => {
+                    const elevation = parseContourElevation(feature.properties || {});
+                    if (!Number.isFinite(elevation)) return;
+                    const geometry = feature.geometry || {};
+                    if (geometry.type === 'LineString' && Array.isArray(geometry.coordinates)) {
+                        contours.push({ elevation, line: geometry.coordinates });
+                    } else if (geometry.type === 'MultiLineString' && Array.isArray(geometry.coordinates)) {
+                        geometry.coordinates.forEach(line => {
+                            if (Array.isArray(line)) {
+                                contours.push({ elevation, line });
+                            }
+                        });
+                    }
+                });
+                return contours;
+            } catch (_) {
+                return [];
+            }
+        }
+
+        async function fetchWfsPointFeatures(typeName, lat, lon, maxFeatures = 1) {
+            const baseUrl = 'https://opendata.maps.vic.gov.au/geoserver/wfs';
+            const filters = [
+                `INTERSECTS(geom, POINT(${lon} ${lat}))`,
+                `INTERSECTS(geom, POINT(${lat} ${lon}))`
+            ];
+
+            for (const filter of filters) {
+                const params = new URLSearchParams({
+                    service: 'WFS',
+                    version: '1.1.0',
+                    request: 'GetFeature',
+                    typeName,
+                    outputFormat: 'application/json',
+                    srsName: 'EPSG:4326',
+                    CQL_FILTER: filter,
+                    maxFeatures: String(maxFeatures)
+                });
+
+                try {
+                    const resp = await fetch(`${baseUrl}?${params.toString()}`, {
+                        headers: { Accept: 'application/json' }
+                    });
+                    if (!resp.ok) continue;
+                    const data = await resp.json();
+                    const features = Array.isArray(data.features) ? data.features : [];
+                    if (features.length) return features;
+                } catch (_) {
+                    // Try next coordinate order.
+                }
+            }
+
+            return [];
+        }
+
+        function parsePlanningZoneProps(props = {}) {
+            const zoneCode = normalizeAddress(
+                props.ZONE_CODE || props.zone_code || props.ZONE_MAP_CODE || props.zone_map_code || ''
+            );
+            const zoneDesc = normalizeAddress(
+                props.ZONE_DESC || props.zone_desc || props.ZONE_DESCRIPTION || props.zone_description || ''
+            );
+            return { zoneCode, zoneDesc };
+        }
+
+        function parseOverlayCode(props = {}) {
+            return normalizeAddress(
+                props.scheme_code
+                || props.SCHEME_CODE
+                || props.overlay_code
+                || props.OVERLAY_CODE
+                || props.zone_code
+                || props.ZONE_CODE
+                || ''
+            ).toUpperCase();
+        }
+
+        function buildPlanningRecommendation(zoneCode, overlays = []) {
+            const zone = (zoneCode || '').toUpperCase();
+            const codes = overlays.map(code => (code || '').toUpperCase());
+
+            let base = 'Use 2-storey attached townhouses with moderate site coverage and practical private open space.';
+            if (zone.startsWith('GRZ')) {
+                base = 'GRZ supports medium-density townhouse outcomes; 2 storey is a typical first-pass format.';
+            } else if (zone.startsWith('RGZ')) {
+                base = 'RGZ can support denser townhouse form; test 3 storey where neighbourhood character and setbacks allow.';
+            } else if (zone.startsWith('NRZ')) {
+                base = 'NRZ is typically lower-intensity; duplex or 2-3 townhouse outcomes are more common than high-yield rows.';
+            } else if (zone.startsWith('MUZ')) {
+                base = 'MUZ supports mixed-use outcomes; townhouse format can include flexible ground-level frontages.';
+            }
+
+            const constraints = [];
+            if (codes.some(code => code.startsWith('DDO'))) {
+                constraints.push('DDO applies: validate height, setbacks and streetscape response against schedule controls.');
+            }
+            if (codes.some(code => code.startsWith('HO'))) {
+                constraints.push('Heritage controls likely limit demolition and built-form change.');
+            }
+            if (codes.some(code => code.startsWith('SBO') || code.startsWith('LSIO') || code.startsWith('FO'))) {
+                constraints.push('Flood/stormwater overlays may reduce ground-floor yield and add engineering requirements.');
+            }
+            if (codes.some(code => code.startsWith('BMO'))) {
+                constraints.push('BMO requires bushfire-responsive siting/material choices and may reduce envelope efficiency.');
+            }
+            if (codes.some(code => code.startsWith('VPO') || code.startsWith('SLO') || code.startsWith('ESO'))) {
+                constraints.push('Vegetation/slope/environment overlays may constrain building envelope and tree removal.');
+            }
+
+            if (!constraints.length) {
+                return `${base} No high-friction overlay triggers detected in this quick screen.`;
+            }
+            return `${base} ${constraints.join(' ')}`;
+        }
+
+        async function fetchPlanningContext(lat, lon) {
+            const zoneFeatures = await fetchWfsPointFeatures('open-data-platform:plan_zone', lat, lon, 3);
+            let zoneCode = '';
+            let zoneDesc = '';
+            if (zoneFeatures.length) {
+                const parsed = parsePlanningZoneProps(zoneFeatures[0].properties || {});
+                zoneCode = parsed.zoneCode;
+                zoneDesc = parsed.zoneDesc;
+            }
+
+            const overlayFeatures = await fetchWfsPointFeatures('open-data-platform:plan_overlay', lat, lon, 40);
+            const seen = new Set();
+            const overlays = [];
+            overlayFeatures.forEach(feature => {
+                const code = parseOverlayCode(feature.properties || {});
+                if (!code) return;
+                const key = code.toUpperCase();
+                if (seen.has(key)) return;
+                seen.add(key);
+                overlays.push(code);
+            });
+
+            return {
+                zoneCode,
+                zoneDesc,
+                overlays,
+                recommendation: buildPlanningRecommendation(zoneCode, overlays)
+            };
+        }
+
+        function updatePlanningDisplay(planning) {
+            const zoneEl = document.getElementById('fit-zone');
+            const overlaysEl = document.getElementById('fit-overlays');
+            const recEl = document.getElementById('fit-zone-recommend');
+            if (!zoneEl || !overlaysEl || !recEl) return;
+
+            if (!planning) {
+                zoneEl.innerText = 'N/A';
+                overlaysEl.innerText = 'N/A';
+                recEl.innerText = 'Planning format suggestion loads after GIS lookup.';
+                return;
+            }
+
+            const zoneText = planning.zoneCode
+                ? `${planning.zoneCode}${planning.zoneDesc ? ` - ${planning.zoneDesc}` : ''}`
+                : 'Zone unavailable';
+            const overlayText = planning.overlays && planning.overlays.length
+                ? `${planning.overlays.slice(0, 3).join(', ')}${planning.overlays.length > 3 ? ` +${planning.overlays.length - 3}` : ''}`
+                : 'None detected';
+
+            zoneEl.innerText = zoneText;
+            overlaysEl.innerText = overlayText;
+            recEl.innerText = planning.recommendation || 'No planning recommendation available.';
+        }
+
+        function estimateFallFromContours(parcelCoords, frontageEdgeIndex, contours, depthMeters = 0) {
+            const ring = normalizeParcelRing(parcelCoords);
+            if (!ring.length || !Array.isArray(contours) || !contours.length) {
+                return {
+                    frontElevation: null,
+                    rearElevation: null,
+                    fallMeters: null,
+                    slopePct: null,
+                    minElevation: null,
+                    maxElevation: null
+                };
+            }
+
+            const centroid = [
+                ring.reduce((sum, p) => sum + p[0], 0) / ring.length,
+                ring.reduce((sum, p) => sum + p[1], 0) / ring.length
+            ];
+
+            const selected = contours.filter(contour => {
+                if (!Array.isArray(contour.line) || contour.line.length < 2) return false;
+                for (const point of contour.line) {
+                    if (pointInPolygon(point, ring)) return true;
+                }
+                let minDist = Number.POSITIVE_INFINITY;
+                for (let i = 0; i < contour.line.length - 1; i += 1) {
+                    const d = pointToSegmentDistanceMeters(centroid, contour.line[i], contour.line[i + 1]);
+                    if (d < minDist) minDist = d;
+                }
+                return minDist <= 80;
+            });
+
+            const contourSet = selected.length ? selected : contours;
+            const elevations = contourSet.map(c => c.elevation).filter(Number.isFinite);
+            if (!elevations.length) {
+                return {
+                    frontElevation: null,
+                    rearElevation: null,
+                    fallMeters: null,
+                    slopePct: null,
+                    minElevation: null,
+                    maxElevation: null
+                };
+            }
+
+            const idx = (frontageEdgeIndex >= 0 && frontageEdgeIndex < ring.length) ? frontageEdgeIndex : 0;
+            const frontA = ring[idx];
+            const frontB = ring[(idx + 1) % ring.length];
+            const frontMid = [(frontA[0] + frontB[0]) / 2, (frontA[1] + frontB[1]) / 2];
+
+            let rearEdgeIndex = idx;
+            let maxDist = -1;
+            for (let i = 0; i < ring.length; i += 1) {
+                const a = ring[i];
+                const b = ring[(i + 1) % ring.length];
+                const mid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+                const d = distanceMeters(frontMid, mid);
+                if (d > maxDist) {
+                    maxDist = d;
+                    rearEdgeIndex = i;
+                }
+            }
+            const rearA = ring[rearEdgeIndex];
+            const rearB = ring[(rearEdgeIndex + 1) % ring.length];
+            const rearMid = [(rearA[0] + rearB[0]) / 2, (rearA[1] + rearB[1]) / 2];
+
+            const nearestElevation = point => {
+                let bestElevation = null;
+                let minDist = Number.POSITIVE_INFINITY;
+                contourSet.forEach(contour => {
+                    const line = contour.line || [];
+                    for (let i = 0; i < line.length - 1; i += 1) {
+                        const d = pointToSegmentDistanceMeters(point, line[i], line[i + 1]);
+                        if (d < minDist) {
+                            minDist = d;
+                            bestElevation = contour.elevation;
+                        }
+                    }
+                });
+                return bestElevation;
+            };
+
+            const frontElevation = nearestElevation(frontMid);
+            const rearElevation = nearestElevation(rearMid);
+            const fallMeters = (Number.isFinite(frontElevation) && Number.isFinite(rearElevation))
+                ? Math.abs(rearElevation - frontElevation)
+                : (Math.max(...elevations) - Math.min(...elevations));
+            const effectiveDepth = depthMeters > 0 ? depthMeters : maxDist;
+            const slopePct = (effectiveDepth > 0 && Number.isFinite(fallMeters))
+                ? (fallMeters / effectiveDepth) * 100
+                : null;
+
+            return {
+                frontElevation: Number.isFinite(frontElevation) ? frontElevation : null,
+                rearElevation: Number.isFinite(rearElevation) ? rearElevation : null,
+                fallMeters: Number.isFinite(fallMeters) ? fallMeters : null,
+                slopePct: Number.isFinite(slopePct) ? slopePct : null,
+                minElevation: Math.min(...elevations),
+                maxElevation: Math.max(...elevations)
+            };
+        }
+
+        function updateFallDisplay(fallStats) {
+            const fallEl = document.getElementById('fit-fall');
+            const slopeEl = document.getElementById('fit-slope');
+            const rangeEl = document.getElementById('fit-elev-range');
+            if (!fallEl || !slopeEl || !rangeEl) return;
+
+            if (!fallStats || !Number.isFinite(fallStats.fallMeters)) {
+                fallEl.innerText = 'N/A';
+                slopeEl.innerText = 'N/A';
+                rangeEl.innerText = 'N/A';
+                return;
+            }
+
+            let frontRear = '';
+            if (Number.isFinite(fallStats.frontElevation) && Number.isFinite(fallStats.rearElevation)) {
+                const delta = fallStats.rearElevation - fallStats.frontElevation;
+                let direction = 'level front to rear';
+                if (delta > 0.05) direction = 'rises to rear';
+                if (delta < -0.05) direction = 'falls to rear';
+                frontRear = ` (${direction}: front ${fallStats.frontElevation.toFixed(1)}m, rear ${fallStats.rearElevation.toFixed(1)}m)`;
+            }
+
+            fallEl.innerText = `${fallStats.fallMeters.toFixed(1)} m${frontRear}`;
+            slopeEl.innerText = Number.isFinite(fallStats.slopePct) ? `${fallStats.slopePct.toFixed(1)}%` : 'N/A';
+            if (Number.isFinite(fallStats.minElevation) && Number.isFinite(fallStats.maxElevation)) {
+                rangeEl.innerText = `${fallStats.minElevation.toFixed(1)}m - ${fallStats.maxElevation.toFixed(1)}m`;
+            } else {
+                rangeEl.innerText = 'N/A';
+            }
+        }
+
+        function estimateFrontageDepth(parcelCoords, areaSqm, roadLines = [], preferredStreet = '') {
+            const ring = normalizeParcelRing(parcelCoords);
+            if (ring.length < 2) {
+                return {
+                    frontage: 0,
+                    depth: 0,
+                    frontageEdgeIndex: -1,
+                    frontageEdgeIndices: [],
+                    bboxWidth: 0,
+                    bboxHeight: 0,
+                    frontageRoadName: '',
+                    alternativeFrontage: 0,
+                    alternativeRoadName: '',
+                    frontageSource: ''
+                };
+            }
+
+            const bounds = getBounds(ring);
+            const midLat = (bounds.minLat + bounds.maxLat) / 2;
+            const bboxWidth = (bounds.maxLon - bounds.minLon) * metersPerLonDegree(midLat);
+            const bboxHeight = (bounds.maxLat - bounds.minLat) * 111111;
+
+            let fallbackEdgeIndex = 0;
+            let fallbackEdgeLen = 0;
+            const roadEdgeCandidates = [];
+            const preferred = normalizeStreetLabel(preferredStreet);
+
+            for (let i = 0; i < ring.length; i += 1) {
+                const a = ring[i];
+                const b = ring[(i + 1) % ring.length];
+                const edgeLen = segmentLengthMeters(a, b);
+                const midpoint = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+                const edgeVec = segmentVectorMeters(a, b, midpoint[1]);
+
+                if (edgeLen > fallbackEdgeLen) {
+                    fallbackEdgeLen = edgeLen;
+                    fallbackEdgeIndex = i;
+                }
+
+                if (!roadLines.length) continue;
+
+                let minDist = Number.POSITIVE_INFINITY;
+                let closestRoadName = '';
+                let matchedPreferredStreet = false;
+                let bestRoadSegVec = null;
+                let bestOrientationDiff = 90;
+
+                roadLines.forEach(road => {
+                    const line = Array.isArray(road) ? road : road.coords;
+                    if (!Array.isArray(line) || line.length < 2) return;
+                    const roadName = (road && typeof road === 'object') ? normalizeAddress(road.label || '') : '';
+                    const roadMatch = preferred && roadName ? streetNameMatch(preferred, roadName) : false;
+                    for (let j = 0; j < line.length - 1; j += 1) {
+                        const segA = line[j];
+                        const segB = line[j + 1];
+                        const d = pointToSegmentDistanceMeters(midpoint, segA, segB);
+                        if (d < minDist) {
+                            const roadSegVec = segmentVectorMeters(segA, segB, midpoint[1]);
+                            minDist = d;
+                            closestRoadName = roadName;
+                            matchedPreferredStreet = roadMatch;
+                            bestRoadSegVec = roadSegVec;
+                            bestOrientationDiff = orientationDiffDegrees(edgeVec, roadSegVec);
+                        }
+                    }
+                });
+
+                if (minDist < 30) {
+                    const parallelBonus = Math.max(0, 28 - bestOrientationDiff) * 0.9;
+                    const orientationPenalty = Math.max(0, bestOrientationDiff - 35) * 0.6;
+                    const score = (matchedPreferredStreet ? 1000 : 0)
+                        + Math.max(0, 40 - minDist)
+                        + (edgeLen * 0.18)
+                        + parallelBonus
+                        - orientationPenalty;
+                    roadEdgeCandidates.push({
+                        edgeIndex: i,
+                        edgeLen,
+                        edgeVec,
+                        minDist,
+                        roadName: closestRoadName,
+                        matchedPreferredStreet,
+                        orientationDiff: bestOrientationDiff,
+                        roadSegVec: bestRoadSegVec,
+                        score
+                    });
+                }
+            }
+
+            let selected = null;
+            if (roadEdgeCandidates.length) {
+                roadEdgeCandidates.sort((a, b) => b.score - a.score || b.edgeLen - a.edgeLen || a.minDist - b.minDist);
+                selected = roadEdgeCandidates[0];
+            }
+
+            let frontage = selected ? selected.edgeLen : fallbackEdgeLen;
+            const frontageEdgeIndex = selected ? selected.edgeIndex : fallbackEdgeIndex;
+            const frontageEdgeIndices = [frontageEdgeIndex];
+
+            if (selected) {
+                const byIndex = new Map(roadEdgeCandidates.map(candidate => [candidate.edgeIndex, candidate]));
+                const selectedRoadNorm = normalizeStreetLabel(selected.roadName);
+                const n = ring.length;
+                const canMerge = candidate => {
+                    if (!candidate) return false;
+                    if (selectedRoadNorm && normalizeStreetLabel(candidate.roadName) !== selectedRoadNorm) return false;
+                    if (selected.matchedPreferredStreet && !candidate.matchedPreferredStreet) return false;
+                    if (candidate.orientationDiff > 42) return false;
+                    if (orientationDiffDegrees(candidate.edgeVec, selected.edgeVec) > 28) return false;
+                    return candidate.minDist <= Math.max(26, selected.minDist + 8);
+                };
+
+                let back = frontageEdgeIndex;
+                for (let step = 0; step < n; step += 1) {
+                    const next = (back - 1 + n) % n;
+                    const candidate = byIndex.get(next);
+                    if (!canMerge(candidate)) break;
+                    frontage += candidate.edgeLen;
+                    frontageEdgeIndices.unshift(next);
+                    back = next;
+                }
+
+                let fwd = frontageEdgeIndex;
+                for (let step = 0; step < n; step += 1) {
+                    const next = (fwd + 1) % n;
+                    const candidate = byIndex.get(next);
+                    if (!canMerge(candidate)) break;
+                    if (frontageEdgeIndices.includes(next)) break;
+                    frontage += candidate.edgeLen;
+                    frontageEdgeIndices.push(next);
+                    fwd = next;
+                }
+            }
+
+            if (selected && selected.edgeVec && selected.edgeVec.length === 2) {
+                const axisLen = Math.hypot(selected.edgeVec[0], selected.edgeVec[1]);
+                if (axisLen > 1e-6) {
+                    const ux = selected.edgeVec[0] / axisLen;
+                    const uy = selected.edgeVec[1] / axisLen;
+                    const ref = ring[frontageEdgeIndices[0]];
+                    const refLat = ref[1];
+                    const lonScale = metersPerLonDegree(refLat);
+
+                    const chainPoints = [ring[frontageEdgeIndices[0]]];
+                    frontageEdgeIndices.forEach(idx => {
+                        chainPoints.push(ring[(idx + 1) % ring.length]);
+                    });
+                    const projVals = chainPoints.map(point => {
+                        const vx = (point[0] - ref[0]) * lonScale;
+                        const vy = (point[1] - ref[1]) * 111111;
+                        return (vx * ux) + (vy * uy);
+                    });
+                    const projMin = Math.min(...projVals);
+                    const projMax = Math.max(...projVals);
+                    const projectedFrontage = Math.max(0, projMax - projMin);
+                    if (projectedFrontage > 0) {
+                        frontage = Math.max(selected.edgeLen, projectedFrontage);
+                    }
+                }
+            }
+
+            let depthGeom = 0;
+            if (frontageEdgeIndex >= 0 && frontageEdgeIndex < ring.length) {
+                const frontA = ring[frontageEdgeIndex];
+                const frontB = ring[(frontageEdgeIndex + 1) % ring.length];
+                const frontMid = [(frontA[0] + frontB[0]) / 2, (frontA[1] + frontB[1]) / 2];
+                const refLat = frontMid[1];
+                const lonScale = metersPerLonDegree(refLat);
+                const frontVec = segmentVectorMeters(frontA, frontB, refLat);
+                const frontLen = Math.hypot(frontVec[0], frontVec[1]);
+
+                if (frontLen > 1e-6) {
+                    const ux = frontVec[0] / frontLen;
+                    const uy = frontVec[1] / frontLen;
+                    const n1 = [-uy, ux];
+                    const n2 = [uy, -ux];
+
+                    let centroidLon = 0;
+                    let centroidLat = 0;
+                    ring.forEach(p => {
+                        centroidLon += p[0];
+                        centroidLat += p[1];
+                    });
+                    centroidLon /= ring.length;
+                    centroidLat /= ring.length;
+
+                    const centroidDx = (centroidLon - frontMid[0]) * lonScale;
+                    const centroidDy = (centroidLat - frontMid[1]) * 111111;
+                    const useN1 = ((centroidDx * n1[0]) + (centroidDy * n1[1])) >= 0;
+                    const normal = useN1 ? n1 : n2;
+
+                    ring.forEach(p => {
+                        const dx = (p[0] - frontMid[0]) * lonScale;
+                        const dy = (p[1] - frontMid[1]) * 111111;
+                        const d = (dx * normal[0]) + (dy * normal[1]);
+                        if (d > depthGeom) depthGeom = d;
+                    });
+                    depthGeom = Math.max(0, depthGeom);
+                }
+            }
+
+            const depthArea = frontage > 0 ? (areaSqm / frontage) : 0;
+            const depth = depthGeom > 0 ? depthGeom : depthArea;
+            const altExcluded = new Set(frontageEdgeIndices);
+            const alternate = roadEdgeCandidates.find(candidate => !altExcluded.has(candidate.edgeIndex)) || null;
+
+            return {
+                frontage,
+                depth,
+                depthGeom,
+                depthArea,
+                frontageEdgeIndex,
+                frontageEdgeIndices,
+                bboxWidth,
+                bboxHeight,
+                frontageRoadName: selected ? selected.roadName : '',
+                alternativeFrontage: alternate ? alternate.edgeLen : 0,
+                alternativeRoadName: alternate ? alternate.roadName : '',
+                frontageSource: selected
+                    ? (selected.matchedPreferredStreet
+                        ? (frontageEdgeIndices.length > 1 ? 'address-street-merged' : 'address-street')
+                        : (frontageEdgeIndices.length > 1 ? 'nearest-road-merged' : 'nearest-road-edge'))
+                    : 'fallback-longest-edge'
+            };
+        }
+
+        function renderSiteFootprintPreview(parcelCoords, frontageEdgeIndex, frontageEdgeIndices, areaSqm, frontageM, depthM, bboxWidth, bboxHeight, layoutPreview = null) {
+            const container = document.getElementById('site-footprint-preview');
+            const meta = document.getElementById('site-preview-meta');
+            if (!container || !meta) return;
+
+            const ring = normalizeParcelRing(parcelCoords);
+            if (!ring.length) {
+                container.innerHTML = '';
+                meta.innerText = 'No GIS footprint loaded.';
+                return;
+            }
+
+            const pad = 8;
+            const view = 100;
+            const drawSpan = view - (pad * 2);
+
+            const meanLat = ring.reduce((sum, p) => sum + p[1], 0) / ring.length;
+            const lonScale = metersPerLonDegree(meanLat);
+            const meterPoints = ring.map(p => [p[0] * lonScale, p[1] * 111111]);
+
+            const minX = Math.min(...meterPoints.map(p => p[0]));
+            const maxX = Math.max(...meterPoints.map(p => p[0]));
+            const minY = Math.min(...meterPoints.map(p => p[1]));
+            const maxY = Math.max(...meterPoints.map(p => p[1]));
+            const widthM = Math.max(1e-6, maxX - minX);
+            const heightM = Math.max(1e-6, maxY - minY);
+            const scale = drawSpan / Math.max(widthM, heightM);
+            const offsetX = pad + ((drawSpan - (widthM * scale)) / 2);
+            const offsetY = pad + ((drawSpan - (heightM * scale)) / 2);
+
+            const toView = p => {
+                const xMeters = p[0] * lonScale;
+                const yMeters = p[1] * 111111;
+                const x = offsetX + ((xMeters - minX) * scale);
+                const y = offsetY + ((maxY - yMeters) * scale);
+                return [x, y];
+            };
+
+            const points = ring.map(toView);
+            const pointString = points.map(p => `${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ');
+
+            let frontageLine = '';
+            let frontAView = null;
+            let frontBView = null;
+            const frontageChain = (Array.isArray(frontageEdgeIndices) && frontageEdgeIndices.length)
+                ? frontageEdgeIndices
+                : ((frontageEdgeIndex >= 0 && frontageEdgeIndex < ring.length) ? [frontageEdgeIndex] : []);
+
+            if (frontageChain.length) {
+                const chainPts = [toView(ring[frontageChain[0]])];
+                frontageChain.forEach(idx => {
+                    chainPts.push(toView(ring[(idx + 1) % ring.length]));
+                });
+                frontAView = chainPts[0];
+                frontBView = chainPts[chainPts.length - 1];
+                const pointAttr = chainPts.map(p => `${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ');
+                frontageLine = `<polyline points="${pointAttr}" stroke="#34d399" stroke-width="2.2" fill="none" />`;
+            }
+
+            let townhouseOverlay = '';
+            if (layoutPreview && frontAView && frontBView && frontageM > 0 && depthM > 0) {
+                const frontVecX = frontBView[0] - frontAView[0];
+                const frontVecY = frontBView[1] - frontAView[1];
+                const frontLenView = Math.hypot(frontVecX, frontVecY);
+
+                if (frontLenView > 1e-6) {
+                    const ux = frontVecX / frontLenView;
+                    const uy = frontVecY / frontLenView;
+
+                    const centroid = points.reduce((acc, p) => [acc[0] + p[0], acc[1] + p[1]], [0, 0]).map(v => v / points.length);
+                    const frontMid = [(frontAView[0] + frontBView[0]) / 2, (frontAView[1] + frontBView[1]) / 2];
+                    const n1 = [-uy, ux];
+                    const n2 = [uy, -ux];
+                    const dot1 = ((centroid[0] - frontMid[0]) * n1[0]) + ((centroid[1] - frontMid[1]) * n1[1]);
+                    const normal = dot1 >= 0 ? n1 : n2;
+
+                    let rearIdx = frontageChain.length ? frontageChain[0] : ((frontageEdgeIndex >= 0) ? frontageEdgeIndex : 0);
+                    let maxDist = -1;
+                    for (let i = 0; i < points.length; i += 1) {
+                        const a = points[i];
+                        const b = points[(i + 1) % points.length];
+                        const edgeMid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+                        const d = Math.hypot(edgeMid[0] - frontMid[0], edgeMid[1] - frontMid[1]);
+                        if (d > maxDist) {
+                            maxDist = d;
+                            rearIdx = i;
+                        }
+                    }
+                    const rearA = points[rearIdx];
+                    const rearB = points[(rearIdx + 1) % points.length];
+                    const rearMid = [(rearA[0] + rearB[0]) / 2, (rearA[1] + rearB[1]) / 2];
+                    const depthView = Math.max(1e-6, Math.hypot(rearMid[0] - frontMid[0], rearMid[1] - frontMid[1]));
+
+                    const scaleX = frontLenView / Math.max(1e-6, frontageM);
+                    const scaleY = depthView / Math.max(1e-6, depthM);
+
+                    const toPlot = (xMeters, yMeters) => [
+                        frontAView[0] + (ux * xMeters * scaleX) + (normal[0] * yMeters * scaleY),
+                        frontAView[1] + (uy * xMeters * scaleX) + (normal[1] * yMeters * scaleY)
+                    ];
+
+                    const rows = Math.max(1, layoutPreview.rows || 1);
+                    const cols = Math.max(1, layoutPreview.cols || 1);
+                    const sideMargin = Math.max(0, layoutPreview.sideMargin || 0);
+                    const frontMargin = Math.max(0, layoutPreview.frontMargin || 0);
+                    const sideDriveWidth = Math.max(0, layoutPreview.sideDriveWidth || 0);
+                    const rowGap = Math.max(0, layoutPreview.rowGap || 0);
+                    const cellWidth = Math.max(1, layoutPreview.cellWidth || (frontageM / cols));
+                    const unitWidth = Math.max(0.5, layoutPreview.unitWidth || cellWidth * 0.9);
+                    const unitDepth = Math.max(0.5, layoutPreview.unitDepth || 5);
+                    const insetX = Math.max(0, (cellWidth - unitWidth) / 2);
+                    const unitBandStart = sideMargin + sideDriveWidth;
+
+                    const polys = [];
+                    const labels = [];
+                    const unitCount = Math.max(1, layoutPreview.unitsCount || 1);
+                    for (let i = 0; i < unitCount; i += 1) {
+                        const row = Math.floor(i / cols);
+                        const col = i % cols;
+                        const x0 = unitBandStart + (col * cellWidth) + insetX;
+                        const x1 = x0 + unitWidth;
+                        const y0 = frontMargin + (row * unitDepth) + (row * rowGap);
+                        const y1 = y0 + unitDepth;
+
+                        const p0 = toPlot(x0, y0);
+                        const p1 = toPlot(x1, y0);
+                        const p2 = toPlot(x1, y1);
+                        const p3 = toPlot(x0, y1);
+                        const center = [(p0[0] + p2[0]) / 2, (p0[1] + p2[1]) / 2];
+
+                        const polyPts = [p0, p1, p2, p3].map(p => `${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ');
+                        const fill = row % 2 === 0 ? 'rgba(14, 165, 233, 0.34)' : 'rgba(52, 211, 153, 0.32)';
+                        polys.push(`<polygon points="${polyPts}" fill="${fill}" stroke="rgba(147,197,253,0.95)" stroke-width="0.6"></polygon>`);
+                        labels.push(`<text x="${center[0].toFixed(2)}" y="${(center[1] + 0.9).toFixed(2)}" text-anchor="middle" font-size="2.6" fill="#e2e8f0">TH${i + 1}</text>`);
+                    }
+
+                    const laneLines = [];
+                    if (rows > 1 && rowGap > 0) {
+                        for (let r = 1; r < rows; r += 1) {
+                            const laneY = frontMargin + (r * unitDepth) + ((r - 0.5) * rowGap);
+                            const a = toPlot(unitBandStart, laneY);
+                            const b = toPlot(unitBandStart + (cols * cellWidth), laneY);
+                            laneLines.push(`<line x1="${a[0].toFixed(2)}" y1="${a[1].toFixed(2)}" x2="${b[0].toFixed(2)}" y2="${b[1].toFixed(2)}" stroke="rgba(248,250,252,0.45)" stroke-dasharray="1.3 1.3" stroke-width="0.45"></line>`);
+                        }
+                    }
+
+                    let drivewayOverlay = '';
+                    if (sideDriveWidth > 0) {
+                        const driveDepth = frontMargin + (rows * unitDepth) + ((rows - 1) * rowGap);
+                        const d0 = toPlot(sideMargin, frontMargin);
+                        const d1 = toPlot(sideMargin + sideDriveWidth, frontMargin);
+                        const d2 = toPlot(sideMargin + sideDriveWidth, driveDepth);
+                        const d3 = toPlot(sideMargin, driveDepth);
+                        const drivePts = [d0, d1, d2, d3].map(p => `${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ');
+                        drivewayOverlay = `<polygon points="${drivePts}" fill="rgba(148,163,184,0.18)" stroke="rgba(148,163,184,0.45)" stroke-width="0.35" stroke-dasharray="1.1 0.9"></polygon>`;
+                    }
+
+                    townhouseOverlay = `
+                        <defs>
+                            <clipPath id="site-clip-preview">
+                                <polygon points="${pointString}"></polygon>
+                            </clipPath>
+                        </defs>
+                        <g clip-path="url(#site-clip-preview)">
+                            ${drivewayOverlay}
+                            ${polys.join('')}
+                            ${laneLines.join('')}
+                            ${labels.join('')}
+                        </g>
+                    `;
+                }
+            }
+
+            container.innerHTML = `
+                <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Site footprint">
+                    <polygon points="${pointString}" fill="rgba(59,130,246,0.25)" stroke="#93c5fd" stroke-width="1.6"></polygon>
+                    ${townhouseOverlay}
+                    ${frontageLine}
+                </svg>
+            `;
+
+            let metaText = `Footprint axis envelope: ${bboxWidth.toFixed(1)}m x ${bboxHeight.toFixed(1)}m | Area ${Math.round(areaSqm).toLocaleString()} m2 | Frontage ${frontageM.toFixed(1)}m | Front-rear depth ${depthM.toFixed(1)}m`;
+            if (siteGeoData.frontageRoadName) {
+                const basis = siteGeoData.frontageSource || '';
+                const basisLabel = basis.startsWith('address-street')
+                    ? (basis.includes('merged') ? 'address street (merged edges)' : 'address street')
+                    : (basis.startsWith('nearest-road')
+                        ? (basis.includes('merged') ? 'nearest road (merged edges)' : 'nearest road edge')
+                        : 'auto edge');
+                metaText += ` | Frontage basis: ${siteGeoData.frontageRoadName} (${basisLabel})`;
+                if (siteGeoData.alternativeFrontageM > 0) {
+                    const altRoad = siteGeoData.alternativeRoadName || 'alternate road edge';
+                    metaText += ` | Alt frontage ${siteGeoData.alternativeFrontageM.toFixed(1)}m (${altRoad})`;
+                }
+            }
+            if (siteGeoData.depthAreaM > 0 && siteGeoData.depthGeomM > 0) {
+                const delta = Math.abs(siteGeoData.depthAreaM - siteGeoData.depthGeomM);
+                if (delta > 2) {
+                    metaText += ` | Avg depth by area ${siteGeoData.depthAreaM.toFixed(1)}m`;
+                }
+            }
+            if (layoutPreview && Number.isFinite(layoutPreview.footprintEach)) {
+                metaText += ` | Preview: ${layoutPreview.unitsCount} TH (${layoutPreview.cols}x${layoutPreview.rows}) at ${layoutPreview.footprintEach.toFixed(0)}m2 footprint each`;
+            }
+            meta.innerText = metaText;
+        }
+
+        async function lookupSiteFromAddress() {
+            const address = (document.getElementById('inp-site-location').value || '').trim();
+            if (!address) {
+                setGisNote('Enter a site address before GIS lookup.', true);
+                return;
+            }
+
+            setGisNote('Looking up address and parcel geometry...');
+
+            try {
+                const geo = await geocodeAddress(address);
+                siteGeoData.lat = geo.lat;
+                siteGeoData.lon = geo.lon;
+
+                const parcelFeature = await fetchParcelAtPoint(geo.lat, geo.lon);
+                const parcelCoords = getParcelRingFromGeometry(parcelFeature.geometry);
+                if (!parcelCoords.length) {
+                    throw new Error('Parcel geometry was empty.');
+                }
+
+                const areaSqm = polygonAreaSqm(parcelCoords);
+                const roadLines = await fetchNearbyRoadLines(parcelCoords);
+                const preferredStreet = extractStreetFromAddress(address);
+                const dimensions = estimateFrontageDepth(parcelCoords, areaSqm, roadLines, preferredStreet);
+                const contourLines = await fetchContourLines(parcelCoords);
+                const fallStats = estimateFallFromContours(
+                    parcelCoords,
+                    dimensions.frontageEdgeIndex,
+                    contourLines,
+                    dimensions.depth || 0
+                );
+                let planning = null;
+                try {
+                    planning = await fetchPlanningContext(geo.lat, geo.lon);
+                } catch (_) {
+                    planning = null;
+                }
+
+                siteGeoData.parcelCoords = parcelCoords;
+                siteGeoData.frontageEdgeIndex = dimensions.frontageEdgeIndex;
+                siteGeoData.frontageEdgeIndices = dimensions.frontageEdgeIndices || [dimensions.frontageEdgeIndex];
+                siteGeoData.areaSqm = areaSqm;
+                siteGeoData.frontageM = dimensions.frontage || 0;
+                siteGeoData.depthM = dimensions.depth || 0;
+                siteGeoData.depthGeomM = dimensions.depthGeom || 0;
+                siteGeoData.depthAreaM = dimensions.depthArea || 0;
+                siteGeoData.bboxWidth = dimensions.bboxWidth || 0;
+                siteGeoData.bboxHeight = dimensions.bboxHeight || 0;
+                siteGeoData.frontageRoadName = dimensions.frontageRoadName || '';
+                siteGeoData.alternativeFrontageM = dimensions.alternativeFrontage || 0;
+                siteGeoData.alternativeRoadName = dimensions.alternativeRoadName || '';
+                siteGeoData.frontageSource = dimensions.frontageSource || '';
+                siteGeoData.planningZoneCode = planning ? planning.zoneCode : '';
+                siteGeoData.planningZoneDesc = planning ? planning.zoneDesc : '';
+                siteGeoData.planningOverlays = planning ? planning.overlays : [];
+                siteGeoData.fallMeters = fallStats.fallMeters;
+                siteGeoData.slopePct = fallStats.slopePct;
+                siteGeoData.minElevation = fallStats.minElevation;
+                siteGeoData.maxElevation = fallStats.maxElevation;
+
+                document.getElementById('inp-site-area').value = formatNumber(Math.round(areaSqm));
+                document.getElementById('inp-site-frontage').value = dimensions.frontage > 0 ? dimensions.frontage.toFixed(1) : '';
+                document.getElementById('inp-site-depth').value = dimensions.depth > 0 ? dimensions.depth.toFixed(1) : '';
+
+                setInterpolationNote('Auto-filled from GIS parcel footprint.');
+                renderSiteFootprintPreview(
+                    parcelCoords,
+                    dimensions.frontageEdgeIndex,
+                    dimensions.frontageEdgeIndices || [dimensions.frontageEdgeIndex],
+                    areaSqm,
+                    dimensions.frontage || 0,
+                    dimensions.depth || 0,
+                    dimensions.bboxWidth || 0,
+                    dimensions.bboxHeight || 0,
+                    siteGeoData.layoutPreview
+                );
+                updateFallDisplay(fallStats);
+                updatePlanningDisplay(planning);
+
+                saveRecentSiteAddress(address);
+                populateSiteAddressOptions();
+                setGisNote(`GIS lookup complete at ${geo.lat.toFixed(6)}, ${geo.lon.toFixed(6)}.`);
+                updateComparableLinks();
+                calculate();
+
+                const normalizedAddress = normalizeAddress(address).toLowerCase();
+                if (normalizedAddress && normalizedAddress !== comparableAutoFilledAddress) {
+                    comparableAutoFilledAddress = normalizedAddress;
+                    setTimeout(() => autoPopulateComparableSales(), 120);
+                }
+            } catch (err) {
+                siteGeoData.layoutPreview = null;
+                siteGeoData.frontageRoadName = '';
+                siteGeoData.alternativeFrontageM = 0;
+                siteGeoData.alternativeRoadName = '';
+                siteGeoData.frontageSource = '';
+                siteGeoData.frontageEdgeIndices = [];
+                siteGeoData.depthGeomM = 0;
+                siteGeoData.depthAreaM = 0;
+                updateFallDisplay(null);
+                updatePlanningDisplay(null);
+                setGisNote(`GIS lookup failed: ${err.message}`, true);
+            }
+        }
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
         }
 
         function renderUnits() {
@@ -647,14 +3215,22 @@
                 div.innerHTML = `
                 <div class="unit-name">U${i + 1}</div>
                 <div class="input-wrapper" style="width:100%">
-                    <span class="unit-symbol" style="right:8px">m²</span>
+                    <span class="unit-symbol" style="right:8px">m2</span>
                     <input type="number" value="${u.size}" onchange="updateUnit(${i}, 'size', this.value)" style="padding-right:32px">
                 </div>
-                <div class="input-wrapper" style="width:100%">
-                    <span class="currency-symbol" style="left:8px; font-size:12px">$</span>
-                    <input type="text" value="${formatNumber(u.price)}" oninput="formatInput(this); updateUnit(${i}, 'price', this.value)" style="padding-left:20px">
+                <div class="input-wrapper with-slider" style="width:100%">
+                    <div class="input-shell">
+                        <span class="currency-symbol" style="left:8px; font-size:12px">$</span>
+                        <input type="text" id="unit-price-${i}" value="${formatNumber(u.price)}"
+                            oninput="formatInput(this); syncRangeFromInput('unit-price-${i}', 'unit-price-range-${i}'); updateUnit(${i}, 'price', this.value)"
+                            style="padding-left:20px">
+                    </div>
+                    <div class="slider-wrap">
+                        <input type="range" id="unit-price-range-${i}" min="300000" max="3000000" step="10000" value="${u.price}"
+                            oninput="syncInputFromRange('unit-price-range-${i}', 'unit-price-${i}', true); updateUnit(${i}, 'price', this.value)">
+                    </div>
                 </div>
-                <button class="btn-remove" onclick="removeUnit(${i})">×</button>
+                <button class="btn-remove" onclick="removeUnit(${i})">&times;</button>
             `;
                 container.appendChild(div);
             });
@@ -682,15 +3258,1349 @@
             calculate();
         }
 
+        function renderComparables() {
+            const container = document.getElementById('comparableList');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const maxRelevance = comparables.reduce((best, comp) => Math.max(best, comp.relevance || 0), 0) || 1;
+
+            comparables.forEach((comp, i) => {
+                const hasMeta = Boolean(
+                    comp.url
+                    || comp.soldDate
+                    || ((comp.beds || 0) > 0)
+                    || ((comp.baths || 0) > 0)
+                    || ((comp.parking || 0) > 0)
+                    || ((comp.relevance || 0) > 0)
+                );
+                const details = [];
+                if (comp.soldDate) details.push(`Sold ${escapeHtml(comp.soldDate)}`);
+                if (Number.isFinite(comp.beds) && comp.beds > 0) details.push(`${comp.beds} bed`);
+                if (Number.isFinite(comp.baths) && comp.baths > 0) details.push(`${comp.baths} bath`);
+                if (Number.isFinite(comp.parking) && comp.parking > 0) details.push(`${comp.parking} car`);
+                const relPct = Math.max(0, Math.min(100, Math.round(((comp.relevance || 0) / maxRelevance) * 100)));
+
+                const div = document.createElement('div');
+                div.className = 'comparable-row';
+                div.innerHTML = `
+                <div>
+                    <span class="comp-col-label">Address</span>
+                    <input type="text" class="input-left" value="${escapeHtml(comp.address)}"
+                        oninput="updateComparable(${i}, 'address', this.value)">
+                    ${hasMeta ? `
+                    <div class="comp-meta">
+                        ${comp.url ? `<a href="${escapeHtml(comp.url)}" target="_blank" rel="noopener noreferrer">View Listing</a>` : ''}
+                        ${details.map(item => `<span>${item}</span>`).join('')}
+                    </div>
+                    <div class="comp-visual-meta">
+                        <span>Match score</span>
+                        <span>${relPct}%</span>
+                    </div>
+                    <div class="comp-visual"><div class="comp-visual-fill" style="width:${relPct}%"></div></div>
+                    ` : ''}
+                </div>
+                <div>
+                    <span class="comp-col-label">Sold Price</span>
+                    <input type="text" value="${comp.soldPrice ? formatNumber(comp.soldPrice) : ''}"
+                        oninput="formatInput(this); updateComparable(${i}, 'soldPrice', this.value)">
+                </div>
+                <div>
+                    <span class="comp-col-label">Size (m2)</span>
+                    <input type="number" value="${comp.size || ''}" oninput="updateComparable(${i}, 'size', this.value)">
+                </div>
+                <div>
+                    <span class="comp-col-label">Distance (km)</span>
+                    <input type="number" step="0.1" value="${comp.distance || ''}"
+                        oninput="updateComparable(${i}, 'distance', this.value)">
+                </div>
+                <button class="comp-remove" onclick="removeComparable(${i})" aria-label="Remove comparable">&times;</button>
+            `;
+                container.appendChild(div);
+            });
+        }
+
+        function addComparable() {
+            comparables.push({
+                address: '',
+                soldPrice: 0,
+                size: 0,
+                distance: 0,
+                url: '',
+                soldDate: '',
+                beds: 0,
+                baths: 0,
+                parking: 0,
+                relevance: 0
+            });
+            renderComparables();
+        }
+
+        function removeComparable(index) {
+            if (comparables.length <= 1) return;
+            comparables.splice(index, 1);
+            renderComparables();
+            updateComparableSummary();
+        }
+
+        function updateComparable(index, field, val) {
+            if (field === 'soldPrice') {
+                comparables[index][field] = parseFormatted(val);
+            } else if (field === 'size' || field === 'distance') {
+                comparables[index][field] = parseFloat(val) || 0;
+            } else {
+                comparables[index][field] = val;
+            }
+            updateComparableSummary();
+        }
+
+        function getAverageUnitSize() {
+            if (!units.length) return 0;
+            const total = units.reduce((sum, unit) => sum + (unit.size || 0), 0);
+            return total / units.length;
+        }
+
+        function getComparableRatePerSqm(comp) {
+            const soldPrice = Number(comp && comp.soldPrice);
+            const size = Number(comp && comp.size);
+            if (!Number.isFinite(soldPrice) || !Number.isFinite(size) || soldPrice <= 0 || size <= 0) return 0;
+            return soldPrice / size;
+        }
+
+        function isPlausibleComparable(comp) {
+            const soldPrice = Number(comp && comp.soldPrice);
+            const size = Number(comp && comp.size);
+            const rate = getComparableRatePerSqm(comp);
+            if (!Number.isFinite(soldPrice) || soldPrice < COMPARABLE_MIN_PRICE || soldPrice > COMPARABLE_MAX_PRICE) return false;
+            if (!Number.isFinite(size) || size < COMPARABLE_MIN_SIZE || size > COMPARABLE_MAX_SIZE) return false;
+            if (!Number.isFinite(rate) || rate < COMPARABLE_MIN_RATE || rate > COMPARABLE_MAX_RATE) return false;
+            return true;
+        }
+
+        function getComparableStats() {
+            const withPriceAndSize = comparables.filter(comp => (comp.soldPrice || 0) > 0 && (comp.size || 0) > 0);
+            const plausible = withPriceAndSize.filter(isPlausibleComparable);
+            return {
+                plausible,
+                totalWithPriceAndSize: withPriceAndSize.length,
+                excluded: Math.max(0, withPriceAndSize.length - plausible.length)
+            };
+        }
+
+        function getComparableAverageRate() {
+            const stats = getComparableStats();
+            if (!stats.plausible.length) return 0;
+            return stats.plausible.reduce((sum, comp) => sum + getComparableRatePerSqm(comp), 0) / stats.plausible.length;
+        }
+
+        function getCurrentAverageSellRate() {
+            const totalInternal = units.reduce((sum, unit) => sum + (unit.size || 0), 0);
+            if (totalInternal <= 0) return 0;
+            const totalPrice = units.reduce((sum, unit) => sum + (unit.price || 0), 0);
+            return totalPrice / totalInternal;
+        }
+
+        function loadSubdivisionPrecedents() {
+            try {
+                const raw = localStorage.getItem(SUBDIVISION_PRECEDENT_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                if (!Array.isArray(parsed)) return [];
+                return parsed.filter(item =>
+                    item
+                    && Number.isFinite(item.unitCount)
+                    && Number.isFinite(item.cols)
+                    && Number.isFinite(item.rows)
+                );
+            } catch (_) {
+                return [];
+            }
+        }
+
+        function updateSubdivisionCacheNote() {
+            const el = document.getElementById('subdivision-cache-note');
+            if (!el) return;
+            const precedents = loadSubdivisionPrecedents();
+            if (!precedents.length) {
+                el.innerText = 'Subdivision learning cache is empty. Import a JSON cache or run GIS lookups to build it.';
+                return;
+            }
+
+            const zoneSet = new Set(precedents.map(item => getZonePrefix(item.zoneCode)).filter(Boolean));
+            const latest = precedents[0] && precedents[0].timestamp
+                ? new Date(precedents[0].timestamp).toLocaleDateString()
+                : 'unknown';
+            el.innerText = `${precedents.length} cached subdivision patterns across ${zoneSet.size || 1} zone family(s). Latest sample ${latest}.`;
+        }
+
+        function saveSubdivisionPrecedent(record) {
+            if (!record || !Number.isFinite(record.unitCount) || !Number.isFinite(record.cols) || !Number.isFinite(record.rows)) {
+                return;
+            }
+
+            const all = loadSubdivisionPrecedents();
+            const dedupeKey = [
+                String(record.addressKey || ''),
+                String(record.zoneCode || '').toUpperCase(),
+                String(record.unitCount),
+                String(record.storeys),
+                String(record.cols),
+                String(record.rows)
+            ].join('|');
+
+            const filtered = all.filter(item => {
+                const key = [
+                    String(item.addressKey || ''),
+                    String(item.zoneCode || '').toUpperCase(),
+                    String(item.unitCount || ''),
+                    String(item.storeys || ''),
+                    String(item.cols || ''),
+                    String(item.rows || '')
+                ].join('|');
+                return key !== dedupeKey;
+            });
+
+            filtered.unshift(record);
+            const trimmed = filtered.slice(0, SUBDIVISION_PRECEDENT_LIMIT);
+
+            try {
+                localStorage.setItem(SUBDIVISION_PRECEDENT_KEY, JSON.stringify(trimmed));
+            } catch (_) {
+                // Ignore storage write issues.
+            }
+            updateSubdivisionCacheNote();
+        }
+
+        function triggerSubdivisionImport() {
+            const input = document.getElementById('subdivision-cache-file');
+            if (!input) return;
+            input.value = '';
+            input.click();
+        }
+
+        function normalizeSubdivisionRecord(record = {}) {
+            const unitCount = Math.max(1, Math.round(Number(record.unitCount || record.units || 0)));
+            const cols = Math.max(1, Math.round(Number(record.cols || record.columns || 0)));
+            const rows = Math.max(1, Math.round(Number(record.rows || 0)));
+            if (!Number.isFinite(unitCount) || !Number.isFinite(cols) || !Number.isFinite(rows)) return null;
+
+            return {
+                addressKey: normalizeAddress(record.addressKey || record.address || '').toLowerCase(),
+                zoneCode: String(record.zoneCode || '').toUpperCase(),
+                unitCount,
+                storeys: Math.max(1, Math.round(Number(record.storeys || 2))),
+                cols,
+                rows,
+                sideDriveWidth: Math.max(0, Number(record.sideDriveWidth || record.sideDrive || 0)),
+                frontage: Math.max(0, Number(record.frontage || 0)),
+                depth: Math.max(0, Number(record.depth || 0)),
+                area: Math.max(0, Number(record.area || 0)),
+                timestamp: Number(record.timestamp || Date.now())
+            };
+        }
+
+        function importSubdivisionCacheFile(event) {
+            const file = event && event.target && event.target.files && event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const parsed = JSON.parse(String(reader.result || '[]'));
+                    const rows = Array.isArray(parsed)
+                        ? parsed
+                        : (Array.isArray(parsed.records) ? parsed.records : []);
+                    let imported = 0;
+                    rows.forEach(row => {
+                        const normalized = normalizeSubdivisionRecord(row);
+                        if (!normalized) return;
+                        saveSubdivisionPrecedent(normalized);
+                        imported += 1;
+                    });
+                    setGisNote(imported
+                        ? `Imported ${imported} subdivision pattern(s) into local cache.`
+                        : 'No valid subdivision records found in import file.', !imported);
+                    updateSubdivisionCacheNote();
+                } catch (_) {
+                    setGisNote('Subdivision import failed. Use a valid JSON array of records.', true);
+                }
+            };
+            reader.onerror = () => setGisNote('Failed to read subdivision import file.', true);
+            reader.readAsText(file);
+        }
+
+        function exportSubdivisionCache() {
+            const precedents = loadSubdivisionPrecedents();
+            if (!precedents.length) {
+                setGisNote('Subdivision cache is empty, nothing to export.', true);
+                return;
+            }
+
+            const payload = {
+                exportedAt: new Date().toISOString(),
+                recordCount: precedents.length,
+                records: precedents
+            };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'subdivision_precedent_cache.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            setGisNote(`Exported ${precedents.length} subdivision pattern(s).`);
+        }
+
+        function getZonePrefix(zoneCode) {
+            return String(zoneCode || '').toUpperCase().replace(/[^A-Z]/g, '');
+        }
+
+        function getSubdivisionPatternHint(unitCount, zoneCode, frontage, depth, area) {
+            const precedents = loadSubdivisionPrecedents();
+            if (!precedents.length) {
+                return { pattern: null, sampleCount: 0 };
+            }
+
+            const zonePrefix = getZonePrefix(zoneCode);
+            let candidates = precedents.filter(item => Number(item.unitCount) === Number(unitCount));
+            if (zonePrefix) {
+                const zoneMatched = candidates.filter(item => getZonePrefix(item.zoneCode) === zonePrefix);
+                if (zoneMatched.length) candidates = zoneMatched;
+            }
+            if (!candidates.length) {
+                return { pattern: null, sampleCount: precedents.length };
+            }
+
+            const now = Date.now();
+            let best = null;
+            let bestScore = Number.POSITIVE_INFINITY;
+
+            candidates.forEach(item => {
+                const frontageDiff = Math.abs((item.frontage || 0) - frontage) / Math.max(4, frontage * 0.35);
+                const depthDiff = Math.abs((item.depth || 0) - depth) / Math.max(6, depth * 0.35);
+                const areaDiff = Math.abs((item.area || 0) - area) / Math.max(120, area * 0.3);
+                const ageDays = Math.max(0, (now - (item.timestamp || now)) / (1000 * 60 * 60 * 24));
+                const agePenalty = Math.min(0.8, ageDays / 5000);
+                const score = frontageDiff + depthDiff + areaDiff + agePenalty;
+                if (score < bestScore) {
+                    bestScore = score;
+                    best = item;
+                }
+            });
+
+            if (!best) {
+                return { pattern: null, sampleCount: candidates.length };
+            }
+
+            return {
+                pattern: {
+                    cols: Math.max(1, Math.round(best.cols)),
+                    rows: Math.max(1, Math.round(best.rows)),
+                    sideDrive: Number(best.sideDriveWidth || 0) > 0
+                },
+                sampleCount: candidates.length
+            };
+        }
+
+        function buildTownhouseLayout(unitCount, storeys, avgInternalSize, frontageM, depthM, patternHint = null) {
+            const unitsCount = Math.max(1, Math.round(unitCount || 1));
+            const levelCount = Math.max(1, Number(storeys) || 1);
+            const avgSize = Math.max(70, Number(avgInternalSize) || 0);
+            const frontage = Math.max(0, Number(frontageM) || 0);
+            const depth = Math.max(0, Number(depthM) || 0);
+            const footprintEach = avgSize / levelCount;
+
+            const sideMargin = 1.0;
+            const frontMargin = 2.0;
+            const rearMargin = 2.0;
+            const sideDriveBase = 3.2;
+            const rowGap = 2.0;
+            const minUnitWidth = 5.0;
+            const maxUnitDepth = 22;
+
+            let best = null;
+
+            for (let cols = 1; cols <= unitsCount; cols += 1) {
+                const rows = Math.ceil(unitsCount / cols);
+                const sideDriveWidth = rows > 1 ? sideDriveBase : 0;
+                const usableFrontage = frontage - (sideMargin * 2) - sideDriveWidth;
+                if (usableFrontage <= 1) continue;
+
+                const cellWidth = usableFrontage / cols;
+                const unitWidth = cellWidth * 0.92;
+                if (unitWidth < minUnitWidth) continue;
+
+                const unitDepth = footprintEach / Math.max(1, unitWidth);
+                const totalDepth = frontMargin + rearMargin + (rows * unitDepth) + ((rows - 1) * rowGap);
+                const overflow = depth > 0 ? Math.max(0, totalDepth - depth) : 0;
+                const depthUtil = depth > 0 ? (totalDepth / depth) : 0;
+                const widthPenalty = Math.max(0, 6.0 - unitWidth) * 1.2;
+                const depthPenalty = Math.max(0, unitDepth - maxUnitDepth) * 0.25;
+                const utilPenalty = Math.abs(0.72 - Math.min(1.3, depthUtil)) * 1.2;
+                const rowPenalty = Math.max(0, rows - 2) * 0.35;
+                const extraColPenalty = unitsCount === 3 && cols === 3 ? 0.35 : 0;
+                const hintPenalty = patternHint
+                    ? ((Math.abs(cols - patternHint.cols) * 0.35)
+                        + (Math.abs(rows - patternHint.rows) * 0.35)
+                        + ((patternHint.sideDrive && sideDriveWidth <= 0) ? 0.2 : 0))
+                    : 0;
+                const score = (overflow * 8) + widthPenalty + depthPenalty + utilPenalty + rowPenalty + extraColPenalty + hintPenalty;
+
+                if (depth > 0 && totalDepth > depth + 3.0) continue;
+
+                const candidate = {
+                    unitsCount,
+                    storeys: levelCount,
+                    avgSize,
+                    footprintEach,
+                    cols,
+                    rows,
+                    sideMargin,
+                    frontMargin,
+                    rearMargin,
+                    sideDriveWidth,
+                    rowGap: rows > 1 ? rowGap : 0,
+                    cellWidth,
+                    unitWidth,
+                    unitDepth,
+                    totalDepth,
+                    fitsDepth: depth > 0 ? totalDepth <= depth + 1.0 : true,
+                    score
+                };
+
+                if (!best || candidate.score < best.score) {
+                    best = candidate;
+                }
+            }
+
+            if (best) return best;
+
+            // Fallback so preview still renders when strict filters remove all options.
+            const fallbackCols = Math.max(1, Math.min(unitsCount, 2));
+            const fallbackRows = Math.ceil(unitsCount / fallbackCols);
+            const fallbackSideDrive = fallbackRows > 1 ? sideDriveBase : 0;
+            const fallbackUsableFrontage = Math.max(1, frontage - (sideMargin * 2) - fallbackSideDrive);
+            const fallbackCellWidth = fallbackUsableFrontage / fallbackCols;
+            const fallbackUnitWidth = Math.max(3.2, fallbackCellWidth * 0.9);
+            const fallbackUnitDepth = footprintEach / Math.max(1, fallbackUnitWidth);
+            const fallbackTotalDepth = frontMargin + rearMargin + (fallbackRows * fallbackUnitDepth) + ((fallbackRows - 1) * rowGap);
+
+            return {
+                unitsCount,
+                storeys: levelCount,
+                avgSize,
+                footprintEach,
+                cols: fallbackCols,
+                rows: fallbackRows,
+                sideMargin,
+                frontMargin,
+                rearMargin,
+                sideDriveWidth: fallbackSideDrive,
+                rowGap: fallbackRows > 1 ? rowGap : 0,
+                cellWidth: fallbackCellWidth,
+                unitWidth: fallbackUnitWidth,
+                unitDepth: fallbackUnitDepth,
+                totalDepth: fallbackTotalDepth,
+                fitsDepth: depth > 0 ? fallbackTotalDepth <= depth + 1.5 : true,
+                score: 999
+            };
+        }
+
+        function updateSiteFit(totalSqm) {
+            const siteArea = parseFormatted(document.getElementById('inp-site-area').value);
+            const frontage = parseFloat(document.getElementById('inp-site-frontage').value) || 0;
+            const depth = parseFloat(document.getElementById('inp-site-depth').value) || 0;
+            const fitUnits = Math.max(1, parseInt(document.getElementById('inp-fit-units').value, 10) || 3);
+            const storeys = Math.max(1, parseFloat(document.getElementById('inp-fit-storeys').value) || 2);
+            const openSpaceEach = Math.max(0, parseFloat(document.getElementById('inp-fit-open-space').value) || 40);
+            const coverageCapRatio = 0.5;
+
+            const maxInternalEl = document.getElementById('fit-max-internal');
+            const maxEachEl = document.getElementById('fit-max-each');
+            const bestConfigEl = document.getElementById('fit-best-config');
+            const footprintEachEl = document.getElementById('fit-footprint-each');
+            const bestNoteEl = document.getElementById('fit-best-note');
+
+            const avgUnitSize = units.length ? (totalSqm / units.length) : 0;
+            const unitAreaForFit = avgUnitSize || 170;
+
+            const estimateConfig = (unitCount, avgInternalSize, storeyCount) => {
+                const estimatedFootprint = (avgInternalSize / storeyCount) * unitCount;
+                const circulationAllowance = Math.max(90, unitCount * 24);
+                const estimatedRequiredLand = (estimatedFootprint + (openSpaceEach * unitCount) + circulationAllowance) * 1.1;
+                const depthNeeded = frontage > 0 ? estimatedRequiredLand / frontage : 0;
+                const maxFootprintBalance = (siteArea > 0)
+                    ? (siteArea / 1.1) - (openSpaceEach * unitCount) - circulationAllowance
+                    : 0;
+                const maxFootprintCoverage = siteArea > 0 ? siteArea * coverageCapRatio : 0;
+                const maxFootprint = Math.min(maxFootprintBalance, maxFootprintCoverage);
+                const maxInternalArea = maxFootprint > 0 ? maxFootprint * storeyCount : 0;
+
+                return {
+                    estimatedRequiredLand,
+                    depthNeeded,
+                    maxInternalArea,
+                    maxAvgEach: unitCount > 0 ? (maxInternalArea / unitCount) : 0
+                };
+            };
+
+            const currentConfig = estimateConfig(fitUnits, unitAreaForFit, storeys);
+            const estimatedRequiredLand = currentConfig.estimatedRequiredLand;
+
+            const surplus = siteArea - estimatedRequiredLand;
+            const depthNeeded = currentConfig.depthNeeded;
+
+            document.getElementById('fit-required-land').innerText = `${Math.round(estimatedRequiredLand).toLocaleString()} m2`;
+            document.getElementById('fit-surplus').innerText = `${surplus >= 0 ? '+' : ''}${Math.round(surplus).toLocaleString()} m2`;
+            document.getElementById('fit-depth-needed').innerText = `${depthNeeded ? depthNeeded.toFixed(1) : '0.0'} m`;
+            if (maxInternalEl) {
+                maxInternalEl.innerText = `${Math.max(0, currentConfig.maxInternalArea).toFixed(0)} m2`;
+            }
+            if (maxEachEl) {
+                maxEachEl.innerText = `${Math.max(0, currentConfig.maxAvgEach).toFixed(0)} m2`;
+            }
+            if (footprintEachEl) {
+                footprintEachEl.innerText = `${Math.max(0, (unitAreaForFit / storeys)).toFixed(0)} m2`;
+            }
+
+            const planningZone = (siteGeoData.planningZoneCode || '').toUpperCase();
+            const planningOverlays = (siteGeoData.planningOverlays || []).map(code => (code || '').toUpperCase());
+            const precedentHint = getSubdivisionPatternHint(fitUnits, planningZone, frontage, depth, siteArea);
+            const patternHint = precedentHint.pattern;
+
+            let activeLayout = buildTownhouseLayout(fitUnits, storeys, unitAreaForFit, frontage, depth, patternHint);
+            const refreshPreview = () => {
+                if (!siteGeoData.parcelCoords || !siteGeoData.parcelCoords.length) return;
+                renderSiteFootprintPreview(
+                    siteGeoData.parcelCoords,
+                    siteGeoData.frontageEdgeIndex,
+                    siteGeoData.frontageEdgeIndices,
+                    siteGeoData.areaSqm || siteArea,
+                    siteGeoData.frontageM || frontage,
+                    siteGeoData.depthM || depth,
+                    siteGeoData.bboxWidth || 0,
+                    siteGeoData.bboxHeight || 0,
+                    activeLayout
+                );
+            };
+
+            const chip = document.getElementById('fit-status');
+            let statusClass = 'neutral';
+            let statusText = 'Need site inputs';
+
+            if (siteArea > 0) {
+                if (surplus >= 80 && frontage >= 15) {
+                    statusClass = 'good';
+                    statusText = `Likely fit for ${fitUnits} townhouses`;
+                } else if (surplus >= 0) {
+                    statusClass = 'warn';
+                    statusText = 'Tight fit - test with concept plan';
+                } else {
+                    statusClass = 'bad';
+                    statusText = 'Unlikely fit as configured';
+                }
+
+                if (depth > 0 && depthNeeded > depth + 2) {
+                    statusClass = 'bad';
+                    statusText = 'Depth appears constrained';
+                } else if (depth > 0 && depthNeeded > depth) {
+                    statusClass = 'warn';
+                    statusText = 'Depth looks tight';
+                }
+            }
+
+            chip.className = `status-chip ${statusClass}`;
+            chip.innerText = statusText;
+
+            if (!bestConfigEl || !bestNoteEl) return;
+            if (siteArea <= 0) {
+                bestConfigEl.innerText = 'N/A';
+                bestNoteEl.innerText = 'Enter site area/frontage/depth to generate an optimisation guide.';
+                siteGeoData.layoutPreview = null;
+                refreshPreview();
+                return;
+            }
+
+            const compRate = getComparableAverageRate();
+            const inputRate = getCurrentAverageSellRate();
+            const compRateAccepted = compRate >= COMPARABLE_MIN_RATE && compRate <= COMPARABLE_MAX_RATE;
+            const saleRate = compRateAccepted ? compRate : inputRate;
+            if (saleRate <= 0) {
+                bestConfigEl.innerText = 'N/A';
+                bestNoteEl.innerText = 'Add unit prices or comparable sales so the size/price optimisation can run.';
+                siteGeoData.layoutPreview = activeLayout;
+                refreshPreview();
+                return;
+            }
+
+            const getVal = id => parseFormatted(document.getElementById(id).value);
+            const purchase = getVal('inp-purchase');
+            const stamp = getVal('inp-stamp');
+            const legal = getVal('inp-legal');
+            const totalAcq = purchase + stamp + legal;
+            const buildRate = getVal('inp-buildrate');
+            const consultants = getVal('inp-consultants');
+            const council = getVal('inp-council');
+            const contingencyPct = getVal('inp-contingency');
+            const agentPct = getVal('inp-agent');
+            const months = getVal('inp-months');
+            const years = months / 12;
+            const landLvr = getVal('inp-land-lvr');
+            const landRate = getVal('inp-land-rate') / 100;
+            const constLvr = getVal('inp-const-lvr');
+            const constRate = getVal('inp-const-rate') / 100;
+
+            const landLoan = purchase * (landLvr / 100);
+            const landInterest = landLoan * landRate * years;
+
+            const unitMin = fitUnits;
+            const unitMax = fitUnits;
+            const baseStoreys = Math.max(1, Math.round(storeys));
+
+            let planningStoreyCap = 4;
+            if (planningZone.startsWith('NRZ')) planningStoreyCap = Math.min(planningStoreyCap, 2);
+            if (planningOverlays.some(code => code.startsWith('HO'))) planningStoreyCap = Math.min(planningStoreyCap, 2);
+            if (planningOverlays.some(code => code.startsWith('DDO'))) planningStoreyCap = Math.min(planningStoreyCap, 2);
+
+            const cappedBaseStoreys = Math.max(1, Math.min(baseStoreys, planningStoreyCap));
+            const storeyOptions = [cappedBaseStoreys];
+            if (cappedBaseStoreys < planningStoreyCap) {
+                storeyOptions.push(cappedBaseStoreys + 1);
+            }
+
+            let best = null;
+
+            for (let testUnits = unitMin; testUnits <= unitMax; testUnits += 1) {
+                for (const testStoreys of storeyOptions) {
+                    const capacity = estimateConfig(testUnits, 150, testStoreys);
+                    const maxAvgSize = Math.min(capacity.maxAvgEach, 280);
+                    if (!Number.isFinite(maxAvgSize) || maxAvgSize < 95) continue;
+
+                    const sizeCandidates = [...new Set(
+                        [0.7, 0.8, 0.9, 1.0]
+                            .map(ratio => Math.round((maxAvgSize * ratio) / 5) * 5)
+                            .filter(size => size >= 95 && size <= maxAvgSize + 0.1)
+                    )];
+
+                    for (const avgSize of sizeCandidates) {
+                        const fitCheck = estimateConfig(testUnits, avgSize, testStoreys);
+                        if (fitCheck.estimatedRequiredLand > siteArea + 0.5) continue;
+                        if (depth > 0 && fitCheck.depthNeeded > depth + 1.0) continue;
+
+                        const layoutCheck = buildTownhouseLayout(testUnits, testStoreys, avgSize, frontage, depth, patternHint);
+                        if (!layoutCheck || !layoutCheck.fitsDepth || layoutCheck.score >= 900) continue;
+
+                        const totalInternal = testUnits * avgSize;
+                        const totalGRV = totalInternal * saleRate;
+                        const baseBuild = buildRate * totalInternal;
+                        const softBase = consultants + council;
+                        const contingency = (baseBuild + softBase) * (contingencyPct / 100);
+                        const totalSoft = softBase + contingency;
+                        const sellingCosts = totalGRV * (agentPct / 100);
+                        const constBase = baseBuild + totalSoft;
+                        const constLoan = constBase * (constLvr / 100);
+                        const constInterest = constLoan * constRate * years * 0.6;
+                        const totalFinanceCost = landInterest + constInterest;
+                        const totalProjectCost = totalAcq + baseBuild + totalSoft + sellingCosts + totalFinanceCost;
+                        const netProfit = totalGRV - totalProjectCost;
+                        const marginPct = totalProjectCost > 0 ? (netProfit / totalProjectCost) * 100 : -Infinity;
+
+                        const candidate = {
+                            units: testUnits,
+                            storeys: testStoreys,
+                            avgSize,
+                            totalInternal,
+                            salePerUnit: totalGRV / testUnits,
+                            totalGRV,
+                            netProfit,
+                            marginPct,
+                            layout: layoutCheck
+                        };
+
+                        if (!best
+                            || candidate.netProfit > best.netProfit
+                            || (Math.abs(candidate.netProfit - best.netProfit) < 1 && candidate.marginPct > best.marginPct)) {
+                            best = candidate;
+                        }
+                    }
+                }
+            }
+
+            if (!best) {
+                bestConfigEl.innerText = 'N/A';
+                bestNoteEl.innerText = 'No feasible size/price combination found under current frontage/depth/open-space assumptions.';
+                siteGeoData.layoutPreview = activeLayout;
+                refreshPreview();
+                return;
+            }
+
+            bestConfigEl.innerText = `${best.units} TH x ${best.storeys} storey x ${best.avgSize.toFixed(0)} m2`;
+            activeLayout = best.layout || buildTownhouseLayout(best.units, best.storeys, best.avgSize, frontage, depth, patternHint);
+            if (footprintEachEl && activeLayout) {
+                footprintEachEl.innerText = `${Math.max(0, activeLayout.footprintEach).toFixed(0)} m2`;
+            }
+
+            const addressKey = normalizeAddress(document.getElementById('inp-site-location').value || '').toLowerCase();
+            if (activeLayout && activeLayout.fitsDepth) {
+                saveSubdivisionPrecedent({
+                    addressKey,
+                    zoneCode: planningZone,
+                    unitCount: best.units,
+                    storeys: best.storeys,
+                    cols: activeLayout.cols,
+                    rows: activeLayout.rows,
+                    sideDriveWidth: activeLayout.sideDriveWidth || 0,
+                    frontage,
+                    depth,
+                    area: siteArea,
+                    timestamp: Date.now()
+                });
+            }
+
+            const rateLabel = `$${Math.round(saleRate).toLocaleString()}/m2`;
+            const capNote = planningStoreyCap < 4
+                ? ` Storey options capped at ${planningStoreyCap} by planning controls.`
+                : '';
+            const compRateNote = (!compRateAccepted && compRate > 0)
+                ? ` Comparable rate ignored as outlier ($${Math.round(compRate).toLocaleString()}/m2).`
+                : '';
+            const precedentNote = precedentHint.sampleCount > 0 && patternHint
+                ? ` Precedent hint: ${patternHint.cols}x${patternHint.rows} from ${precedentHint.sampleCount} cached project(s).`
+                : '';
+            if (best.netProfit >= 0) {
+                bestNoteEl.innerText =
+                    `Estimated sale/unit ${fmt(best.salePerUnit)}, GRV ${fmt(best.totalGRV)}, profit ${fmt(best.netProfit)} (${best.marginPct.toFixed(1)}% margin) using ${compRateAccepted ? 'comparable' : 'input'} rate ${rateLabel} with a ${Math.round(coverageCapRatio * 100)}% footprint cap.${capNote}${compRateNote}${precedentNote}`;
+            } else {
+                bestNoteEl.innerText =
+                    `No profitable option found for ${fitUnits} TH with current inputs. Least-loss layout shown: sale/unit ${fmt(best.salePerUnit)}, GRV ${fmt(best.totalGRV)}, profit ${fmt(best.netProfit)} (${best.marginPct.toFixed(1)}% margin) at ${rateLabel}.${capNote}${compRateNote}${precedentNote}`;
+            }
+
+            siteGeoData.layoutPreview = activeLayout;
+            refreshPreview();
+        }
+
+        function updateComparableLinks(avgUnitSize = getAverageUnitSize()) {
+            const addressRaw = document.getElementById('inp-site-location').value || '';
+            const locationInfo = getSearchLocality(addressRaw);
+            const exactAddress = locationInfo.exact || 'Melbourne VIC';
+            const locality = locationInfo.locality || exactAddress;
+            const beds = Math.max(1, parseInt(document.getElementById('inp-comp-beds').value, 10) || 3);
+            const tolerancePct = Math.max(5, parseFloat(document.getElementById('inp-comp-tolerance').value) || 15);
+            const radiusKm = Math.max(0.5, parseFloat(document.getElementById('inp-comp-radius').value) || 2);
+            const lookbackMonths = Math.max(1, parseInt(document.getElementById('inp-comp-lookback').value, 10) || 6);
+
+            const baseSize = avgUnitSize || 170;
+            const tolerance = tolerancePct / 100;
+            const minSize = Math.max(50, Math.round(baseSize * (1 - tolerance)));
+            const maxSize = Math.max(minSize + 10, Math.round(baseSize * (1 + tolerance)));
+
+            const query = `${locality} sold townhouse ${beds} bedroom ${minSize} to ${maxSize} sqm within ${radiusKm} km last ${lookbackMonths} months`;
+
+            const queryInput = document.getElementById('comp-search-query');
+            if (queryInput) {
+                queryInput.value = query;
+            }
+
+            document.getElementById('lnk-comp-domain').href =
+                `https://www.google.com/search?q=${encodeURIComponent(`site:domain.com.au ${query}`)}`;
+            document.getElementById('lnk-comp-rea').href =
+                `https://www.google.com/search?q=${encodeURIComponent(`site:realestate.com.au ${query}`)}`;
+            document.getElementById('lnk-comp-map').href =
+                `https://www.google.com/maps/search/${encodeURIComponent(`recent sold townhouses near ${exactAddress}`)}`;
+
+            document.getElementById('comp-size-band').innerText =
+                `Search around ${locality}. Target comparable size band: ${minSize}-${maxSize} m2 internal, within ${radiusKm} km, last ${lookbackMonths} months.`;
+        }
+
+        function copyComparableQuery() {
+            const input = document.getElementById('comp-search-query');
+            if (!input || !input.value) return;
+
+            const onSuccess = () => {
+                document.getElementById('comp-coverage-note').innerText =
+                    'Search query copied. Open Domain/REA links and paste this into portal filters if needed.';
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(input.value).then(onSuccess).catch(() => {
+                    input.removeAttribute('readonly');
+                    input.select();
+                    document.execCommand('copy');
+                    input.setAttribute('readonly', 'readonly');
+                    onSuccess();
+                });
+                return;
+            }
+
+            input.removeAttribute('readonly');
+            input.select();
+            document.execCommand('copy');
+            input.setAttribute('readonly', 'readonly');
+            onSuccess();
+        }
+
+        function openComparableSearches() {
+            const ids = ['lnk-comp-domain', 'lnk-comp-rea', 'lnk-comp-map'];
+            let opened = 0;
+
+            ids.forEach((id, idx) => {
+                const el = document.getElementById(id);
+                const href = el ? el.href : '';
+                if (!href || href === '#') return;
+                setTimeout(() => {
+                    const win = window.open(href, '_blank', 'noopener,noreferrer');
+                    if (win) opened += 1;
+                }, idx * 120);
+            });
+
+            setTimeout(() => {
+                const msg = opened > 0
+                    ? `Opened ${opened} comparable search tab(s).`
+                    : 'Your browser blocked popups. Use the individual Domain/REA/Map links.';
+                document.getElementById('comp-coverage-note').innerText = msg;
+            }, 500);
+        }
+
+        function parseAuDate(dateStr) {
+            if (!dateStr) return null;
+            const match = String(dateStr).match(/(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})/);
+            if (!match) return null;
+            const months = {
+                jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+                jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11
+            };
+            const day = Number(match[1]);
+            const month = months[match[2].toLowerCase()];
+            const year = Number(match[3]);
+            if (!Number.isFinite(day) || month === undefined || !Number.isFinite(year)) return null;
+            return new Date(Date.UTC(year, month, day));
+        }
+
+        function buildCorsProxyUrl(url) {
+            return `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`;
+        }
+
+        async function fetchTextWithProxy(url) {
+            // Prefer direct fetch first; fallback proxy is for stricter CORS cases.
+            const candidates = [url, buildCorsProxyUrl(url)];
+            let lastError = null;
+
+            for (const candidate of candidates) {
+                try {
+                    const resp = await fetch(candidate, { headers: { Accept: 'text/plain' } });
+                    if (!resp.ok) {
+                        lastError = new Error(`Request failed (${resp.status})`);
+                        continue;
+                    }
+                    const text = await resp.text();
+                    if (/is not a valid resource/i.test(text) || /"Error":/i.test(text)) {
+                        lastError = new Error('Proxy returned an invalid resource response.');
+                        continue;
+                    }
+                    return text;
+                } catch (err) {
+                    lastError = err;
+                }
+            }
+
+            throw (lastError || new Error('Request failed.'));
+        }
+
+        function buildComparableSearchQueries(locality, targetBeds, lookbackMonths) {
+            const local = normalizeAddress(locality || 'Melbourne VIC') || 'Melbourne VIC';
+            const suburbMatch = local.match(/^(.+?)\s+(VIC|NSW|QLD|SA|WA|TAS|ACT|NT)\b/i);
+            const suburb = suburbMatch ? normalizeAddress(suburbMatch[1]) : local;
+            const state = suburbMatch ? suburbMatch[2].toUpperCase() : '';
+            const queries = [
+                `site:domain.com.au sold townhouse ${local} ${targetBeds} bedroom`,
+                `site:domain.com.au sold townhouse ${suburb} ${targetBeds} bedroom ${state}`.trim(),
+                `site:domain.com.au sold townhouse ${local}`,
+                `site:domain.com.au ${local} sold townhouse last ${lookbackMonths} months`
+            ];
+
+            const seen = new Set();
+            return queries
+                .map(q => normalizeAddress(q))
+                .filter(q => {
+                    if (!q) return false;
+                    const key = q.toLowerCase();
+                    if (seen.has(key)) return false;
+                    seen.add(key);
+                    return true;
+                });
+        }
+
+        function extractDomainListingUrls(markdownText) {
+            const text = String(markdownText || '');
+            const urls = new Set();
+
+            const uddgMatches = [...text.matchAll(/uddg=([^\s)\]]+)/gi)];
+            uddgMatches.forEach(match => {
+                try {
+                    const decoded = decodeURIComponent(match[1]);
+                    if (decoded.startsWith('https://www.domain.com.au/')) {
+                        urls.add(decoded);
+                    }
+                } catch (_) {
+                    // Ignore malformed encodings.
+                }
+            });
+
+            const directMatches = text.match(/https:\/\/www\.domain\.com\.au\/[^\s)\]]+/gi) || [];
+            directMatches.forEach(url => urls.add(url));
+
+            const cleaned = [];
+            urls.forEach(rawUrl => {
+                let url = rawUrl
+                    .replace(/&rut=.*$/i, '')
+                    .replace(/[>,.;]+$/g, '')
+                    .trim();
+                url = url.split('?')[0];
+                url = url.replace(/\/+$/, '');
+
+                url = url.replace(/^https:\/\/domain\.com\.au\//i, 'https://www.domain.com.au/');
+                if (!url.startsWith('https://www.domain.com.au/')) return;
+                if (url.includes('/sold-listings/')) return;
+                if (!/-\d{7,}$/.test(url)) return;
+                cleaned.push(url);
+            });
+
+            return [...new Set(cleaned)];
+        }
+
+        function extractDomainSoldIndexUrls(markdownText) {
+            const text = String(markdownText || '');
+            const urls = new Set();
+
+            const uddgMatches = [...text.matchAll(/uddg=([^\s)\]]+)/gi)];
+            uddgMatches.forEach(match => {
+                try {
+                    const decoded = decodeURIComponent(match[1]);
+                    if (/^https:\/\/(www\.)?domain\.com\.au\/sold-listings\//i.test(decoded)) {
+                        urls.add(decoded.split('?')[0].replace(/\/+$/, ''));
+                    }
+                } catch (_) {
+                    // Ignore malformed encodings.
+                }
+            });
+
+            const directMatches = text.match(/https:\/\/(?:www\.)?domain\.com\.au\/sold-listings\/[^\s)\]]*/gi) || [];
+            directMatches.forEach(url => {
+                urls.add(url.split('?')[0].replace(/\/+$/, ''));
+            });
+
+            return [...urls].map(url => url.replace(/^https:\/\/domain\.com\.au\//i, 'https://www.domain.com.au/'));
+        }
+
+        function parseAddressFromDomainUrl(url) {
+            const clean = String(url || '').split('?')[0].replace(/\/+$/, '');
+            const slug = (clean.match(/\/([^/]+)-\d{7,}$/) || [])[1] || '';
+            if (!slug) return '';
+            const normalized = slug
+                .replace(/^unit-/i, 'Unit ')
+                .replace(/-/g, ' ')
+                .replace(/\bvic\b/i, 'VIC')
+                .replace(/\bnsw\b/i, 'NSW')
+                .replace(/\bqld\b/i, 'QLD')
+                .replace(/\bsa\b/i, 'SA')
+                .replace(/\bwa\b/i, 'WA')
+                .replace(/\btas\b/i, 'TAS')
+                .replace(/\bact\b/i, 'ACT')
+                .replace(/\bnt\b/i, 'NT');
+            return normalizeAddress(normalized);
+        }
+
+        function parsePriceAmount(raw) {
+            const text = String(raw || '').trim().toLowerCase();
+            if (!text) return 0;
+            const withoutRateSuffix = text
+                .replace(/\/\s*m(?:2|\u00B2)\b/g, '')
+                .replace(/\bper\s*m(?:2|\u00B2)\b/g, '')
+                .trim();
+            const tokenMatch = withoutRateSuffix.match(/\$?\s*\d[\d,]*(?:\.\d+)?\s*[mk]?/i);
+            const token = tokenMatch ? tokenMatch[0] : withoutRateSuffix;
+            const compact = token.replace(/[, ]/g, '');
+
+            const mil = compact.match(/^\$?(\d+(?:\.\d+)?)m$/i);
+            if (mil) return Math.round(parseFloat(mil[1]) * 1000000);
+            const k = compact.match(/^\$?(\d+(?:\.\d+)?)k$/i);
+            if (k) return Math.round(parseFloat(k[1]) * 1000);
+
+            const digits = compact.replace(/[^\d.]/g, '');
+            if (!digits) return 0;
+            return parseFloat(digits) || 0;
+        }
+
+        function parseDomainComparable(markdownText, url) {
+            const text = String(markdownText || '');
+            const titleMatch = text.match(/Title:\s*Sold\s+(.+?)\s+on\s+(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})/i);
+            const titleAddress = titleMatch ? normalizeAddress(titleMatch[1]) : '';
+            const soldDate = titleMatch
+                ? titleMatch[2]
+                : ((text.match(/Sold(?:\s+at\s+auction)?\s+(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})/i) || [])[1] || '');
+
+            const priceMatch = text.match(/SOLD\s*-\s*(\$[\d,.]+(?:\s*[mk])?)/i)
+                || text.match(/\$[\d,.]+(?:\s*[mk])?/i);
+            const soldPrice = priceMatch ? parsePriceAmount(priceMatch[1] || priceMatch[0]) : 0;
+
+            let beds = 0;
+            let baths = 0;
+            let parking = 0;
+            let size = 0;
+
+            const fullSpecMatch = text.match(/(\d+)\s+Beds?\s+(\d+)\s+Baths?\s+(\d+)\s+Parking\s+(\d+(?:\.\d+)?)\s*m(?:2|\u00B2)/i)
+                || text.match(/(\d+)\s+Beds?\s+(\d+)\s+Baths?\s+(\d+)\s+Parking\s+(\d+(?:\.\d+)?)m(?:2|\u00B2)/i);
+            if (fullSpecMatch) {
+                beds = parseFloat(fullSpecMatch[1]) || 0;
+                baths = parseFloat(fullSpecMatch[2]) || 0;
+                parking = parseFloat(fullSpecMatch[3]) || 0;
+                size = parseFloat(fullSpecMatch[4]) || 0;
+            } else {
+                const partialSpec = text.match(/(\d+)\s+Beds?\s+(\d+)\s+Baths?/i);
+                const sizeMatch = text.match(/(\d+(?:\.\d+)?)\s*m(?:2|\u00B2)/i)
+                    || text.match(/(\d+(?:\.\d+)?)m(?:2|\u00B2)/i);
+                beds = partialSpec ? (parseFloat(partialSpec[1]) || 0) : 0;
+                baths = partialSpec ? (parseFloat(partialSpec[2]) || 0) : 0;
+                size = sizeMatch ? (parseFloat(sizeMatch[1]) || 0) : 0;
+            }
+
+            const propertyTypeMatch = text.match(/\b(Townhouse|Unit|Villa|House|Apartment|Duplex)\b/i);
+            const propertyType = propertyTypeMatch ? normalizeAddress(propertyTypeMatch[1]) : '';
+
+            const address = titleAddress
+                || normalizeAddress((text.match(/^([^\n]+)\n=+/m) || [])[1] || '')
+                || parseAddressFromDomainUrl(url);
+
+            const soldSignal = /Title:\s*Sold\b/i.test(text) || /\bSold at auction\b/i.test(text) || /\bSOLD\s*-\s*\$/i.test(text);
+            if (size > 0 && (size < COMPARABLE_MIN_SIZE || size > COMPARABLE_MAX_SIZE)) {
+                size = 0;
+            }
+            const saneSoldPrice = soldPrice >= COMPARABLE_MIN_PRICE && soldPrice <= COMPARABLE_MAX_PRICE;
+            if (!address || !saneSoldPrice || !soldSignal) {
+                return null;
+            }
+
+            return {
+                address,
+                soldPrice,
+                size,
+                beds,
+                baths,
+                parking,
+                propertyType,
+                soldDate,
+                soldDateObj: parseAuDate(soldDate),
+                url
+            };
+        }
+
+        async function geocodeComparableAddress(address) {
+            const key = normalizeAddress(address).toLowerCase();
+            if (!key) return null;
+            if (geocodeDistanceCache.has(key)) {
+                return geocodeDistanceCache.get(key);
+            }
+
+            try {
+                const q = encodeURIComponent(`${address}, Australia`);
+                const resp = await fetch(`https://photon.komoot.io/api/?q=${q}&limit=1`, {
+                    headers: { Accept: 'application/json' }
+                });
+                if (!resp.ok) {
+                    geocodeDistanceCache.set(key, null);
+                    return null;
+                }
+                const data = await resp.json();
+                const feature = (data.features || [])[0];
+                const coords = feature && feature.geometry ? feature.geometry.coordinates : null;
+                if (!coords || coords.length < 2) {
+                    geocodeDistanceCache.set(key, null);
+                    return null;
+                }
+                const result = { lon: Number(coords[0]), lat: Number(coords[1]) };
+                geocodeDistanceCache.set(key, result);
+                return result;
+            } catch (_) {
+                geocodeDistanceCache.set(key, null);
+                return null;
+            }
+        }
+
+        function calcComparableRelevance(comp, targetBeds, avgUnitSize, radiusKm, lookbackMonths) {
+            const bedsScore = comp.beds > 0
+                ? Math.max(0, 1 - Math.min(3, Math.abs(comp.beds - targetBeds)) / 3)
+                : 0.45;
+            const sizeScore = comp.size > 0 && avgUnitSize > 0
+                ? Math.max(0, 1 - Math.min(1, Math.abs(comp.size - avgUnitSize) / Math.max(60, avgUnitSize * 0.45)))
+                : 0.4;
+            const distScore = Number.isFinite(comp.distance)
+                ? Math.max(0, 1 - Math.min(1.2, comp.distance / Math.max(0.8, radiusKm * 1.25)))
+                : 0.35;
+
+            let recencyScore = 0.4;
+            if (comp.soldDateObj instanceof Date && !Number.isNaN(comp.soldDateObj.getTime())) {
+                const monthsAgo = Math.max(0, (Date.now() - comp.soldDateObj.getTime()) / (1000 * 60 * 60 * 24 * 30.44));
+                recencyScore = Math.max(0, 1 - Math.min(1.5, monthsAgo / Math.max(2, lookbackMonths)));
+            }
+
+            return (bedsScore * 0.25) + (sizeScore * 0.25) + (distScore * 0.15) + (recencyScore * 0.35);
+        }
+
+        function formatComparableSearchTime(ts) {
+            const d = new Date(ts);
+            if (Number.isNaN(d.getTime())) return '';
+            return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function setComparableSearchState(state, message = '') {
+            const stateEl = document.getElementById('comp-search-state');
+            const autoBtn = document.getElementById('btn-comp-autofill');
+            const rerunBtn = document.getElementById('btn-comp-rerun');
+            const isBusy = state === 'busy';
+
+            if (autoBtn) {
+                autoBtn.disabled = isBusy;
+                autoBtn.innerText = isBusy ? 'Searching...' : 'Auto Fill 5 Comps';
+            }
+            if (rerunBtn) {
+                rerunBtn.disabled = isBusy;
+            }
+            if (!stateEl) return;
+
+            stateEl.classList.remove('status-busy', 'status-ok', 'status-error');
+            if (state === 'busy') stateEl.classList.add('status-busy');
+            if (state === 'ok') stateEl.classList.add('status-ok');
+            if (state === 'error') stateEl.classList.add('status-error');
+
+            if (message) {
+                stateEl.innerText = message;
+                return;
+            }
+
+            if (state === 'busy') {
+                stateEl.innerText = 'Searching sold listings and ranking comparables...';
+                return;
+            }
+            if (state === 'ok') {
+                const at = comparableLastSearchAt ? formatComparableSearchTime(comparableLastSearchAt) : '';
+                stateEl.innerText = at
+                    ? `Last search completed at ${at}. Click Run Search Again to refresh.`
+                    : 'Comparable search completed.';
+                return;
+            }
+            if (state === 'error') {
+                stateEl.innerText = 'Comparable search failed. Adjust filters and run again.';
+                return;
+            }
+
+            stateEl.innerText = 'Search idle. Click Auto Fill 5 Comps to run.';
+        }
+
+        async function autoPopulateComparableSales(forceRefresh = false) {
+            if (comparableAutoFillInFlight) {
+                if (forceRefresh) {
+                    setComparableSearchState('busy', 'A comparable search is already running. Please wait...');
+                }
+                return;
+            }
+            comparableAutoFillInFlight = true;
+            setComparableSearchState('busy');
+
+            const noteEl = document.getElementById('comp-coverage-note');
+            const query = (document.getElementById('comp-search-query').value || '').trim();
+            const targetBeds = Math.max(1, parseInt(document.getElementById('inp-comp-beds').value, 10) || 3);
+            const radiusKm = Math.max(0.5, parseFloat(document.getElementById('inp-comp-radius').value) || 2);
+            const lookbackMonths = Math.max(1, parseInt(document.getElementById('inp-comp-lookback').value, 10) || 6);
+            const avgUnitSize = getAverageUnitSize() || 170;
+
+            if (!query) {
+                updateComparableLinks(avgUnitSize);
+            }
+
+            if (noteEl) {
+                noteEl.innerText = 'Searching and ranking latest comparable townhouse sales...';
+            }
+
+            try {
+                const locality = getSearchLocality(document.getElementById('inp-site-location').value || '').locality;
+                const searchQueries = buildComparableSearchQueries(locality, targetBeds, lookbackMonths);
+                const listingUrlSet = new Set();
+                const soldIndexUrlSet = new Set();
+
+                for (const ddgQuery of searchQueries) {
+                    try {
+                        const searchUrl = `https://r.jina.ai/http://duckduckgo.com/html/?q=${encodeURIComponent(ddgQuery)}`;
+                        const searchText = await fetchTextWithProxy(searchUrl);
+                        extractDomainListingUrls(searchText).forEach(url => listingUrlSet.add(url));
+                        extractDomainSoldIndexUrls(searchText).forEach(url => soldIndexUrlSet.add(url));
+                        if (listingUrlSet.size >= 24) break;
+                    } catch (_) {
+                        // Try the next query variant.
+                    }
+                }
+
+                if (listingUrlSet.size < 24 && soldIndexUrlSet.size) {
+                    const indexUrls = [...soldIndexUrlSet].slice(0, 8);
+                    setComparableSearchState('busy', `Found ${listingUrlSet.size} direct listing link(s). Expanding from ${indexUrls.length} sold-index page(s)...`);
+                    for (const indexUrl of indexUrls) {
+                        try {
+                            const sourceUrl = `https://r.jina.ai/http://${indexUrl.replace(/^https?:\/\//, '')}`;
+                            const indexMarkdown = await fetchTextWithProxy(sourceUrl);
+                            extractDomainListingUrls(indexMarkdown).forEach(url => listingUrlSet.add(url));
+                            if (listingUrlSet.size >= 24) break;
+                        } catch (_) {
+                            // Keep expanding from other index pages.
+                        }
+                    }
+                }
+
+                const listingUrls = [...listingUrlSet].slice(0, 30);
+                setComparableSearchState('busy', `Found ${listingUrls.length} candidate listing link(s). Parsing sold details...`);
+
+                if (!listingUrls.length) {
+                    throw new Error('No listing URLs discovered from search.');
+                }
+
+                const parsed = [];
+                const seenCompKeys = new Set();
+                for (const listingUrl of listingUrls) {
+                    if (parsed.length >= 20) break;
+                    try {
+                        const sourceUrl = `https://r.jina.ai/http://${listingUrl.replace(/^https?:\/\//, '')}`;
+                        const markdown = await fetchTextWithProxy(sourceUrl);
+                        const comp = parseDomainComparable(markdown, listingUrl);
+                        if (!comp) continue;
+                        const key = `${normalizeAddress(comp.address).toLowerCase()}|${Math.round(comp.soldPrice || 0)}`;
+                        if (seenCompKeys.has(key)) continue;
+                        seenCompKeys.add(key);
+                        parsed.push(comp);
+                    } catch (_) {
+                        // Keep going across candidate listings.
+                    }
+                }
+
+                if (!parsed.length) {
+                    throw new Error('Listings were found but details could not be parsed.');
+                }
+                setComparableSearchState('busy', `Parsed ${parsed.length} listing(s). Calculating distance and relevance...`);
+
+                for (const comp of parsed) {
+                    if (siteGeoData.lat && siteGeoData.lon && comp.address) {
+                        const geo = await geocodeComparableAddress(comp.address);
+                        if (geo) {
+                            comp.distance = haversineKm(siteGeoData.lat, siteGeoData.lon, geo.lat, geo.lon);
+                        }
+                    }
+                    comp.relevance = calcComparableRelevance(comp, targetBeds, avgUnitSize, radiusKm, lookbackMonths);
+                    const type = String(comp.propertyType || '').toLowerCase();
+                    if (type.includes('townhouse')) comp.relevance += 0.12;
+                    else if (type.includes('villa') || type.includes('duplex')) comp.relevance += 0.05;
+                    else if (type.includes('unit') || type.includes('apartment')) comp.relevance -= 0.08;
+                }
+
+                const ranked = parsed.filter(comp => comp.soldPrice > 0);
+                ranked.sort((a, b) => {
+                    const scoreDiff = (b.relevance || 0) - (a.relevance || 0);
+                    if (Math.abs(scoreDiff) > 1e-6) return scoreDiff;
+                    const aTime = a.soldDateObj instanceof Date ? a.soldDateObj.getTime() : 0;
+                    const bTime = b.soldDateObj instanceof Date ? b.soldDateObj.getTime() : 0;
+                    return bTime - aTime;
+                });
+
+                const top = ranked.slice(0, 5).map(comp => ({
+                    address: comp.address,
+                    soldPrice: comp.soldPrice || 0,
+                    size: comp.size || 0,
+                    distance: Number.isFinite(comp.distance) ? Number(comp.distance.toFixed(2)) : 0,
+                    url: comp.url || '',
+                    soldDate: comp.soldDate || '',
+                    beds: comp.beds || 0,
+                    baths: comp.baths || 0,
+                    parking: comp.parking || 0,
+                    relevance: comp.relevance || 0
+                }));
+
+                if (!top.length) {
+                    throw new Error('No comparable sales met minimum data quality.');
+                }
+
+                comparables = top;
+                renderComparables();
+                updateComparableSummary(avgUnitSize);
+                comparableLastSearchAt = Date.now();
+                setComparableSearchState('ok', `Search complete. Filled ${top.length} comparable sale(s). Click Run Search Again to refresh.`);
+
+                if (noteEl) {
+                    if (top.length >= 5) {
+                        noteEl.innerText = `Auto-filled ${top.length} comparable sale(s) with links and relevance visuals.`;
+                    } else {
+                        noteEl.innerText = `Auto-filled ${top.length} comparable sale(s). Not enough sold data was found to reach 5 under current filters.`;
+                    }
+                }
+            } catch (err) {
+                if (noteEl) {
+                    noteEl.innerText = `Auto-fill failed: ${err.message}. Use manual links as fallback.`;
+                }
+                setComparableSearchState('error', `Search failed: ${err.message}`);
+            } finally {
+                comparableAutoFillInFlight = false;
+                const stateEl = document.getElementById('comp-search-state');
+                if (stateEl && !stateEl.innerText) {
+                    setComparableSearchState('idle');
+                }
+            }
+        }
+
+        function updateComparableSummary(avgUnitSize = getAverageUnitSize()) {
+            const totalUnitSqm = units.reduce((sum, unit) => sum + (unit.size || 0), 0);
+            const stats = getComparableStats();
+            const validComps = stats.plausible;
+            if (!validComps.length) {
+                document.getElementById('comp-avg-price').innerText = '$0';
+                document.getElementById('comp-avg-rate').innerText = '$0';
+                document.getElementById('comp-implied-price').innerText = '$0';
+                const excludedNote = stats.totalWithPriceAndSize > 0
+                    ? ` (${stats.excluded} outlier comp(s) excluded as implausible).`
+                    : '';
+                document.getElementById('comp-coverage-note').innerText =
+                    `Add sold comps to benchmark whether your townhouse sell prices are realistic.${excludedNote}`;
+                updateSiteFit(totalUnitSqm);
+                return;
+            }
+
+            const totalPrice = validComps.reduce((sum, comp) => sum + comp.soldPrice, 0);
+            const avgPrice = totalPrice / validComps.length;
+            const avgRate = validComps.reduce((sum, comp) => sum + getComparableRatePerSqm(comp), 0) / validComps.length;
+            const impliedUnitPrice = avgRate * (avgUnitSize || 170);
+
+            const currentAvgTarget = units.length
+                ? units.reduce((sum, unit) => sum + unit.price, 0) / units.length
+                : 0;
+            const deltaPct = impliedUnitPrice > 0
+                ? ((currentAvgTarget - impliedUnitPrice) / impliedUnitPrice) * 100
+                : 0;
+
+            document.getElementById('comp-avg-price').innerText = fmt(avgPrice);
+            document.getElementById('comp-avg-rate').innerText = `${fmt(avgRate)}/m2`;
+            document.getElementById('comp-implied-price').innerText = fmt(impliedUnitPrice);
+
+            const deltaLabel = deltaPct >= 0 ? `${deltaPct.toFixed(1)}% above` : `${Math.abs(deltaPct).toFixed(1)}% below`;
+            const excludedNote = stats.excluded > 0 ? ` ${stats.excluded} outlier comp(s) excluded.` : '';
+            document.getElementById('comp-coverage-note').innerText =
+                `${validComps.length} valid comp(s). Current average unit sell target is ${deltaLabel} comp-implied pricing.${excludedNote}`;
+            updateSiteFit(totalUnitSqm);
+        }
+
         function calculate() {
             const getVal = (id) => parseFormatted(document.getElementById(id).value);
 
             // 1. REVENUE
             let totalGRV = 0;
             let totalSqm = 0;
-            units.forEach(u => {
-                totalGRV += u.price;
-                totalSqm += u.size;
+            units.forEach(unit => {
+                totalGRV += unit.price;
+                totalSqm += unit.size;
             });
 
             // 2. ACQUISITION
@@ -708,56 +4618,42 @@
             const council = getVal('inp-council');
             const contingencyPct = getVal('inp-contingency');
             const softBase = consultants + council;
-
-            // Contingency
             const contingency = (baseBuild + softBase) * (contingencyPct / 100);
             const totalSoft = softBase + contingency;
 
             // 5. FINANCE & SALES
             const agentPct = getVal('inp-agent');
             const sellingCosts = totalGRV * (agentPct / 100);
-
             const months = getVal('inp-months');
             const years = months / 12;
 
-            // Land Loan
             const landLvr = getVal('inp-land-lvr');
             const landRate = getVal('inp-land-rate') / 100;
-            // Land Value is Purchase Price (usually, or Value if different). Using Purchase Price.
-            // Some banks might lend on Total Acq costs, but standard is usually Purchase Price or Value.
-            // Let's stick to Purchase Price for LVR base as per common practice.
             const landLoan = purchase * (landLvr / 100);
             const landInterest = landLoan * landRate * years;
 
-            // Construction Loan
             const constLvr = getVal('inp-const-lvr');
             const constRate = getVal('inp-const-rate') / 100;
-            // Construction Loan Base: usually Build + Statutory/Consultants (Soft Costs)
             const constBase = baseBuild + totalSoft;
             const constLoan = constBase * (constLvr / 100);
-            // S-curve factor 0.6 usually applied to construction interest
             const constInterest = constLoan * constRate * years * 0.6;
 
             const totalFinanceCost = landInterest + constInterest;
             const totalFinSale = sellingCosts + totalFinanceCost;
 
-            // Update Loan Displays
+            // Totals
+            const totalProjectCost = totalAcq + baseBuild + totalSoft + totalFinSale;
+            const netProfit = totalGRV - totalProjectCost;
+            const margin = totalProjectCost > 0 ? (netProfit / totalProjectCost) * 100 : 0;
+            const totalDebt = landLoan + constLoan;
+            const equity = totalProjectCost - totalDebt;
+            const roe = equity > 0 ? (netProfit / equity) * 100 : 0;
+
+            // Update loan displays
             document.getElementById('disp-land-loan').innerText = fmt(landLoan);
             document.getElementById('disp-const-loan').innerText = fmt(constLoan);
 
-            // TOTALS
-            // Note: totalAcq, baseBuild, totalSoft are calculated above
-            const totalProjectCost = totalAcq + baseBuild + totalSoft + totalFinSale;
-            const netProfit = totalGRV - totalProjectCost;
-            const margin = (netProfit / totalProjectCost) * 100;
-
-            // EQUITY ROE
-            // Equity Required = Total Project Cost - Total Debt
-            const totalDebt = landLoan + constLoan;
-            const equity = totalProjectCost - totalDebt;
-            const roe = (netProfit / equity) * 100;
-
-            // UPDATE UI
+            // Update main metrics
             document.getElementById('display-grv').innerText = fmt(totalGRV);
             document.getElementById('display-sqm').innerText = Math.round(totalSqm);
 
@@ -773,7 +4669,7 @@
             document.getElementById('res-equity').innerText = fmt(equity);
             document.getElementById('res-roe').innerText = roe.toFixed(1) + '%';
 
-            // Update Summary Table
+            // Update summary table
             document.getElementById('sum-land').innerText = fmt(totalAcq);
             document.getElementById('sum-build').innerText = fmt(baseBuild);
             document.getElementById('sum-soft').innerText = fmt(totalSoft);
@@ -781,16 +4677,20 @@
             document.getElementById('sum-total').innerText = fmt(totalProjectCost);
             document.getElementById('vis-total-cost').innerText = fmt(totalProjectCost);
 
-            // Update Bar Chart
-            const pLand = (totalAcq / totalProjectCost) * 100;
-            const pBuild = (baseBuild / totalProjectCost) * 100;
-            const pSoft = (totalSoft / totalProjectCost) * 100;
-            const pFin = (totalFinSale / totalProjectCost) * 100;
+            // Update bar chart
+            const pLand = totalProjectCost > 0 ? (totalAcq / totalProjectCost) * 100 : 0;
+            const pBuild = totalProjectCost > 0 ? (baseBuild / totalProjectCost) * 100 : 0;
+            const pSoft = totalProjectCost > 0 ? (totalSoft / totalProjectCost) * 100 : 0;
+            const pFin = totalProjectCost > 0 ? (totalFinSale / totalProjectCost) * 100 : 0;
 
             document.getElementById('bar-land').style.width = pLand + '%';
             document.getElementById('bar-build').style.width = pBuild + '%';
             document.getElementById('bar-soft').style.width = pSoft + '%';
             document.getElementById('bar-finance').style.width = pFin + '%';
+
+            updateSiteFit(totalSqm);
+            updateComparableLinks(totalSqm / Math.max(units.length, 1));
+            updateComparableSummary(totalSqm / Math.max(units.length, 1));
         }
 
         function fmt(num) {
@@ -806,6 +4706,7 @@
             const val = parseFormatted(this.value);
             const stamp = val * 0.055; // simple 5.5% rule
             document.getElementById('inp-stamp').value = formatNumber(Math.round(stamp));
+            syncRangeFromInput('inp-purchase', 'rng-purchase');
             calculate();
         });
 
@@ -815,3 +4716,6 @@
 </body>
 
 </html>
+
+
+

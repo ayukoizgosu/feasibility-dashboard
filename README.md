@@ -64,6 +64,21 @@ Reports are generated in `reports/`:
 - `site_<id>.md` - Detailed Markdown report per site
 - `site_<id>.json` - Machine-readable data per site
 
+## GitHub Pages
+
+This repo includes a Pages workflow at `.github/workflows/deploy-pages.yml`.
+
+It publishes these static pages from `main`:
+
+- `index.html`
+- `feasibility_calculator.html`
+- `due_diligence.html`
+- `market_scan.html`
+- `demo_report.html`
+- `examples/` (if present)
+
+After pushing to `main`, set **Settings -> Pages -> Source** to **GitHub Actions**.
+
 ## Architecture
 
 ```
