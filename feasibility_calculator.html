@@ -1253,7 +1253,7 @@
                             <label class="input-label">Site Area</label>
                             <div class="input-wrapper">
                                 <span class="unit-symbol">m2</span>
-                                <input type="text" id="inp-site-area" class="has-unit" value="760"
+                                <input type="text" id="inp-site-area" class="has-unit" value="846"
                                     oninput="formatInput(this); handleSiteMetricInput('area')">
                             </div>
                         </div>
@@ -1261,7 +1261,7 @@
                             <label class="input-label">Frontage</label>
                             <div class="input-wrapper">
                                 <span class="unit-symbol">m</span>
-                                <input type="number" id="inp-site-frontage" class="has-unit" value="18"
+                                <input type="number" id="inp-site-frontage" class="has-unit" value="18.4"
                                     oninput="handleSiteMetricInput('frontage')">
                             </div>
                         </div>
@@ -1269,7 +1269,7 @@
                             <label class="input-label">Depth</label>
                             <div class="input-wrapper">
                                 <span class="unit-symbol">m</span>
-                                <input type="number" id="inp-site-depth" class="has-unit" value="42"
+                                <input type="number" id="inp-site-depth" class="has-unit" value="47.1"
                                     oninput="handleSiteMetricInput('depth')">
                             </div>
                         </div>
@@ -1759,6 +1759,7 @@
         const COMPARABLE_MAX_PRICE = 12000000;
         const COMPARABLE_MIN_RATE = 1200;
         const COMPARABLE_MAX_RATE = 20000;
+        const DEFAULT_GIS_REFRESH_ADDRESS = '13 Jilpanger Road, Donvale VIC 3111';
         const DEFAULT_SITE_ADDRESSES = [
             '13 Jilpanger Road, Donvale VIC 3111',
             '21 Ringwood St, Ringwood VIC 3134',
@@ -1940,6 +1941,13 @@
             updateSubdivisionCacheNote();
             setComparableSearchState('idle', 'Search idle. Click Auto Fill 5 Comps to run (typically 30-90s).');
             calculate();
+
+            const input = document.getElementById('inp-site-location');
+            const normalized = normalizeAddress(input && input.value ? input.value : '');
+            if (normalized && normalized.toLowerCase() === DEFAULT_GIS_REFRESH_ADDRESS.toLowerCase()) {
+                setGisNote('Refreshing GIS parcel data for default site...');
+                setTimeout(() => lookupSiteFromAddress({ autoComparables: false }), 120);
+            }
         }
 
         function formatNumber(num) {
@@ -3469,7 +3477,8 @@
             meta.innerText = metaText;
         }
 
-        async function lookupSiteFromAddress() {
+        async function lookupSiteFromAddress(options = {}) {
+            const autoComparables = options && options.autoComparables !== false;
             const address = (document.getElementById('inp-site-location').value || '').trim();
             if (!address) {
                 setGisNote('Enter a site address before GIS lookup.', true);
@@ -3555,9 +3564,13 @@
                 calculate();
 
                 const normalizedAddress = normalizeAddress(address).toLowerCase();
-                if (normalizedAddress && normalizedAddress !== comparableAutoFilledAddress) {
+                if (autoComparables) {
+                    if (normalizedAddress && normalizedAddress !== comparableAutoFilledAddress) {
+                        comparableAutoFilledAddress = normalizedAddress;
+                        setTimeout(() => autoPopulateComparableSales(), 120);
+                    }
+                } else if (normalizedAddress) {
                     comparableAutoFilledAddress = normalizedAddress;
-                    setTimeout(() => autoPopulateComparableSales(), 120);
                 }
             } catch (err) {
                 siteGeoData.layoutPreview = null;
