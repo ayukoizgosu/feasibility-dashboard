@@ -1753,6 +1753,7 @@
         const SITE_ADDRESS_RECENT_KEY = 'feasibility_recent_site_addresses_v1';
         const SUBDIVISION_PRECEDENT_KEY = 'feasibility_subdivision_precedents_v1';
         const SUBDIVISION_PRECEDENT_LIMIT = 800;
+        const SUBDIVISION_HINT_MIN_SAMPLES = 3;
         const COMPARABLE_MIN_SIZE = 60;
         const COMPARABLE_MAX_SIZE = 450;
         const COMPARABLE_MIN_PRICE = 150000;
@@ -3976,7 +3977,10 @@
             const latest = precedents[0] && precedents[0].timestamp
                 ? new Date(precedents[0].timestamp).toLocaleDateString()
                 : 'unknown';
-            el.innerText = `${precedents.length} cached subdivision patterns across ${zoneSet.size || 1} zone family(s). Latest sample ${latest}.`;
+            const minSamplesNote = precedents.length < SUBDIVISION_HINT_MIN_SAMPLES
+                ? ` Need ${SUBDIVISION_HINT_MIN_SAMPLES}+ matching samples before precedent hints are applied.`
+                : '';
+            el.innerText = `${precedents.length} cached subdivision patterns across ${zoneSet.size || 1} zone family(s). Latest sample ${latest}.${minSamplesNote}`;
         }
 
         function saveSubdivisionPrecedent(record) {
@@ -4116,7 +4120,11 @@
                 if (zoneMatched.length) candidates = zoneMatched;
             }
             if (!candidates.length) {
-                return { pattern: null, sampleCount: precedents.length };
+                return { pattern: null, sampleCount: 0 };
+            }
+
+            if (candidates.length < SUBDIVISION_HINT_MIN_SAMPLES) {
+                return { pattern: null, sampleCount: candidates.length };
             }
 
             const now = Date.now();
@@ -4509,8 +4517,12 @@
             const capNote = planningStoreyCap < 4
                 ? ` Storey options capped at ${planningStoreyCap} by planning controls.`
                 : '';
-            const compRateNote = (!compRateAccepted && compRate > 0)
-                ? ` Comparable rate ignored as outlier ($${Math.round(compRate).toLocaleString()}/m2).`
+            const compRateNote = !compRateAccepted
+                ? (compRate > 0
+                    ? ` Comparable rate ignored as outlier ($${Math.round(compRate).toLocaleString()}/m2).`
+                    : (comparableAutoFillInFlight
+                        ? ' Comparable refresh still running; using input rate temporarily.'
+                        : ' No valid comparable sales loaded yet; using input rate.'))
                 : '';
             const precedentNote = precedentHint.sampleCount > 0 && patternHint
                 ? ` Precedent hint: ${patternHint.cols}x${patternHint.rows} from ${precedentHint.sampleCount} cached project(s).`
