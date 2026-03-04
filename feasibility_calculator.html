@@ -1759,6 +1759,9 @@
         const COMPARABLE_MAX_PRICE = 12000000;
         const COMPARABLE_MIN_RATE = 1200;
         const COMPARABLE_MAX_RATE = 20000;
+        const COMPARABLE_CACHE_KEY = 'feasibility_comparable_cache_v1';
+        const COMPARABLE_CACHE_LIMIT = 24;
+        const COMPARABLE_CACHE_TTL_MS = 1000 * 60 * 60 * 72;
         const DEFAULT_GIS_REFRESH_ADDRESS = '13 Jilpanger Road, Donvale VIC 3111';
         const DEFAULT_SITE_ADDRESSES = [
             '13 Jilpanger Road, Donvale VIC 3111',
@@ -1942,11 +1945,16 @@
             setComparableSearchState('idle', 'Search idle. Click Auto Fill 5 Comps to run (typically 30-90s).');
             calculate();
 
+            const hadImmediateCache = applyComparableCache(getAverageUnitSize() || 170, false);
+            if (hadImmediateCache) {
+                setComparableSearchState('ok', 'Loaded cached comparable sales. Refreshing latest data...', 100, 'Cache loaded.');
+            }
+
             const input = document.getElementById('inp-site-location');
             const normalized = normalizeAddress(input && input.value ? input.value : '');
             if (normalized && normalized.toLowerCase() === DEFAULT_GIS_REFRESH_ADDRESS.toLowerCase()) {
                 setGisNote('Refreshing GIS parcel data for default site...');
-                setTimeout(() => lookupSiteFromAddress({ autoComparables: false }), 120);
+                setTimeout(() => lookupSiteFromAddress({ autoComparables: 'cache-first' }), 120);
             }
         }
 
@@ -3478,7 +3486,8 @@
         }
 
         async function lookupSiteFromAddress(options = {}) {
-            const autoComparables = options && options.autoComparables !== false;
+            const hasAutoFlag = Object.prototype.hasOwnProperty.call(options || {}, 'autoComparables');
+            const autoComparables = hasAutoFlag ? options.autoComparables : 'cache-first';
             const address = (document.getElementById('inp-site-location').value || '').trim();
             if (!address) {
                 setGisNote('Enter a site address before GIS lookup.', true);
@@ -3564,7 +3573,14 @@
                 calculate();
 
                 const normalizedAddress = normalizeAddress(address).toLowerCase();
-                if (autoComparables) {
+                const avgUnitSize = getAverageUnitSize() || 170;
+                if (autoComparables === 'cache-first') {
+                    if (normalizedAddress) {
+                        comparableAutoFilledAddress = normalizedAddress;
+                    }
+                    const usedCache = applyComparableCache(avgUnitSize, true);
+                    setTimeout(() => autoPopulateComparableSales(Boolean(usedCache)), usedCache ? 220 : 120);
+                } else if (autoComparables) {
                     if (normalizedAddress && normalizedAddress !== comparableAutoFilledAddress) {
                         comparableAutoFilledAddress = normalizedAddress;
                         setTimeout(() => autoPopulateComparableSales(), 120);
@@ -3748,6 +3764,147 @@
             if (!units.length) return 0;
             const total = units.reduce((sum, unit) => sum + (unit.size || 0), 0);
             return total / units.length;
+        }
+
+        function getComparableCacheContext(avgUnitSize = getAverageUnitSize()) {
+            const addressRaw = document.getElementById('inp-site-location')
+                ? (document.getElementById('inp-site-location').value || '')
+                : '';
+            const locationInfo = getSearchLocality(addressRaw);
+            const locality = normalizeAddress(locationInfo.locality || locationInfo.exact || 'Melbourne VIC');
+            const targetBeds = Math.max(1, parseInt(document.getElementById('inp-comp-beds').value, 10) || 3);
+            const tolerancePct = Math.max(5, parseFloat(document.getElementById('inp-comp-tolerance').value) || 15);
+            const radiusKm = Math.max(0.5, parseFloat(document.getElementById('inp-comp-radius').value) || 2);
+            const lookbackMonths = Math.max(1, parseInt(document.getElementById('inp-comp-lookback').value, 10) || 6);
+            const baseSize = avgUnitSize || 170;
+            const tolerance = tolerancePct / 100;
+            const minSize = Math.max(50, Math.round(baseSize * (1 - tolerance)));
+            const maxSize = Math.max(minSize + 10, Math.round(baseSize * (1 + tolerance)));
+            return {
+                locality,
+                targetBeds,
+                tolerancePct: Number(tolerancePct.toFixed(2)),
+                radiusKm: Number(radiusKm.toFixed(2)),
+                lookbackMonths,
+                minSize,
+                maxSize
+            };
+        }
+
+        function buildComparableCacheKey(context) {
+            const local = normalizeAddress(context.locality || 'melbourne vic').toLowerCase();
+            return [
+                local,
+                `beds:${context.targetBeds}`,
+                `tol:${context.tolerancePct}`,
+                `rad:${context.radiusKm}`,
+                `look:${context.lookbackMonths}`,
+                `min:${context.minSize}`,
+                `max:${context.maxSize}`
+            ].join('|');
+        }
+
+        function loadComparableCacheStore() {
+            try {
+                const raw = localStorage.getItem(COMPARABLE_CACHE_KEY);
+                const parsed = raw ? JSON.parse(raw) : null;
+                if (!parsed || !Array.isArray(parsed.entries)) {
+                    return { entries: [] };
+                }
+                return { entries: parsed.entries };
+            } catch (_) {
+                return { entries: [] };
+            }
+        }
+
+        function saveComparableCacheStore(entries) {
+            try {
+                localStorage.setItem(COMPARABLE_CACHE_KEY, JSON.stringify({ entries }));
+            } catch (_) {
+                // Ignore cache write errors.
+            }
+        }
+
+        function sanitizeComparableCacheRows(rows) {
+            if (!Array.isArray(rows)) return [];
+            return rows
+                .map(comp => ({
+                    address: normalizeAddress(comp && comp.address),
+                    soldPrice: Number(comp && comp.soldPrice) || 0,
+                    size: Number(comp && comp.size) || 0,
+                    distance: Number(comp && comp.distance) || 0,
+                    url: String((comp && comp.url) || ''),
+                    soldDate: String((comp && comp.soldDate) || ''),
+                    beds: Number(comp && comp.beds) || 0,
+                    baths: Number(comp && comp.baths) || 0,
+                    parking: Number(comp && comp.parking) || 0,
+                    relevance: Number(comp && comp.relevance) || 0
+                }))
+                .filter(comp => comp.address && comp.soldPrice > 0)
+                .slice(0, 8);
+        }
+
+        function getComparableCacheEntry(avgUnitSize = getAverageUnitSize()) {
+            const store = loadComparableCacheStore();
+            const context = getComparableCacheContext(avgUnitSize);
+            const key = buildComparableCacheKey(context);
+            const now = Date.now();
+            const freshEnough = entry => (now - Number(entry.updatedAt || 0)) <= COMPARABLE_CACHE_TTL_MS;
+
+            const exact = store.entries.find(entry => entry && entry.key === key && freshEnough(entry));
+            if (exact) return exact;
+
+            const fallback = store.entries.find(entry => {
+                if (!entry || !entry.context || !freshEnough(entry)) return false;
+                const ctx = entry.context;
+                return normalizeAddress(ctx.locality || '').toLowerCase() === normalizeAddress(context.locality).toLowerCase()
+                    && Number(ctx.targetBeds) === Number(context.targetBeds)
+                    && Number(ctx.radiusKm) === Number(context.radiusKm)
+                    && Number(ctx.lookbackMonths) === Number(context.lookbackMonths);
+            });
+            return fallback || null;
+        }
+
+        function saveComparableCacheRows(rows, avgUnitSize = getAverageUnitSize()) {
+            const sanitized = sanitizeComparableCacheRows(rows);
+            if (!sanitized.length) return;
+            const context = getComparableCacheContext(avgUnitSize);
+            const key = buildComparableCacheKey(context);
+            const store = loadComparableCacheStore();
+            const remaining = store.entries.filter(entry => entry && entry.key !== key);
+            remaining.unshift({
+                key,
+                context,
+                updatedAt: Date.now(),
+                comparables: sanitized
+            });
+            saveComparableCacheStore(remaining.slice(0, COMPARABLE_CACHE_LIMIT));
+        }
+
+        function applyComparableCache(avgUnitSize = getAverageUnitSize(), announce = false) {
+            const entry = getComparableCacheEntry(avgUnitSize);
+            if (!entry) return false;
+
+            const rows = sanitizeComparableCacheRows(entry.comparables);
+            if (!rows.length) return false;
+
+            comparables = rows;
+            renderComparables();
+            updateComparableSummary(avgUnitSize);
+            comparableLastSearchAt = Number(entry.updatedAt || Date.now());
+
+            if (announce) {
+                const at = formatComparableSearchTime(comparableLastSearchAt);
+                const msg = at
+                    ? `Loaded ${rows.length} cached comparable sale(s) from ${at}. Refreshing in background...`
+                    : `Loaded ${rows.length} cached comparable sale(s). Refreshing in background...`;
+                setComparableSearchState('ok', msg, 100, 'Cache loaded.');
+                const noteEl = document.getElementById('comp-coverage-note');
+                if (noteEl) {
+                    noteEl.innerText = 'Cached comparable data loaded instantly while a fresh search runs in background.';
+                }
+            }
+            return true;
         }
 
         function getComparableRatePerSqm(comp) {
@@ -5068,6 +5225,7 @@
                 comparables = top;
                 renderComparables();
                 updateComparableSummary(avgUnitSize);
+                saveComparableCacheRows(top, avgUnitSize);
                 comparableLastSearchAt = Date.now();
                 setComparableSearchState(
                     'ok',
