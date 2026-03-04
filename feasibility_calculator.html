@@ -634,6 +634,72 @@
             color: #fca5a5;
         }
 
+        .comp-search-progress {
+            display: none;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .comp-search-progress.is-visible {
+            display: block;
+        }
+
+        .comp-progress-track {
+            position: relative;
+            width: 100%;
+            height: 9px;
+            border-radius: 999px;
+            background: rgba(148, 163, 184, 0.2);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            overflow: hidden;
+        }
+
+        .comp-progress-bar {
+            width: 0%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+            transition: width 0.35s ease;
+        }
+
+        .comp-progress-bar.is-busy {
+            background-image:
+                linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%),
+                repeating-linear-gradient(
+                    45deg,
+                    rgba(255, 255, 255, 0.28) 0px,
+                    rgba(255, 255, 255, 0.28) 10px,
+                    rgba(255, 255, 255, 0) 10px,
+                    rgba(255, 255, 255, 0) 20px
+                );
+            background-size: 100% 100%, 28px 100%;
+            animation: comp-progress-stripes 1.1s linear infinite;
+        }
+
+        .comp-progress-bar.is-ok {
+            background: linear-gradient(90deg, #16a34a 0%, #4ade80 100%);
+            animation: none;
+        }
+
+        .comp-progress-bar.is-error {
+            background: linear-gradient(90deg, #dc2626 0%, #f87171 100%);
+            animation: none;
+        }
+
+        .comp-progress-meta {
+            margin-top: 6px;
+        }
+
+        @keyframes comp-progress-stripes {
+            from {
+                background-position: 0 0, 0 0;
+            }
+
+            to {
+                background-position: 0 0, 28px 0;
+            }
+        }
+
         .predictive-list {
             margin-top: 6px;
             border: 1px solid var(--border);
@@ -1091,6 +1157,14 @@
                             search</a>
                     </div>
                     <div class="field-note" id="comp-search-state">Search idle. Click Auto Fill 5 Comps to run.</div>
+                    <div class="comp-search-progress" id="comp-search-progress">
+                        <div class="comp-progress-track" id="comp-progress-track" role="progressbar"
+                            aria-label="Comparable search progress" aria-valuemin="0" aria-valuemax="100"
+                            aria-valuenow="0">
+                            <div class="comp-progress-bar" id="comp-progress-bar"></div>
+                        </div>
+                        <div class="field-note comp-progress-meta" id="comp-progress-meta"></div>
+                    </div>
 
                     <div class="comparable-list" id="comparableList"></div>
                     <button class="mini-add-btn" onclick="addComparable()">+ Add Comparable Sale</button>
@@ -1401,6 +1475,8 @@
         let comparableAutoFillInFlight = false;
         let comparableAutoFilledAddress = '';
         let comparableLastSearchAt = null;
+        let comparableSearchStartedAt = null;
+        let comparableSearchProgressPct = 0;
         let collapsibleSetupDone = false;
 
         function toCollapseStorageKey(prefix, text) {
@@ -1561,7 +1637,7 @@
             updateComparableLinks();
             updatePlanningDisplay(null);
             updateSubdivisionCacheNote();
-            setComparableSearchState('idle', 'Search idle. Click Auto Fill 5 Comps to run.');
+            setComparableSearchState('idle', 'Search idle. Click Auto Fill 5 Comps to run (typically 30-90s).');
             calculate();
         }
 
@@ -4353,7 +4429,87 @@
             return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
 
-        function setComparableSearchState(state, message = '') {
+        function formatComparableDuration(seconds) {
+            const wholeSeconds = Math.max(0, Math.round(Number(seconds) || 0));
+            if (wholeSeconds < 60) return `${wholeSeconds}s`;
+            const mins = Math.floor(wholeSeconds / 60);
+            const rem = wholeSeconds % 60;
+            return rem > 0 ? `${mins}m ${rem}s` : `${mins}m`;
+        }
+
+        function buildComparableEta(progressPct, elapsedMs) {
+            const pct = Number(progressPct);
+            const elapsed = Number(elapsedMs);
+            if (!Number.isFinite(pct) || !Number.isFinite(elapsed) || pct < 8 || elapsed < 3000) return '';
+            const safePct = Math.min(95, Math.max(5, pct));
+            const estimatedTotalMs = elapsed / (safePct / 100);
+            const remainingMs = Math.max(0, estimatedTotalMs - elapsed);
+            if (remainingMs < 4000) return 'Almost done';
+            return `Est. ${formatComparableDuration(Math.ceil(remainingMs / 1000))} remaining`;
+        }
+
+        function setComparableProgressUi(state, progressPct = null, detail = '') {
+            const wrapEl = document.getElementById('comp-search-progress');
+            const trackEl = document.getElementById('comp-progress-track');
+            const barEl = document.getElementById('comp-progress-bar');
+            const metaEl = document.getElementById('comp-progress-meta');
+
+            const resolvedPct = Number.isFinite(progressPct)
+                ? Math.max(0, Math.min(100, Number(progressPct)))
+                : (state === 'busy'
+                    ? Math.max(4, comparableSearchProgressPct || 0)
+                    : state === 'ok'
+                        ? 100
+                        : 0);
+
+            comparableSearchProgressPct = resolvedPct;
+
+            if (wrapEl) {
+                const show = state === 'busy' || state === 'ok' || state === 'error';
+                wrapEl.classList.toggle('is-visible', show);
+            }
+
+            if (trackEl) {
+                trackEl.setAttribute('aria-valuenow', String(Math.round(resolvedPct)));
+            }
+
+            if (barEl) {
+                barEl.style.width = `${resolvedPct}%`;
+                barEl.classList.remove('is-busy', 'is-ok', 'is-error');
+                if (state === 'busy') barEl.classList.add('is-busy');
+                if (state === 'ok') barEl.classList.add('is-ok');
+                if (state === 'error') barEl.classList.add('is-error');
+            }
+
+            if (!metaEl) return;
+            if (state === 'busy') {
+                const elapsedMs = comparableSearchStartedAt ? Date.now() - comparableSearchStartedAt : 0;
+                const elapsedLabel = elapsedMs > 0
+                    ? `Elapsed ${formatComparableDuration(elapsedMs / 1000)}`
+                    : '';
+                const etaLabel = buildComparableEta(resolvedPct, elapsedMs);
+                const parts = [];
+                if (detail) parts.push(detail);
+                if (elapsedLabel) parts.push(elapsedLabel);
+                if (etaLabel) parts.push(etaLabel);
+                metaEl.innerText = parts.join(' | ');
+                return;
+            }
+            if (state === 'ok') {
+                const elapsedMs = comparableSearchStartedAt ? Date.now() - comparableSearchStartedAt : 0;
+                metaEl.innerText = elapsedMs > 0
+                    ? `Completed in ${formatComparableDuration(elapsedMs / 1000)}.`
+                    : 'Comparable search complete.';
+                return;
+            }
+            if (state === 'error') {
+                metaEl.innerText = detail || 'Search stopped before completion.';
+                return;
+            }
+            metaEl.innerText = '';
+        }
+
+        function setComparableSearchState(state, message = '', progressPct = null, progressDetail = '') {
             const stateEl = document.getElementById('comp-search-state');
             const autoBtn = document.getElementById('btn-comp-autofill');
             const rerunBtn = document.getElementById('btn-comp-rerun');
@@ -4366,6 +4522,9 @@
             if (rerunBtn) {
                 rerunBtn.disabled = isBusy;
             }
+
+            setComparableProgressUi(state, progressPct, progressDetail);
+
             if (!stateEl) return;
 
             stateEl.classList.remove('status-busy', 'status-ok', 'status-error');
@@ -4379,7 +4538,7 @@
             }
 
             if (state === 'busy') {
-                stateEl.innerText = 'Searching sold listings and ranking comparables...';
+                stateEl.innerText = 'Searching sold listings and ranking comparables. Typical run is 30-90s.';
                 return;
             }
             if (state === 'ok') {
@@ -4394,7 +4553,7 @@
                 return;
             }
 
-            stateEl.innerText = 'Search idle. Click Auto Fill 5 Comps to run.';
+            stateEl.innerText = 'Search idle. Click Auto Fill 5 Comps to run (typically 30-90s).';
         }
 
         async function autoPopulateComparableSales(forceRefresh = false) {
@@ -4405,7 +4564,9 @@
                 return;
             }
             comparableAutoFillInFlight = true;
-            setComparableSearchState('busy');
+            comparableSearchStartedAt = Date.now();
+            comparableSearchProgressPct = 4;
+            setComparableSearchState('busy', '', 4, 'Step 1/5: Preparing query sources (network speed affects duration).');
 
             const noteEl = document.getElementById('comp-coverage-note');
             const query = (document.getElementById('comp-search-query').value || '').trim();
@@ -4428,35 +4589,75 @@
                 const listingUrlSet = new Set();
                 const soldIndexUrlSet = new Set();
 
-                for (const ddgQuery of searchQueries) {
+                for (let queryIdx = 0; queryIdx < searchQueries.length; queryIdx += 1) {
+                    const ddgQuery = searchQueries[queryIdx];
                     try {
                         const searchUrl = `https://r.jina.ai/http://duckduckgo.com/html/?q=${encodeURIComponent(ddgQuery)}`;
                         const searchText = await fetchTextWithProxy(searchUrl);
                         extractDomainListingUrls(searchText).forEach(url => listingUrlSet.add(url));
                         extractDomainSoldIndexUrls(searchText).forEach(url => soldIndexUrlSet.add(url));
+                        const discoverPct = 6 + ((queryIdx + 1) / Math.max(1, searchQueries.length)) * 22;
+                        setComparableSearchState(
+                            'busy',
+                            `Searching sold pages (${queryIdx + 1}/${searchQueries.length}). Found ${listingUrlSet.size} direct listing link(s) so far...`,
+                            discoverPct,
+                            'Step 2/5: Discovering sold listings.'
+                        );
                         if (listingUrlSet.size >= 24) break;
                     } catch (_) {
+                        const discoverPct = 6 + ((queryIdx + 1) / Math.max(1, searchQueries.length)) * 22;
+                        setComparableSearchState(
+                            'busy',
+                            `Searching sold pages (${queryIdx + 1}/${searchQueries.length}). Continuing with next source...`,
+                            discoverPct,
+                            'Step 2/5: Discovering sold listings.'
+                        );
                         // Try the next query variant.
                     }
                 }
 
                 if (listingUrlSet.size < 24 && soldIndexUrlSet.size) {
                     const indexUrls = [...soldIndexUrlSet].slice(0, 8);
-                    setComparableSearchState('busy', `Found ${listingUrlSet.size} direct listing link(s). Expanding from ${indexUrls.length} sold-index page(s)...`);
-                    for (const indexUrl of indexUrls) {
+                    setComparableSearchState(
+                        'busy',
+                        `Found ${listingUrlSet.size} direct listing link(s). Expanding from ${indexUrls.length} sold-index page(s)...`,
+                        30,
+                        'Step 3/5: Expanding index pages for additional sold listings.'
+                    );
+                    for (let indexIdx = 0; indexIdx < indexUrls.length; indexIdx += 1) {
+                        const indexUrl = indexUrls[indexIdx];
                         try {
                             const sourceUrl = `https://r.jina.ai/http://${indexUrl.replace(/^https?:\/\//, '')}`;
                             const indexMarkdown = await fetchTextWithProxy(sourceUrl);
                             extractDomainListingUrls(indexMarkdown).forEach(url => listingUrlSet.add(url));
+                            const expandPct = 30 + ((indexIdx + 1) / Math.max(1, indexUrls.length)) * 20;
+                            setComparableSearchState(
+                                'busy',
+                                `Expanded ${indexIdx + 1}/${indexUrls.length} sold-index page(s). ${listingUrlSet.size} listing link(s) discovered...`,
+                                expandPct,
+                                'Step 3/5: Expanding index pages for additional sold listings.'
+                            );
                             if (listingUrlSet.size >= 24) break;
                         } catch (_) {
+                            const expandPct = 30 + ((indexIdx + 1) / Math.max(1, indexUrls.length)) * 20;
+                            setComparableSearchState(
+                                'busy',
+                                `Expanded ${indexIdx + 1}/${indexUrls.length} sold-index page(s). Continuing...`,
+                                expandPct,
+                                'Step 3/5: Expanding index pages for additional sold listings.'
+                            );
                             // Keep expanding from other index pages.
                         }
                     }
                 }
 
                 const listingUrls = [...listingUrlSet].slice(0, 30);
-                setComparableSearchState('busy', `Found ${listingUrls.length} candidate listing link(s). Parsing sold details...`);
+                setComparableSearchState(
+                    'busy',
+                    `Found ${listingUrls.length} candidate listing link(s). Parsing sold details...`,
+                    52,
+                    'Step 4/5: Parsing sold listing details.'
+                );
 
                 if (!listingUrls.length) {
                     throw new Error('No listing URLs discovered from search.');
@@ -4464,7 +4665,8 @@
 
                 const parsed = [];
                 const seenCompKeys = new Set();
-                for (const listingUrl of listingUrls) {
+                for (let listingIdx = 0; listingIdx < listingUrls.length; listingIdx += 1) {
+                    const listingUrl = listingUrls[listingIdx];
                     if (parsed.length >= 20) break;
                     try {
                         const sourceUrl = `https://r.jina.ai/http://${listingUrl.replace(/^https?:\/\//, '')}`;
@@ -4478,14 +4680,29 @@
                     } catch (_) {
                         // Keep going across candidate listings.
                     }
+                    const parsePct = 52 + ((listingIdx + 1) / Math.max(1, listingUrls.length)) * 30;
+                    if (((listingIdx + 1) % 3 === 0) || listingIdx === listingUrls.length - 1) {
+                        setComparableSearchState(
+                            'busy',
+                            `Parsed ${parsed.length} potential comp(s) from ${listingIdx + 1}/${listingUrls.length} candidate page(s)...`,
+                            parsePct,
+                            'Step 4/5: Parsing sold listing details.'
+                        );
+                    }
                 }
 
                 if (!parsed.length) {
                     throw new Error('Listings were found but details could not be parsed.');
                 }
-                setComparableSearchState('busy', `Parsed ${parsed.length} listing(s). Calculating distance and relevance...`);
+                setComparableSearchState(
+                    'busy',
+                    `Parsed ${parsed.length} listing(s). Calculating distance and relevance...`,
+                    84,
+                    'Step 5/5: Calculating distance and relevance.'
+                );
 
-                for (const comp of parsed) {
+                for (let rankIdx = 0; rankIdx < parsed.length; rankIdx += 1) {
+                    const comp = parsed[rankIdx];
                     if (siteGeoData.lat && siteGeoData.lon && comp.address) {
                         const geo = await geocodeComparableAddress(comp.address);
                         if (geo) {
@@ -4497,6 +4714,15 @@
                     if (type.includes('townhouse')) comp.relevance += 0.12;
                     else if (type.includes('villa') || type.includes('duplex')) comp.relevance += 0.05;
                     else if (type.includes('unit') || type.includes('apartment')) comp.relevance -= 0.08;
+                    const rankPct = 84 + ((rankIdx + 1) / Math.max(1, parsed.length)) * 14;
+                    if (((rankIdx + 1) % 2 === 0) || rankIdx === parsed.length - 1) {
+                        setComparableSearchState(
+                            'busy',
+                            `Scored ${rankIdx + 1}/${parsed.length} parsed listing(s)...`,
+                            rankPct,
+                            'Step 5/5: Calculating distance and relevance.'
+                        );
+                    }
                 }
 
                 const ranked = parsed.filter(comp => comp.soldPrice > 0);
@@ -4529,7 +4755,12 @@
                 renderComparables();
                 updateComparableSummary(avgUnitSize);
                 comparableLastSearchAt = Date.now();
-                setComparableSearchState('ok', `Search complete. Filled ${top.length} comparable sale(s). Click Run Search Again to refresh.`);
+                setComparableSearchState(
+                    'ok',
+                    `Search complete. Filled ${top.length} comparable sale(s). Click Run Search Again to refresh.`,
+                    100,
+                    'Completed.'
+                );
 
                 if (noteEl) {
                     if (top.length >= 5) {
@@ -4542,7 +4773,12 @@
                 if (noteEl) {
                     noteEl.innerText = `Auto-fill failed: ${err.message}. Use manual links as fallback.`;
                 }
-                setComparableSearchState('error', `Search failed: ${err.message}`);
+                setComparableSearchState(
+                    'error',
+                    `Search failed: ${err.message}`,
+                    Math.max(8, comparableSearchProgressPct || 8),
+                    'Search stopped before completion. You can retry with broader filters.'
+                );
             } finally {
                 comparableAutoFillInFlight = false;
                 const stateEl = document.getElementById('comp-search-state');
