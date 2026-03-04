@@ -21,6 +21,10 @@
             --input-bg: #f8faff;
             --panel-muted-bg: #eef3ff;
             --panel-shadow: 0 10px 28px rgba(10, 25, 101, 0.08);
+            --card-input-bg: #f7faff;
+            --card-input-border: #c9d9f4;
+            --card-output-bg: #fff8ee;
+            --card-output-border: #eadab9;
         }
 
         * {
@@ -950,6 +954,20 @@
             box-shadow: var(--panel-shadow);
         }
 
+        .card-input {
+            background: var(--card-input-bg) !important;
+            border-color: var(--card-input-border) !important;
+        }
+
+        .card-output {
+            background: var(--card-output-bg) !important;
+            border-color: var(--card-output-border) !important;
+        }
+
+        .card-output .metric-label {
+            color: #4a3b18;
+        }
+
         .metric-card {
             background: var(--panel-muted-bg);
             border: 1px solid #d8e0f4;
@@ -1198,7 +1216,7 @@
                 <div class="section-title">Site Fit + Local Comps<div class="section-line"></div>
                 </div>
 
-                <div class="assist-card">
+                <div class="assist-card card-input">
                     <div class="input-group">
                         <label class="input-label">Site Address (Exact)</label>
                         <div class="input-wrapper wide">
@@ -1360,7 +1378,7 @@
                     <div class="field-note" id="subdivision-cache-note">Subdivision learning cache is empty.</div>
                 </div>
 
-                <div class="assist-card" style="margin-top:0;">
+                <div class="assist-card card-input" style="margin-top:0;">
                     <div class="assist-label">Latest Comparable Townhouse Sales</div>
 
                     <div class="assist-grid">
@@ -1536,7 +1554,7 @@
                 </div>
 
                 <!-- Land Loan -->
-                <div class="loan-container">
+                <div class="loan-container card-input">
                     <div class="loan-title">Land Loan</div>
                     <div class="input-group">
                         <label class="input-label">Land LVR</label>
@@ -1559,7 +1577,7 @@
                 </div>
 
                 <!-- Construction Loan -->
-                <div class="loan-container">
+                <div class="loan-container card-input">
                     <div class="loan-title">Construction Loan</div>
                     <div class="input-group">
                         <label class="input-label">Construction LVR</label>
@@ -1593,22 +1611,22 @@
             </div>
 
             <!-- RIGHT: RESULTS -->
-            <div class="results-panel">
+            <div class="results-panel card-output">
                 <div class="metric-big">
                     <div class="metric-label">Projected Net Profit</div>
                     <div id="res-profit" class="metric-value">$0</div>
                 </div>
 
                 <div class="metric-grid">
-                    <div class="metric-card">
+                    <div class="metric-card card-output">
                         <div class="metric-label">Dev Margin</div>
                         <div id="res-margin" class="metric-subval">0%</div>
                     </div>
-                    <div class="metric-card">
+                    <div class="metric-card card-output">
                         <div class="metric-label">Equity Required</div>
                         <div id="res-equity" class="metric-subval" style="font-size:16px">$0</div>
                     </div>
-                    <div class="metric-card" style="grid-column: span 2;">
+                    <div class="metric-card card-output" style="grid-column: span 2;">
                         <div class="metric-label">ROE (Return on Equity)</div>
                         <div id="res-roe" class="metric-subval" style="color:var(--primary)">0%</div>
                     </div>
@@ -1670,7 +1688,7 @@
                         <div class="agent-role">Director &amp; Auctioneer</div>
                         <div class="agent-contacts">
                             <a href="tel:+61398428888">Office: 03 9842 8888</a>
-                            <a href="tel:+61408044658">Mobile: 0408 044 658</a>
+                            <a href="tel:+61401941210">Mobile: 0401 941 210</a>
                         </div>
                         <a class="agent-profile-link"
                             href="https://www.barryplant.com.au/offices/manningham/our-team/todd-lucas/"
